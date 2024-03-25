@@ -1,4 +1,4 @@
 {
-  "proxyBaseUrl": "https://example-proxy.com",
+  "proxyBaseUrl": "",
   "forceProxy": false
 }
