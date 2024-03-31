@@ -27,7 +27,7 @@
 
           "name": "func response example",
           "description": "example of func that returns object response",
-          "exec": "(req) => {\n\treturn { data: { isFunc: true }, code: 400 }\n}",
+          "exec": "(req, res) => {\n\t\n\tres.status(400).send({ isFunc: true })\n}",
           "type": "func"
         },
         {
