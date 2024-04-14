@@ -1,17 +1,16 @@
 {
   "id": "c3d0aa64-28ca-48ea-87fe-80fd5ac028b7",
   "filename": "example",
-  "path": "/example",
-  "routes": [
-    {
-      "id":"6d4aa7ed-a23b-4b1e-a48b-83ca7ca5f1b9",
+  "routesHash": {
+    "6d4aa7ed-a23b-4b1e-a48b-83ca7ca5f1b9": {
+      "id": "6d4aa7ed-a23b-4b1e-a48b-83ca7ca5f1b9",
+      "description": "example route for stub-on-prem",
       "routePath": "/route",
       "method": "get",
-      "description": "example route for stub-on-prem",
-      "activeResponseIndex": 1,
-      "responses": [
-        {
-          "id":"4b616f18-218d-4c0d-9967-20404cda37e9",
+      "activeResponseId": "9eaf95df-53e1-45b0-ad1a-01f134294811",
+      "responsesHash": {
+        "4b616f18-218d-4c0d-9967-20404cda37e9": {
+          "id": "4b616f18-218d-4c0d-9967-20404cda37e9",
           "name": "object response example",
           "description": "return example of object response ",
           "res": {
@@ -22,35 +21,35 @@
           },
           "type": "obj"
         },
-        {
-          "id":"9eaf95df-53e1-45b0-ad1a-01f134294811",
-
+        "9eaf95df-53e1-45b0-ad1a-01f134294811": {
+          "id": "9eaf95df-53e1-45b0-ad1a-01f134294811",
           "name": "func response example",
           "description": "example of func that returns object response",
           "exec": "(req, res) => {\n\t\n\tres.status(400).send({ isFunc: true })\n}",
           "type": "func"
         },
-        {
-          "id":"f9b2af90-4dbb-458b-905b-030adabc6396",
-
+        "f9b2af90-4dbb-458b-905b-030adabc6396": {
+          "id": "f9b2af90-4dbb-458b-905b-030adabc6396",
           "name": "proxy response",
           "description": "example of proxy response",
           "url": "https://www.jsonkeeper.com/b/ZIA2",
           "type": "proxy"
         }
-      ]
+      },
+      "paramType": "body",
+      "paramValue": "",
+      "paramKey": "",
+      "withParams": false
     },
-    {
-      "id":"3a5dcb68-6e00-4c11-9edc-272081a71262",
-
+    "3a5dcb68-6e00-4c11-9edc-272081a71262": {
+      "id": "3a5dcb68-6e00-4c11-9edc-272081a71262",
       "description": "test",
       "routePath": "/test",
       "method": "get",
-      "activeResponseIndex": 0,
-      "responses": [
-        {
-          "id":"1a4d6a7f-e56a-40dd-8d4e-e398daa92484",
-
+      "activeResponseId": "1a4d6a7f-e56a-40dd-8d4e-e398daa92484",
+      "responsesHash": {
+        "1a4d6a7f-e56a-40dd-8d4e-e398daa92484": {
+          "id": "1a4d6a7f-e56a-40dd-8d4e-e398daa92484",
           "name": "test",
           "description": "test",
           "res": {
@@ -62,10 +61,12 @@
           "url": null,
           "type": "obj"
         }
-      ],
-      "paramKey": "test",
+      },
       "paramType": "query",
-      "paramValue": "test"
+      "paramValue": "test",
+      "paramKey": "test",
+      "withParams": true
     }
-  ]
+  },
+  "path": "/example"
 }

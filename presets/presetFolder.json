@@ -1,0 +1,28 @@
+{
+  "id": "2cb95f6a-ef15-4544-9525-fce8a10e39e2",
+  "filename": "presetFolder",
+  "name": "presetFolder",
+  "presetsHash": {
+    "abfc630f-bcdf-4063-8e2e-d46a2be9adeb": {
+      "id": "abfc630f-bcdf-4063-8e2e-d46a2be9adeb",
+      "description": "example of a preset",
+      "name": "presetExample",
+      "routesHash": {
+        "d031bf2b-cd69-47cb-abdd-a9d4771afefb": {
+          "id": "d031bf2b-cd69-47cb-abdd-a9d4771afefb",
+          "routeId": "6d4aa7ed-a23b-4b1e-a48b-83ca7ca5f1b9",
+          "parentId": "c3d0aa64-28ca-48ea-87fe-80fd5ac028b7",
+          "serverId": "default",
+          "responseId": "4b616f18-218d-4c0d-9967-20404cda37e9"
+        },
+        "40cae05f-ae94-4c3e-bbb4-bc57106aff52": {
+          "id": "40cae05f-ae94-4c3e-bbb4-bc57106aff52",
+          "routeId": "3a5dcb68-6e00-4c11-9edc-272081a71262",
+          "parentId": "c3d0aa64-28ca-48ea-87fe-80fd5ac028b7",
+          "serverId": "default",
+          "responseId": "1a4d6a7f-e56a-40dd-8d4e-e398daa92484"
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,1 @@
-{
-  "proxyBaseUrl": "",
-  "dataVersion":"0.0.6",
-  "forceProxy": false
-}
+{"forceProxy":false,"dataVersion":"0.0.9","proxyBaseUrl":""}
