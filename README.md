@@ -4,8 +4,14 @@
 
 Welcome to Mockingbird - the ultimate solution to turbocharge your development process! Say goodbye to endless waiting for server development or integration bottlenecks. With Mockingbird, you're in control, driving your projects forward at lightning speed.
 
+For full documentation go to [Wiki](https://github.com/ozkeisar/mockingbird/wiki)
+Quick start guide [link](https://github.com/ozkeisar/mockingbird/wiki/Quick-start)
+Getting started guide [link](https://github.com/ozkeisar/mockingbird/wiki/Getting-started-with-mockingbird)
+Troubleshooting [link](https://github.com/ozkeisar/mockingbird/wiki/Troubleshooting)
+
 ## Quick start
 Go to [Releases](https://github.com/ozkeisar/mockingbird/releases) and download the app.
+
 ### Prerequisites:
 
 1.  Ensure you have Mockingbird installed on your system. If not, download and install it from [Here](https://github.com/ozkeisar/mockingbird/releases).
