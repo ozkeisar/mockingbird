@@ -1,4 +1,7 @@
 
+<p align="center">
+<img src="https://github.com/ozkeisar/mockingbird/assets/34401842/51320104-1f8d-4734-b964-661a8882c27e" width="200" align='center' >
+<p>
 
 # Mockingbird: Elevate Your Development Workflow
 
