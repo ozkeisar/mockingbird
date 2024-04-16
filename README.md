@@ -5,7 +5,7 @@
 
 # Mockingbird: Elevate Your Development Workflow
 
-Welcome to Mockingbird - the ultimate solution to turbocharge your development process! Say goodbye to endless waiting for server development or integration bottlenecks. With Mockingbird, you're in control, driving your projects forward at lightning speed.
+Welcome to Mockingbird - Mockingbird is an innovative tool designed for developers who require a flexible and efficient way to simulate server environments. It allows for instant mock server creation, streamlining the development process by enabling front-end testing without the need for a fully implemented back-end. With robust middleware functionality, Mockingbird offers real-time insights into server requests, facilitating on-the-fly adjustments and troubleshooting. Integrated seamlessly with Git, it supports collaborative workflows, version control, and configuration management. Developers can test multiple scenarios by switching between various responses for a given route, enhancing the application's reliability. The inclusion of presets optimizes common tasks, saving time and effort. Additionally, Mockingbird's capability to handle multiple servers and projects makes it an indispensable tool for developers handling complex or numerous applications, fostering productivity and innovation in the development cycle.
 
 For full documentation go to [Wiki](https://github.com/ozkeisar/mockingbird/wiki)
 
