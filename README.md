@@ -15,9 +15,10 @@ Troubleshooting [Here](https://github.com/ozkeisar/mockingbird/wiki/Troubleshoot
 
 
 <p align="center">
-<img src="https://github.com/ozkeisar/mockingbird/assets/34401842/5e3f1aa5-a730-444f-9715-9c82dfdc67d9" width="600" align='center' >
+    <img src="https://github.com/ozkeisar/mockingbird/assets/34401842/5e3f1aa5-a730-444f-9715-9c82dfdc67d9" width="500"  >
+    <img src="https://github.com/ozkeisar/mockingbird/assets/34401842/bc781074-3d6e-4120-8d11-133df0360803" width="490"  >
 <p>
-    
+
 ## Quick start
 Go to [Releases](https://github.com/ozkeisar/mockingbird/releases) and download the app.
 
