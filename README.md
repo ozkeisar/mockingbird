@@ -3,9 +3,11 @@
 <img src="https://github.com/ozkeisar/mockingbird/assets/34401842/51320104-1f8d-4734-b964-661a8882c27e" width="200" align='center' >
 <p>
 Mac users? Run this after the installation
-```
+
+`
 xattr -c /Applications/Mockingbird.app
-```
+`
+
 # Mockingbird: Elevate Your Development Workflow
 
 For full documentation go to [Wiki](https://github.com/ozkeisar/mockingbird/wiki)
