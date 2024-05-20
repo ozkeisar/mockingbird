@@ -2,168 +2,112 @@
 <p align="center">
 <img src="https://github.com/ozkeisar/mockingbird/assets/34401842/51320104-1f8d-4734-b964-661a8882c27e" width="200" align='center' >
 <p>
-Mac users? Run this after the installation
 
-`
-xattr -c /Applications/Mockingbird.app
-`
 
-# Mockingbird: Elevate Your Development Workflow
 
-For full documentation go to [Wiki](https://github.com/ozkeisar/mockingbird/wiki)
 
-Quick start guide [Here](https://github.com/ozkeisar/mockingbird/wiki/Quick-start)
+# Mockingbird
 
-Getting started guide [Here](https://github.com/ozkeisar/mockingbird/wiki/Getting-started-with-mockingbird)
-
-Troubleshooting [Here](https://github.com/ozkeisar/mockingbird/wiki/Troubleshooting)
+Mockingbird is a robust tool for creating and managing mock environments, enhancing productivity, and streamlining integration. It integrates with Git for a simple and secure solution to develop and test APIs without additional servers.
 
 
 <p align="center">
     <img src="https://github.com/ozkeisar/mockingbird/assets/34401842/5e3f1aa5-a730-444f-9715-9c82dfdc67d9" width="500"  >
 <p>
 
-## Quick start
-Go to [Releases](https://github.com/ozkeisar/mockingbird/releases) and download the app.
 
-### Prerequisites:
+## Features
 
-1.  Ensure you have Mockingbird installed on your system. If not, download and install it from [Here](https://github.com/ozkeisar/mockingbird/releases).
-    
- 2.  Make sure you have a Git installed on you machine (you can download git [Here](https://git-scm.com/downloads)).
- 
- 3.  Make sure you have a Git account and the necessary permissions to clone repositories from your Git server.
-    
-
-### Steps:
-
-1.  **Launch Mockingbird:**
-    
-    -   Open Mockingbird on your system. You can find it in your applications folder or search for it in your system's search bar.
-
- 
-3.  **Create New Repository (If Necessary):**
-    
-    -   if you dont have a data repository exist, go to your git server and create new repository
-    - once the repository is initialized you can clone it using Mockingbird 
-
-2.  **Clone existing data repository:**
-    
-    -   **ssh clone** if you have ssh configured in your machine you can just copy the ssh clone url of your repository and clone using the ssh option
-    - **https clone** if you dont have ssh configured or you prefer clone using https, you can do so in the https tab, insert username and password and copy the https clone url 
-    - **press clone**, mockingbird will clone your data repository and will let you start manage your mocks
+- **Intuitive Interface**: Easy-to-use UI for project and server management.
+- **Git Integration**: Works seamlessly with your Git setup.
+- **Multiple Environments**: Manage various servers and mock environments.
+- **Customizable Responses**: Define responses using functions, objects, or proxies.
+- **Presets**: Create collections of routes with selected responses for efficient testing and debugging.
 
 
-Congratulations! You have successfully cloned repository data using Mockingbird. If you encounter any issues or have any questions, feel free to refer to the help documentation or reach out to our support team for assistance. Thank you for using Mockingbird!
+## Getting Started
 
-## What is Mockingbird?
+### Download and Installation
 
-Mockingbird is an innovative tool designed for developers who require a flexible and efficient way to simulate server environments. It allows for instant mock server creation, streamlining the development process by enabling front-end testing without the need for a fully implemented back-end. With robust middleware functionality, Mockingbird offers real-time insights into server requests, facilitating on-the-fly adjustments and troubleshooting. Integrated seamlessly with Git, it supports collaborative workflows, version control, and configuration management. Developers can test multiple scenarios by switching between various responses for a given route, enhancing the application's reliability. The inclusion of presets optimizes common tasks, saving time and effort. Additionally, Mockingbird's capability to handle multiple servers and projects makes it an indispensable tool for developers handling complex or numerous applications, fostering productivity and innovation in the development cycle.
+1. Download the latest version from the [Releases](https://github.com/ozkeisar/mockingbird/releases) page.
+2. Run the installer and follow the instructions.
 
-## Why Mockingbird?
+### Initializing Your Project
 
-### 1. Eliminate Idle Time
-No more twiddling your thumbs while waiting for the server to catch up. With Mockingbird, you can keep coding and testing without skipping a beat. Say hello to continuous productivity!
+1. **Launch Mockingbird**: Open the application.
+2. **Start a New Project**: 
+   - Clone an existing project from your Git service.
+   - Create a new local project (you can connect it to Git later).
+   - Open an existing project.
 
-### 2. Unleash Integration Power
-Who needs to wait for the actual server? Mockingbird lets you simulate server responses on the fly, empowering you to test integrations, debug, and refine your code without any delays. It's integration testing on steroids!
+### Cloning a Project
 
-### 3. Gain Unrivaled Visibility
-With Mockingbird's middleware magic, you get an eagle-eye view of every single request passing through. Say goodbye to guesswork and hello to full transparency. See it, intercept it, master it!
+1. Choose HTTPS or SSH cloning.
+2. Enter the repository URL and provide a unique name.
+3. Click `CLONE` to set up your project.
 
-### 4. Handle Missing Endpoints Like a Pro
-Got calls to make before the endpoints even exist? No problem! Mockingbird lets you add mock responses for yet-to-be-developed endpoints, ensuring your calls never fall flat. Smooth sailing all the way!
+### Setting Up Your Server
 
-### 5. Collaborate Effortlessly
-Forget about discrepancies between team members. With Mockingbird, everyone's on the same page, working with a shared mock server that mirrors reality. Collaboration has never been easier or more efficient!
+1. **New Server**: Click `+ new server`, name it, and hit `SAVE`.
+2. **New Parent**: Add a parent to hold routes, specify the path and filename.
+3. **Add Route**: Define the HTTP method and path, then add the route.
+4. **Add Response**: Choose between function, object, or proxy responses, set response details, and save.
 
+### Running Your Server
 
+- Start your server and get the server address.
+- Change the `baseUrl` in your project to direct API calls to the Mockingbird server.
+- Use the console to view requests handled by Mockingbird.
 
-## Key Features
+## Advanced Setup
 
+### Configuring Your Mock Server
 
-### 1. Instant Mock Server Creation
+1. **Set Up Your Server**: 
+   - Open server details.
+   - Enter your real server's base URL in the Target URL field to let Mockingbird act as a proxy.
 
-Mockingbird allows developers to create mock servers instantly, without having to wait for the actual server to be developed. This means you can start coding and testing immediately, accelerating your development cycle.
+2. **Redirect Your Application**: 
+   - Click `Start Server`.
+   - Replace your live server URL with the Mockingbird server URL in your application code.
 
-### 2. Middleware Functionality
+3. **Monitoring API Calls**: 
+   - Use the Mockingbird console to view all API requests and how they are handled.
 
-Experience unprecedented visibility into the requests passing through your server with Mockingbird's powerful middleware functionality. See all requests in real-time and add mocks on the fly, ensuring smooth integration and troubleshooting.
+4. **Creating Local Routes**: 
+   - Add Parent: Define the parent path.
+   - Add Route: Add specific routes.
+   - Add Response: Define responses for routes.
 
-### 3. Git Integration
+## Presets
 
-With support for Git, Mockingbird ensures secure and manageable mock server configurations. Collaborate seamlessly with your team, track changes, and maintain version control with ease.
+Presets in Mockingbird are collections of routes with selected responses. Applying a preset updates the active responses on all routes in the preset to their specified responses. This feature is particularly useful for:
 
-### 4. Multiple Responses per Route
+- **QA Automation and Manual QA**: Quickly switch between different test scenarios.
+- **Developers**: Debug specific scenarios efficiently without manually changing each route.
 
-Easily switch between multiple responses per route with Mockingbird. Test various scenarios and edge cases effortlessly, ensuring robustness and reliability in your applications.
+To create a preset:
+1. Define a collection of routes.
+2. Select the desired responses for each route.
+3. Save the preset.
 
-### 5. Presets for Efficiency
+To apply a preset:
+1. Select the desired preset from the list.
+2. Apply the preset to update all active responses.
 
-Save time and effort with Mockingbird's preset feature. Predefine the active response for multiple routes, streamlining your workflow and increasing productivity.
+## Contributing
 
-### 6. Support for Multiple Servers and Projects
-
-Mockingbird supports multiple servers with different endpoints, as well as multiple projects. Whether you're working on a single application or managing multiple projects simultaneously, Mockingbird has you covered.
-
-## Use Cases
-
-### 1. Rapid Prototyping
-
-Quickly prototype your ideas without waiting for backend development. Mockingbird lets you create mock servers instantly, allowing you to iterate and experiment with different features and functionalities.
-
-### 2. Frontend Development
-
-Empower frontend developers to work independently of backend dependencies. With Mockingbird, frontend teams can create and manage mock servers, enabling parallel development and faster time-to-market.
-
-### 3. Integration Testing
-
-Ensure seamless integration between frontend and backend systems with Mockingbird's middleware functionality. Monitor requests in real-time, add mocks as needed, and test edge cases with ease, all within a controlled environment.
-
-###   4. API Development
-
-Mockingbird simplifies API development by allowing developers to create mock servers that mimic the behavior of the actual backend. This enables frontend and backend teams to work in parallel, reducing development time and accelerating the delivery of API endpoints.
-
-### 5. Offline Development
-
-Developing in offline or low-connectivity environments can be challenging, especially when relying on external services or APIs. With Mockingbird, developers can create mock servers that simulate the behavior of external dependencies, enabling uninterrupted development even without internet access.
-
-### 6. Load Testing
-
-Mockingbird facilitates load testing by providing the ability to simulate various responses and scenarios. Developers can configure mock servers to return different responses based on factors like request frequency or load, allowing them to test the resilience and scalability of their applications under different conditions.
-
-### 7. Training and Education
-
-Mockingbird can be a valuable tool for training purposes, allowing developers to learn and practice API integration and troubleshooting in a controlled environment. By simulating real-world scenarios and responses, Mockingbird helps developers gain hands-on experience without impacting production systems.
-
-### 8. Continuous Integration/Continuous Deployment (CI/CD)
-
-Integrating Mockingbird into CI/CD pipelines enables automated testing and deployment of applications with mock server support. By including mock server configuration as part of the deployment process, teams can ensure consistent testing and validation across different environments, leading to more reliable and predictable releases.
-
-### 9. Third-party Integration Development
-
-When integrating with third-party services or APIs, developers often face challenges due to external dependencies and unpredictable responses. Mockingbird allows developers to create mock servers that emulate the behavior of third-party APIs, enabling them to test their integration code and handle edge cases effectively before going live.
-
-### 10. Client Demonstrations and Presentations
-
-Mockingbird can be used to create realistic demos and presentations for clients or stakeholders. By setting up mock servers that showcase the functionality of the application, developers can provide tangible demonstrations of features and workflows, helping to gather feedback and secure buy-in before finalizing development.
-
-Whether you're a solo developer, part of a small team, or working in a large organization, Mockingbird offers versatility and flexibility to streamline your development process and deliver high-quality software faster than ever before.
-
-## How Does it Work?
-
-1. **Set Up Mockingbird**: Install it with a breeze, integrate it into your workflow, and watch the magic unfold.
-2. **Work Over Git**: Seamlessly manage mock data over your Git repository, ensuring privacy and control.
-3. **Customize Responses**: Add multiple responses per route, define presets, and switch with ease.
-4. **Multi-Server & Multi-Project Support**: Handle multiple servers and projects effortlessly, all within Mockingbird's intuitive interface.
+Contributions are welcome! Go to [issues](https://github.com/ozkeisar/mockingbird/issues) page for any suggestion issues or feature.
 
 
 
-## Get Mockingbird Now!
+---
 
-Don't let server development slow you down. Experience the power of Mockingbird and take your development process to the next level. Try it today and see the difference for yourself! 
+For more details, visit the following articles:
+- [Mockingbird: New tool for your mock environments](https://dev.to/ozkeisar/mockingbird-new-tool-for-your-mock-environments-49j)
+- [Setting Up Your Mock Server with Mockingbird](https://dev.to/ozkeisar/setting-up-your-mock-server-with-mockingbird-1b72)
 
-Go to [Releases](https://github.com/ozkeisar/mockingbird/releases) and download the app.
+
 
 
 ## Troubleshooting
@@ -179,5 +123,5 @@ Go to [Releases](https://github.com/ozkeisar/mockingbird/releases) and download 
 
 For support or inquiries, contact us at ozkeisar@gmail.com
 
-Happy coding with Mockingbird! 🚀
+Spread your wings with Mockingbird! 🚀
 
