@@ -23,6 +23,7 @@ Mockingbird is a robust tool for creating and managing mock environments, enhanc
 - **Multiple Environments**: Manage various servers and mock environments.
 - **Customizable Responses**: Define responses using functions, objects, or proxies.
 - **Presets**: Create collections of routes with selected responses for efficient testing and debugging.
+- **GraphQL support**: Define requests with graphQL schema support + record GraphQL requests. 
 
 
 ## Getting Started
