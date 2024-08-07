@@ -1,0 +1,183 @@
+
+
+.main-container{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.body {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.empty-state-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.clone-type-radio-group {
+  margin-bottom: 15px;
+}
+
+.clone-container{
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.empty-state-text {
+  /* color: black; */
+}
+
+.url-text-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.app-sidebar {
+  flex-grow: 0;
+  flex-shrink: 0;
+  min-width: 0;
+  max-width: 60%;
+  display: flex;
+  border-right: #868686 1px solid;
+  flex-direction: row;
+  background: rgb(31, 31, 31);
+  box-shadow: -8px 2px 22px -7px rgba(0, 0, 0, 0.25);
+  z-index: 2;
+  overflow: hidden;
+}
+
+.app-sidebar .app-sidebar-content {
+  flex: 1;
+}
+
+.app-sidebar .app-sidebar-resizer {
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 6px;
+  justify-self: flex-end;
+  cursor: col-resize;
+  resize: horizontal;
+  z-index: 1;
+}
+
+.app-sidebar .app-sidebar-resizer:hover {
+  width: 3px;
+  background: #c1c3c5b4;
+}
+
+
+.body-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.body-content{
+  display: flex;
+  flex: 1;
+  overflow: auto;
+}
+
+.details-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  background-color: black;
+}
+
+.console-wrapper {
+  border-top:rgb(140, 140, 140) solid 1px;
+
+
+  flex-grow: 0;
+  flex-shrink: 0;
+  min-height: 34px;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: rgb(20, 20, 20);
+  box-shadow: -8px 2px 22px -7px rgba(0, 0, 0, 0.25);
+  z-index: 2;
+  overflow: hidden;
+}
+
+
+.console-resizer {
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 2px;
+  justify-self: flex-end;
+  cursor: row-resize;
+  resize: horizontal;
+  z-index: 1;
+}
+
+.console-resizer:hover {
+  height: 3px;
+  background: #c1c3c5b4;
+}
+
+
+/* don't remove its for the console style */
+.terminal-base {
+  max-width: initial !important;
+  height: 100% !important;
+  width: 100% !important;
+  min-width: auto !important;
+  min-height: auto !important;
+}
+
+.terminal-base > div{
+  max-width: initial !important;
+  height: 100% !important;
+  width: 100% !important;
+  min-width: auto !important;
+  min-height: auto !important;
+}
+
+.terminal-base > div > div{
+  max-width: initial !important;
+  height: 100% !important;
+  width: 100% !important;
+  min-width: auto !important;
+  min-height: auto !important;
+  overflow-x: hidden;
+}
+
+
+.terminal-base .terminal-container-wrapper .terminal-top-bar{
+  display: none !important;
+  max-width: initial !important;
+  height: 100% !important;
+  width: 100% !important;
+  min-width: auto !important;
+  min-height: auto !important;
+}
+
+.terminal-base  .terminal-container-wrapper .terminal-container{
+  max-width: initial !important;
+  max-height: initial !important;
+
+  max-width: initial !important;
+  height: 100% !important;
+  width: 100% !important;
+  min-width: auto !important;
+  min-height: auto !important;
+}

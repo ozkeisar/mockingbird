@@ -1,0 +1,30 @@
+
+.container{
+    flex: 1;
+    margin: 10px 15px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.title{
+    margin-bottom: 15px;
+}
+
+.body {
+    flex: 1;
+    padding: 0 3px;
+    overflow-y: auto;
+}
+
+.switch {
+    margin-bottom: 10px;
+    width: 350px;
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}

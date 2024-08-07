@@ -1,0 +1,17 @@
+.container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center !important;
+    justify-content: flex-start !important;
+}
+
+.content{ 
+    display: flex;
+    flex-direction: column;
+}
+
+.branchInput {
+    background-color: rgb(31, 31, 31);
+}

@@ -1,0 +1,63 @@
+
+
+.main-container{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .body {
+      position: relative;
+      display: flex;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    
+    .side-bar {
+      height: 100%;
+      background-color: rgb(31, 31, 31);
+    }
+    
+  .empty-state-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .clone-type-radio-group {
+    margin-bottom: 15px;
+  }
+  
+  .clone-container{
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+ 
+  
+  .url-text-btn {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .inputsContainer {
+    width: 370px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+.link:hover{
+  cursor: pointer;
+}

@@ -1,0 +1,27 @@
+.radio-group {
+    margin-top: 15px;
+    margin-bottom: 7px;
+}
+
+.path-e-method {
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    height: 80px;
+}
+
+.parameter-source {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+.key-value {
+    display: flex;
+    align-items: center;
+}
+
+.advanced-info{
+    margin: 35px 0 15px 0 ;
+}

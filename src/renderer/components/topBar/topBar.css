@@ -1,0 +1,36 @@
+.header {
+    width: 100%;
+    background-color: black;
+  }
+
+  .button {
+    color: white !important; 
+    text-transform: capitalize !important;
+    margin-left: 15px !important;
+
+  }
+
+  .port {
+  }
+
+.title-n-pull {
+  display: flex;
+  flex-direction: row;
+  justify-content:flex-start;
+  align-items:center;
+  flex:1;
+}
+
+.icon-logo {
+  width: 25px;
+  margin-right: 15px;
+  margin-left: -5px;
+}
+
+.git-icon {
+  font-size: 15px;
+  min-width: 15px;
+  width: 15px;
+  height: 15px;
+  /* margin-right: 5px; */
+}

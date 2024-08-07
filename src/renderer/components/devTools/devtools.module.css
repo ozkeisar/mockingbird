@@ -1,0 +1,69 @@
+
+
+.container {
+    padding: 0 10px 0 10px;
+    height: 35px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.startContainer {
+    display: flex;
+}
+
+.endContainer {
+    display: flex;
+
+}
+
+.nameWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 25px;
+    user-select: none;
+    cursor: pointer;
+
+    margin-right: 13px;
+}
+
+.nameWrapperActive {
+    border-bottom: 1px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 25px;
+    user-select: none;
+    cursor: pointer;
+
+    margin-right: 13px;
+}
+
+.nameCounter {
+    background-color: rgb(92, 92, 92);
+    padding: 3px 7px;
+    line-height: 4px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    margin: 0 0 0 8px;
+    user-select: none;
+    height: 17px;
+}
+
+.name {
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.inputWrapper {
+    background-color: rgb(38, 38, 38);
+    margin-right: 15px;
+}
+
+.input {
+    font-size: 14px;
+    width: 200px;
+}

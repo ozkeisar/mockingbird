@@ -1,0 +1,47 @@
+.response-details-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+    padding-bottom: 30px;
+}
+
+.response-details-card {
+    padding: 10px !important;
+}
+
+.response-details-card-active {
+    padding: 10px !important;
+    border-color: green !important;
+}
+.json-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.code-block-wrapper {
+    overflow: auto;
+    max-height: 300px;
+}
+
+.text {
+}
+
+.btn-container {
+    display: flex;
+    justify-content: end;
+    margin-top: 7px;
+}
+
+.header-e-link {
+    display: flex;
+    justify-content: space-between;
+}
+
+.delete-res-btn {
+    margin-right: auto !important;
+    margin-left: 0 !important;
+}

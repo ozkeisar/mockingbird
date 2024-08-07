@@ -1,0 +1,129 @@
+
+.container {
+    width: 100%;
+    height: 100%;
+    padding: 5px 13px;
+    overflow-y: auto;
+}
+
+.serverContainer{
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    margin-bottom: 13px;
+}
+
+.serverTitleWrapper{
+    display: flex;
+    align-items: center;
+}
+
+.serverTitle{
+    margin-left: 5px !important;
+}
+
+.serverTitleDivider{
+    margin-bottom: 8px;
+}
+
+.serverBody {
+    padding: 0px 15px;
+}
+
+.addBtnWrapper {
+    width: 100%;
+    display: flex;
+    margin-top: 8px !important;
+
+}
+
+.addBtn{
+    margin-left: auto !important;
+}
+
+.serverRoutes{
+    margin-top: 8px;
+}
+
+.actionsWrapper{
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+
+.routeBlock{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-bottom: 5px;
+}
+
+.routeDetailsCard {
+    display: flex;
+    align-items: center;
+    padding: 10px !important;
+}
+
+.routeMethod {
+    width: 80px;
+    height: 32px;
+    color: white;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.routePath {
+    align-items: center;
+    color: white;
+    display: flex;
+    font-family: monospace;
+    font-size: 16px;
+    font-weight: 600;
+    word-break: break-word;
+    letter-spacing: -0.1ch;
+    margin-right: 10px;
+
+}
+
+.params {
+    display: flex;
+    margin-right: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 16px;
+}
+
+.selectedResponse {
+    padding: 0 10px  !important;
+
+}
+
+.routeTitle{
+    flex: 1;
+}
+
+.parentSection{
+    width: 100%;
+}
+
+.presetDetails{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.topPage{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.roteDeletedTitle {
+    font-size: 16px;
+    color: red;
+    margin-left: 8px;
+}
