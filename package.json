@@ -85,7 +85,6 @@
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.9.3",
-    "@aptabase/electron": "^0.3.1",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
     "@monaco-editor/react": "^4.6.0",

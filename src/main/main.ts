@@ -20,10 +20,8 @@ import { closeInternalServer, startInternalServer } from '../backend';
 import { closeProjectServers } from '../server';
 import { socketIo } from '../backend/app';
 import { EVENT_KEYS } from '../types/events';
-import { initialize } from "@aptabase/electron/main";
 
 
-initialize("A-US-3117109210");
 autoUpdater.autoDownload = true;
 autoUpdater.autoInstallOnAppQuit = true;
 

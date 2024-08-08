@@ -2,7 +2,6 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import {loader} from '@monaco-editor/react';
 import * as monaco from 'monaco-editor';
-import { trackEvent } from "@aptabase/electron/renderer";
 import * as amplitude from '@amplitude/analytics-browser';
 
 
@@ -10,8 +9,6 @@ const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
 
 amplitude.init(isDev?'':'ed51d61371d63ef1136b842900ebdae');
 
-
-trackEvent("app_started"); // An event with no properties
 
 loader.config({ monaco });
 
