@@ -96,11 +96,13 @@ To apply a preset:
 1. Select the desired preset from the list.
 2. Apply the preset to update all active responses.
 
+## Licensing
+
+Mockingbird is dual-licensed under the GNU Affero General Public License v3.0 (AGPLv3) for open-source use and a commercial license for proprietary use. For more details, see [LICENSE](./LICENSE) and [COMMERCIAL_LICENSE](./COMMERCIAL_LICENSE).
+
 ## Contributing
 
-Contributions are welcome! Go to [issues](https://github.com/ozkeisar/mockingbird/issues) page for any suggestion issues or feature.
-
-
+We welcome contributions to Mockingbird! Please read and agree to our Contributor License Agreement (CLA) before contributing. For more details, see [CONTRIBUTING](./CONTRIBUTING.md).
 
 ---
 

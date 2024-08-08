@@ -1,0 +1,102 @@
+
+.route-details-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.routes-container{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.route-block{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+    padding-bottom: 0px;
+    padding-top: 5px;
+}
+
+.route-details-card {
+    display: flex;
+    align-items: center;
+    padding: 10px !important;
+}
+
+.route-method {
+    width: 80px;
+    height: 32px;
+    color: white;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.route-path {
+    align-items: center;
+    color: white;
+    display: flex;
+    font-family: monospace;
+    font-size: 16px;
+    font-weight: 600;
+    word-break: break-word;
+    letter-spacing: -0.1ch;
+    margin-right: 10px;
+
+}
+
+.route-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.add-route {
+    margin-top: 15px !important;
+    margin-right: 10px !important;
+    max-width: 80%;
+    align-self: flex-end;
+}
+
+.link {
+    align-self: flex-start;
+}
+
+.placeholder{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.route-header-title{
+    display: flex;
+    align-items: center;
+}
+
+.route-params {
+    display: flex;
+    margin-left: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.params {
+    display: flex;
+    margin-right: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 16px;
+}

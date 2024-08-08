@@ -1,0 +1,26 @@
+.radio-group {
+    margin-top: 15px;
+    margin-bottom: 7px;
+}
+
+.path-e-method {
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    height: 80px;
+}
+
+
+.toggleContainer {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap:'10px';
+    margin-bottom: 12px;
+
+}
+
+.toggle {
+    text-transform: capitalize;
+}

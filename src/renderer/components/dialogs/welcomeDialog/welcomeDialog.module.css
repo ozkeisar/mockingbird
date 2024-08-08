@@ -1,0 +1,23 @@
+.container {
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+}
+
+.logo {
+    height: 90px;
+    width: 90px;
+}
+
+.title{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.button {
+    color: white;
+}
+

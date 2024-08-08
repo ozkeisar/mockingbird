@@ -1,0 +1,46 @@
+
+.container {
+    width: 100%;
+    height: 100%;
+    padding: 8px 13px
+}
+
+.folderDetails{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 13px;
+}
+.rowContainer{
+    margin-bottom: 5px;
+}
+
+.presetRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 5px;
+
+}
+
+.presetRowDetails {
+    display: flex;
+    align-items: center;
+    padding: 5px 5px;
+}
+
+.presetTitle {
+    margin-right: 8px !important;
+    margin-left: 10px !important;
+}
+
+.addBtnWrapper {
+    width: 100%;
+    display: flex;
+    margin-top: 8px !important;
+
+}
+
+.addBtn{
+    margin-left: auto !important;
+}
