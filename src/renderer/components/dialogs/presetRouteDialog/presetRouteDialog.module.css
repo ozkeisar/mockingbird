@@ -4,7 +4,6 @@
     overflow-x: auto;
     display: flex;
     flex-direction: column;
-    flex: 1; 
 }
   
 .sectionTitle {
