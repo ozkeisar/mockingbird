@@ -1,21 +1,19 @@
-
-
 .section {
     width: 250px;
     height: 100%;
-    overflow-x: hidden;
+    overflow-x: auto;
     display: flex;
     flex-direction: column;
 }
-
+  
 .sectionTitle {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
+  
 .sectionList {
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
     flex: 1;
 }
