@@ -45,10 +45,11 @@ export const ServersIpDialog = ({onClose, open }:Props)=>{
         }
     },[])
     
-  
-    const rows = Object.values(serversHash).map(({name, settings})=>{
-        return {name, address: `http://${host}:${settings.port}`}
-    })
+    const serverIP = `http://${host}`
+
+    const rows = Object.values(serversHash)
+        .sort((a, b) => a.settings.port - b.settings.port)
+        .map(({ name, settings }) => ({ name, address: `http://${host}:${settings.port}` }))
 
 
     const handleClose = ()=>{
@@ -72,6 +73,30 @@ export const ServersIpDialog = ({onClose, open }:Props)=>{
           </TableRow>
         </TableHead>
         <TableBody>
+          <TableRow
+            key="baseURL"
+            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+          >
+            <TableCell component="th" scope="row">
+              base url
+            </TableCell>
+            <TableCell align="right">
+              <Tooltip title={clipboardData === serverIP ? 'copied' : 'copy'}>
+                <Link
+                  component="button"
+                  variant="body1"
+                  onClick={async () => {
+                  reportButtonClick(BUTTONS.SERVERS_IPS_DIALOG_LINK);
+                  navigator.clipboard.writeText(serverIP);
+                  const text = await navigator.clipboard.readText();
+                  setClipBoardData(text);
+                  }}
+                >
+                  {serverIP}
+                </Link>
+              </Tooltip>
+            </TableCell>
+          </TableRow>
           {rows.map((row) => (
             <TableRow
               key={row.name}
