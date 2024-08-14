@@ -47,9 +47,9 @@ export const ServersIpDialog = ({onClose, open }:Props)=>{
     
     const serverIP = `http://${host}`
 
-    const rows = Object.values(serversHash)
-        .sort((a, b) => a.settings.port - b.settings.port)
-        .map(({ name, settings }) => ({ name, address: `http://${host}:${settings.port}` }))
+    const rows = Object.values(serversHash).map(({name, settings})=>{
+        return {name, address: `http://${host}:${settings.port}`}
+    })
 
 
     const handleClose = ()=>{
