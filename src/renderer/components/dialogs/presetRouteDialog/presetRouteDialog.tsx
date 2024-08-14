@@ -141,6 +141,7 @@ export const PresetRouteDialog = ({onClose, open, data, folderId, presetId }:Pro
                     <Typography variant='h6'>server</Typography>
                 </div>
                 <div className={styles.sectionList}>
+                <MenuList sx={{ flexGrow: 1 }}>
                     {Object.values(serversHash).map((item)=>{
                         return (
                             <MenuItem dense selected={_serverId === item.name} onClick={()=>{
@@ -155,6 +156,7 @@ export const PresetRouteDialog = ({onClose, open, data, folderId, presetId }:Pro
                                 </Tooltip>
                             </MenuItem>)
                     })}
+                </MenuList>
                 </div>
            </div>
            <Divider orientation="vertical" variant="middle" flexItem />
@@ -164,7 +166,7 @@ export const PresetRouteDialog = ({onClose, open, data, folderId, presetId }:Pro
                     <Typography variant='h6'>parent</Typography>
                 </div>
                 <div className={styles.sectionList}>
-                    <MenuList>
+                    <MenuList sx={{ flexGrow: 1 }}>
                         {Object.values(server?.parentRoutesHash || {}).map((item)=>{
                             const isGraphql = item.type === 'GraphQl'
                             return (
@@ -188,6 +190,7 @@ export const PresetRouteDialog = ({onClose, open, data, folderId, presetId }:Pro
                     <Typography variant='h6'>route</Typography>
                 </div>
                 <div className={styles.sectionList}>
+                <MenuList sx={{ flexGrow: 1 }}>
                     {isGraphqlParent ? Object.values(parent?.graphQlRouteHash || {}).map((item)=>{
                         
                         return (
@@ -220,6 +223,7 @@ export const PresetRouteDialog = ({onClose, open, data, folderId, presetId }:Pro
                         )
                     })
                     }
+                </MenuList>
                 </div>
            </div>
            <Divider orientation="vertical" variant="middle" flexItem />
@@ -229,6 +233,7 @@ export const PresetRouteDialog = ({onClose, open, data, folderId, presetId }:Pro
                     <Typography variant='h6'>response</Typography>
                 </div>
                 <div className={styles.sectionList}>
+                <MenuList sx={{ flexGrow: 1 }}>
                     {Object.values(route?.responsesHash || {}).map((item)=>{
                          return (
                             <MenuItem dense selected={_responseId === item.id} onClick={()=>{
@@ -242,6 +247,7 @@ export const PresetRouteDialog = ({onClose, open, data, folderId, presetId }:Pro
                             </MenuItem>
                         )
                     })}
+                </MenuList>
                 </div>
            </div>
            <Divider orientation="vertical" variant="middle" flexItem />
