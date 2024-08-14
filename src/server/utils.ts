@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import  { Request, Response, NextFunction, Express } from 'express';
 import { graphql, buildSchema } from 'graphql';
 import { checkIsProgramActive, readAppSettings, updateAppSettings } from '../backend/utils';
-import { GraphQlRoute, LogMetadata, ResponseLog, Route, RouteParent, ServerLog, ServerLogType, ServerSettings } from '../types';
+import { GraphQlRoute, LogMetadata, Method, ResponseLog, Route, RouteParent, ServerLog, ServerSettings } from '../types';
 import { EVENT_KEYS } from '../types/events';
 import { getGraphqlSchemaFromJsonSchema } from '../utils/jsonToSchema';
 import { socketIo } from '../backend/app';

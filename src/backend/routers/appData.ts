@@ -2,7 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { checkIServerUp } from '../../server';
 import { getActiveProjectName, getProjectsNameList, readAppSettings, updateAppSettings, verifyProjectFoldersExist } from '../../backend/utils';
 import { generateUniqueIdentifier } from '../utils/utils';
-import { GraphQlRoute, GraphQlRouteHash, GraphQlRouteType, ParentType, PresetsFolderHash, ProjectData, ProjectDataNew, ProjectServer, ProjectSettings, Route, RouteHash, RouteParent, RouteParentHash, ServerSettings, ServersHash } from '../../types';
+import { GraphQlRoute, GraphQlRouteType, Method, ParentType, PresetsFolderHash, ProjectDataNew, ProjectSettings, Route, RouteParent, ServerSettings } from '../../types';
 import { projectsManager } from '../managers';
 import { logger } from '../utils/utils';
 

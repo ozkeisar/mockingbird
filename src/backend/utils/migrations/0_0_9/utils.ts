@@ -3,18 +3,19 @@ type Method = 'post' | 'get' | 'put' | 'delete' | 'patch';
 type RouteResponseType = 'func' | 'obj' | 'proxy';
 type ParamType = 'body' | 'query' | 'params';
 
-type ServerSettings_migrationV0_0_9 = {
+export type ServerSettings_migrationV0_0_9 = {
     proxyBaseUrl: string | null;
     forceProxy: boolean | null;
     delay: number | null;
     port: number;
 }
-interface ProjectSettings_migrationV0_0_9  {
+
+export interface ProjectSettings_migrationV0_0_9  {
     forceProxy: boolean | null;
     dataVersion: string;
 }
 
-interface RouteResponse_migrationV0_0_9 {
+export interface RouteResponse_migrationV0_0_9 {
     id: string;
     name: string;
     description: string;
@@ -24,7 +25,7 @@ interface RouteResponse_migrationV0_0_9 {
     type: RouteResponseType;
 } 
 
-interface RouteOld_migrationV0_0_9 {
+export interface RouteOld_migrationV0_0_9 {
     id: string;
     description: string;
     routePath: string;
@@ -37,14 +38,14 @@ interface RouteOld_migrationV0_0_9 {
     paramKey?: string;
 }
 
-interface RouteParentOld_migrationV0_0_9 {
+export interface RouteParentOld_migrationV0_0_9 {
     id: string;
     filename: string;
     routes: RouteOld_migrationV0_0_9[];
     path: string;
 }
 
-interface ProjectServerOld_migrationV0_0_9 {
+export interface ProjectServerOld_migrationV0_0_9 {
     name: string,
     parentRoutes: RouteParentOld_migrationV0_0_9[],
     settings: ServerSettings_migrationV0_0_9
@@ -54,7 +55,7 @@ interface ProjectServerOld_migrationV0_0_9 {
 
 ///New types
 
-interface ServerHash_migrationV0_0_9 {
+export interface ServerHash_migrationV0_0_9 {
     name: string,
     parentRoutesHash: {
         [key:string]: ParentHash_migrationV0_0_9
@@ -62,7 +63,7 @@ interface ServerHash_migrationV0_0_9 {
     settings: ServerSettings_migrationV0_0_9
 }
 
-interface ParentHash_migrationV0_0_9 {
+export interface ParentHash_migrationV0_0_9 {
     id: string;
     filename: string;
     routesHash: {
@@ -71,7 +72,7 @@ interface ParentHash_migrationV0_0_9 {
     path: string;
 } 
 
-interface RouteHash_migrationV0_0_9 {
+export interface RouteHash_migrationV0_0_9 {
     id: string;
     description: string;
     routePath: string;

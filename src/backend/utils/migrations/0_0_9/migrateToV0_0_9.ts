@@ -3,6 +3,7 @@ import { readdirSync } from 'fs';
 import path from 'path';
 import serialize from 'serialize-javascript';
 import { replaceUndefined } from '../../utils';
+import {ParentHash_migrationV0_0_9, ProjectServerOld_migrationV0_0_9, ProjectSettings_migrationV0_0_9, RouteHash_migrationV0_0_9, RouteParentOld_migrationV0_0_9, RouteResponse_migrationV0_0_9, ServerHash_migrationV0_0_9, ServerSettings_migrationV0_0_9 } from './utils'
 
 const SUPPORTED_PROJECT_DATA_VERSION = '0.0.9'
 

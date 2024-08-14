@@ -2,6 +2,6 @@ FROM mhart/alpine-node
 
 COPY docker/* .
 
-EXPOSE 1511
+EXPOSE 1512
 
 CMD [ "npm", "start" ]

@@ -29,4 +29,5 @@ npm-debug.log.*
 *.scss.d.ts
 
 mock-data-test
-docker/index.js
+docker/*
+!.package.json
