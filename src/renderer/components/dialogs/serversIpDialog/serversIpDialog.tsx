@@ -45,11 +45,9 @@ export const ServersIpDialog = ({onClose, open }:Props)=>{
         }
     },[])
     
-    const serverIP = `http://${host}`
-
-    const rows = Object.values(serversHash).map(({name, settings})=>{
+    const rows = [{name: "base url", address: `http://${host}`}, ...Object.values(serversHash).map(({name, settings})=>{
         return {name, address: `http://${host}:${settings.port}`}
-    })
+    })]
 
 
     const handleClose = ()=>{
@@ -58,82 +56,58 @@ export const ServersIpDialog = ({onClose, open }:Props)=>{
     }
 
     return (
-       <Dialog
-        open={open}
-        onClose={handleClose}>
-        <DialogTitle>Server Ip's</DialogTitle>
-        <DialogContent>
-         
-        <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 350 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Server</TableCell>
-            <TableCell align="right">address</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow
-            key="baseURL"
-            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-          >
-            <TableCell component="th" scope="row">
-              base url
-            </TableCell>
-            <TableCell align="right">
-              <Tooltip title={clipboardData === serverIP ? 'copied' : 'copy'}>
-                <Link
-                  component="button"
-                  variant="body1"
-                  onClick={async () => {
-                  reportButtonClick(BUTTONS.SERVERS_IPS_DIALOG_LINK);
-                  navigator.clipboard.writeText(serverIP);
-                  const text = await navigator.clipboard.readText();
-                  setClipBoardData(text);
-                  }}
-                >
-                  {serverIP}
-                </Link>
-              </Tooltip>
-            </TableCell>
-          </TableRow>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-                <TableCell component="th" scope="row">
-                    {row.name}
-                </TableCell>
-                <TableCell align="right">
-                    <Tooltip title={clipboardData === row.address ? 'copied' : 'copy' }>
-                        <Link
-                            component="button"
-                            variant="body1"
-                            onClick={async () => {
-                                reportButtonClick(BUTTONS.SERVERS_IPS_DIALOG_LINK)
-                                navigator.clipboard.writeText(row.address)
-                                const text = await navigator.clipboard.readText();
-                                setClipBoardData(text)
-                            }}
-                        >
-                            {row.address}
-                        </Link>
-                    </Tooltip>
-                </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-            
+      <Dialog
+       open={open}
+       onClose={handleClose}>
+       <DialogTitle>Server Ip's</DialogTitle>
+       <DialogContent>
+        
+       <TableContainer component={Paper}>
+     <Table sx={{ minWidth: 350 }} aria-label="simple table">
+       <TableHead>
+         <TableRow>
+           <TableCell>Server</TableCell>
+           <TableCell align="right">address</TableCell>
+         </TableRow>
+       </TableHead>
+       <TableBody>
+         {rows.map((row) => (
+           <TableRow
+             key={row.name}
+             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+           >
+               <TableCell component="th" scope="row">
+                   {row.name}
+               </TableCell>
+               <TableCell align="right">
+                   <Tooltip title={clipboardData === row.address ? 'copied' : 'copy' }>
+                       <Link
+                           component="button"
+                           variant="body1"
+                           onClick={async () => {
+                               reportButtonClick(BUTTONS.SERVERS_IPS_DIALOG_LINK)
+                               navigator.clipboard.writeText(row.address)
+                               const text = await navigator.clipboard.readText();
+                               setClipBoardData(text)
+                           }}
+                       >
+                           {row.address}
+                       </Link>
+                   </Tooltip>
+               </TableCell>
+           </TableRow>
+         ))}
+       </TableBody>
+     </Table>
+   </TableContainer>
            
-     
-        </DialogContent>
-        <DialogActions>
-            <Button onClick={handleClose}>Close</Button>
-        </DialogActions>
-     </Dialog>
-    )
-  }
-  
+          
+    
+       </DialogContent>
+       <DialogActions>
+           <Button onClick={handleClose}>Close</Button>
+       </DialogActions>
+    </Dialog>
+   )
+ }
+ 
