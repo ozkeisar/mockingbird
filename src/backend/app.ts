@@ -1,41 +1,51 @@
 import express from 'express';
 import http from 'http';
-import { Server as SocketIOServer } from 'socket.io';
-import {routes} from './routers';
-import { socketService } from './services/socketService';
-import swaggerUi from "swagger-ui-express";
-import swaggerOutput from "./swagger_output.json";
-import cors from "cors";
+import swaggerUi from 'swagger-ui-express';
+import cors from 'cors';
 import logger from 'morgan';
-
+import { Socket } from 'socket.io';
+import { routes } from './routers';
+import swaggerOutput from './swagger_output.json';
+import { initSocketIO } from './socket';
+import { socketController } from './controllers/socketController';
 
 const app = express();
 const server = http.createServer(app);
-const socketIo = new SocketIOServer(server, {
-	cors: {
-		origin: "*",
-		methods: ["GET", "POST"]
-	}
-});
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.set('etag',false);
+app.set('etag', false);
 app.use(cors());
 app.use(logger('[:date[clf]] :method :url :status - :response-time ms'));
 
 // Routes
 app.use('/', routes);
 
+const CSS_URL =
+  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui.min.css';
 
-const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui.min.css";
-
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerOutput,  { customCssUrl: CSS_URL }));
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerOutput, { customCssUrl: CSS_URL }),
+);
 // Serve static files
 app.use(express.static('public'));
 
 // Initialize Socket.IO
-socketService(socketIo);
+const socketIO = initSocketIO(server);
 
-export { server, socketIo };
+// Socket.io event handlers
+socketIO.on('connection', (socket: Socket) => {
+  console.log('A user connected');
+
+  // Add your socket event handlers here
+  socketController(socket);
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
+});
+
+export { server };

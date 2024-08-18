@@ -1,1 +1,1 @@
-export * from './graphqlResponseDialog'
+export * from './graphqlResponseDialog';

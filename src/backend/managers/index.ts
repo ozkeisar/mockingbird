@@ -1,2 +1,2 @@
-export * from './projectsManager'
-export * from './serverLogsManager'
+export * from './projectsManager';
+export * from './serverLogsManager';

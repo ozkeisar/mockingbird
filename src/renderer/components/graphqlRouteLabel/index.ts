@@ -1,1 +1,1 @@
-export * from './graphqlRouteLabel'
+export * from './graphqlRouteLabel';

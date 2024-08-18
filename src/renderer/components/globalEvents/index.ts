@@ -1,1 +1,1 @@
-export * from './globalEvents'
+export * from './globalEvents';

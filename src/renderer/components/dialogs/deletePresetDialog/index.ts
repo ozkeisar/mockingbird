@@ -1,1 +1,1 @@
-export * from './deletePresetDialog'
+export * from './deletePresetDialog';

@@ -1,10 +1,11 @@
 import { TranslatableTypeJsonSchema } from './TranslateableTypeJsonSchema';
 
 type TranslatableUnionJsonSchema =
-  {
-    oneOf: TranslatableTypeJsonSchema[];
-  } | {
-    anyOf: TranslatableTypeJsonSchema[];
-  };
+  | {
+      oneOf: TranslatableTypeJsonSchema[];
+    }
+  | {
+      anyOf: TranslatableTypeJsonSchema[];
+    };
 
 export type { TranslatableUnionJsonSchema };

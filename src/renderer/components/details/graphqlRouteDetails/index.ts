@@ -1,1 +1,1 @@
-export * from './graphqlRouteDetails'
+export * from './graphqlRouteDetails';

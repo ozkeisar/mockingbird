@@ -1,41 +1,41 @@
-import { create } from 'zustand'
-import { ServerLog } from '../../../types';
+import { create } from 'zustand';
 import throttle from 'lodash.throttle';
+import { ServerLog } from '../../../types';
 
 export type LoggerStateFuncs = {
-    resetLoggerState: () => void;
-    addServerLog: (log: ServerLog)=> void;
-}
+  resetLoggerState: () => void;
+  addServerLog: (log: ServerLog) => void;
+};
 
 export type LoggerStateProps = {
-    serverLogs: ServerLog[];
-}
+  serverLogs: ServerLog[];
+};
 
-export type SettingsState = LoggerStateFuncs & LoggerStateProps
+export type SettingsState = LoggerStateFuncs & LoggerStateProps;
 
 const INIT_STATE: LoggerStateProps = {
-    serverLogs: []
-}
+  serverLogs: [],
+};
 
 export const useLoggerStore = create<SettingsState>((set) => {
-    let logBuffer: ServerLog[] = [];
+  let logBuffer: ServerLog[] = [];
 
-    const flushLogs = () => {
-        if (logBuffer.length > 0) {
-        set((state) => ({ serverLogs: [...state.serverLogs, ...logBuffer] }));
-        logBuffer = [];
-        }
-    };
+  const flushLogs = () => {
+    if (logBuffer.length > 0) {
+      set((state) => ({ serverLogs: [...state.serverLogs, ...logBuffer] }));
+      logBuffer = [];
+    }
+  };
 
-    // Throttle the flushing to ensure it happens at a regular interval
-    const throttledFlushLogs = throttle(flushLogs, 1000); // Flush every 1000ms
+  // Throttle the flushing to ensure it happens at a regular interval
+  const throttledFlushLogs = throttle(flushLogs, 1000); // Flush every 1000ms
 
-
-    return {
+  return {
     ...INIT_STATE,
     resetLoggerState: () => set({ ...INIT_STATE }),
     addServerLog: (newLog) => {
-        logBuffer.push(newLog);
-        throttledFlushLogs(); // Ensure logs are flushed at regular intervals
+      logBuffer.push(newLog);
+      throttledFlushLogs(); // Ensure logs are flushed at regular intervals
     },
-}});
+  };
+});

@@ -1,1 +1,1 @@
-export * from './graphqlLogRow'
+export * from './graphqlLogRow';

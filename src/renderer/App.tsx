@@ -1,23 +1,25 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import { Main } from './screens';
+import { setUserId } from '@amplitude/analytics-browser';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { GlobalEvents } from './components/globalEvents';
 import { useEffect, useState } from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
+import { SnackbarProvider } from 'notistack';
+import { Main } from './screens';
+import { GlobalEvents } from './components/globalEvents';
 import { useGeneralStore } from './state';
 import { AppSettings } from '../types';
 import { useProjectStore } from './state/project';
-import { ReactComponent as LogoIcon } from './../../assets/icon.svg'; 
-import CircularProgress from '@mui/material/CircularProgress';
+import { ReactComponent as LogoIcon } from '../../assets/icon.svg';
 import { ErrorBoundary } from './components/errorBoundary';
 import { useLoggerStore } from './state/logger';
-import { ElectronEvents } from './utils/electron';
-import { SnackbarProvider } from 'notistack';
 import { EVENT_KEYS } from '../types/events';
 import { emitSocketEvent, socket } from './utils';
-import { useHandleSocketEventsNotifications, useOpenDevtoolsShortcut } from './hooks';
-
+import {
+  useHandleSocketEventsNotifications,
+  useOpenDevtoolsShortcut,
+} from './hooks';
 
 const darkTheme = createTheme({
   palette: {
@@ -26,7 +28,6 @@ const darkTheme = createTheme({
       main: '#805231',
     },
   },
-  
 });
 
 export default function App() {
@@ -37,26 +38,22 @@ export default function App() {
     setIsServerUp,
   } = useGeneralStore();
 
-  const {
-    setActiveProjectName,
-    resetProjectState
-  } = useProjectStore();
-  useHandleSocketEventsNotifications()
-  const {resetLoggerState} = useLoggerStore()
+  const { setActiveProjectName, resetProjectState } = useProjectStore();
+  useHandleSocketEventsNotifications();
+  const { resetLoggerState } = useLoggerStore();
 
-  const [isAppInit, setIsAppInit] = useState(false)
+  const [isAppInit, setIsAppInit] = useState(false);
 
-  // const analytics = getAnalytics()
-
-  useEffect(()=>{
+  useEffect(() => {
     const onEvent = (arg: {
-      success: boolean,
-      projectsNameList: string[],
-      projectName: string | null,
-      appSettings: AppSettings,
-      isServerUp: boolean,
+      success: boolean;
+      projectsNameList: string[];
+      projectName: string | null;
+      appSettings: AppSettings;
+      isServerUp: boolean;
     }) => {
       setIsAppInit(true);
+
       const {
         success,
         projectsNameList,
@@ -65,51 +62,66 @@ export default function App() {
         isServerUp,
       } = arg;
 
-      if(success && projectName && projectName?.length > 0){
+      if (success && projectName && projectName?.length > 0) {
         setActiveProjectName(projectName);
       }
 
-      if(projectsNameList){
+      if (projectsNameList) {
         setProjectsNameList(projectsNameList);
       }
 
-      if(appSettings){
-        setAppSettings(appSettings)
-      }
-      if(appSettings.userId){
-        // setUserId(analytics, appSettings.userId)
+      if (appSettings) {
+        setAppSettings(appSettings);
+        if (appSettings.userId) {
+          setUserId(appSettings.userId);
+        }
       }
 
-      setIsServerUp(isServerUp)
-    }
+      setIsServerUp(isServerUp);
+    };
     socket.on(EVENT_KEYS.INIT, onEvent);
 
-    return ()=>{
-      socket.off(EVENT_KEYS.INIT, onEvent)
-    }
-  },[ setActiveProjectName,setProjectsNameList,setAppSettings]);
+    return () => {
+      socket.off(EVENT_KEYS.INIT, onEvent);
+    };
+  }, [
+    setActiveProjectName,
+    setProjectsNameList,
+    setAppSettings,
+    setIsServerUp,
+  ]);
 
-  useEffect(()=>{
-    emitSocketEvent(EVENT_KEYS.INIT);   
-  },[]);
+  useEffect(() => {
+    emitSocketEvent(EVENT_KEYS.INIT);
+  }, []);
 
-  const handleReset = ()=>{
+  const handleReset = () => {
     resetGeneralState();
     resetProjectState();
     resetLoggerState();
-    setIsAppInit(true)
-    emitSocketEvent(EVENT_KEYS.INIT);   
-  }
+    setIsAppInit(true);
+    emitSocketEvent(EVENT_KEYS.INIT);
+  };
 
-  useOpenDevtoolsShortcut()
+  useOpenDevtoolsShortcut();
 
-  if(!isAppInit){
-    return(
-      <div style={{width:'100%',height:'100%',display:'flex', flexDirection:"column", justifyContent:'center', alignItems:'center', backgroundColor:"black"}}>
-        <LogoIcon width={230} style={{marginBottom:'75px'}}></LogoIcon>
-        <CircularProgress color="inherit" style={{marginTop:'35px'}}/>
+  if (!isAppInit) {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'black',
+        }}
+      >
+        <LogoIcon width={230} style={{ marginBottom: '75px' }} />
+        <CircularProgress color="inherit" style={{ marginTop: '35px' }} />
       </div>
-    )
+    );
   }
 
   return (

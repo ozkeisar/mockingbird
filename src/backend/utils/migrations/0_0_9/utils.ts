@@ -1,87 +1,85 @@
+export type MethodMV009 = 'post' | 'get' | 'put' | 'delete' | 'patch';
+export type RouteResponseTypeMV009 = 'func' | 'obj' | 'proxy';
+export type ParamTypeMV009 = 'body' | 'query' | 'params';
 
-type Method = 'post' | 'get' | 'put' | 'delete' | 'patch';
-type RouteResponseType = 'func' | 'obj' | 'proxy';
-type ParamType = 'body' | 'query' | 'params';
+export type ServerSettingsMV009 = {
+  proxyBaseUrl: string | null;
+  forceProxy: boolean | null;
+  delay: number | null;
+  port: number;
+};
 
-type ServerSettings_migrationV0_0_9 = {
-    proxyBaseUrl: string | null;
-    forceProxy: boolean | null;
-    delay: number | null;
-    port: number;
-}
-interface ProjectSettings_migrationV0_0_9  {
-    forceProxy: boolean | null;
-    dataVersion: string;
-}
-
-interface RouteResponse_migrationV0_0_9 {
-    id: string;
-    name: string;
-    description: string;
-    res: {code: number; data: {}, headers: {[key: string]: any}} | null ;
-    exec: string | null ;
-    url: string | null ;
-    type: RouteResponseType;
-} 
-
-interface RouteOld_migrationV0_0_9 {
-    id: string;
-    description: string;
-    routePath: string;
-    method: Method;
-    activeResponseIndex: number;
-    responses: RouteResponse_migrationV0_0_9[];
-
-    paramType?: ParamType;
-    paramValue?: string;
-    paramKey?: string;
+export interface ProjectSettingsMV009 {
+  forceProxy: boolean | null;
+  dataVersion: string;
 }
 
-interface RouteParentOld_migrationV0_0_9 {
-    id: string;
-    filename: string;
-    routes: RouteOld_migrationV0_0_9[];
-    path: string;
+export interface RouteResponseMV009 {
+  id: string;
+  name: string;
+  description: string;
+  res: { code: number; data: {}; headers: { [key: string]: any } } | null;
+  exec: string | null;
+  url: string | null;
+  type: RouteResponseTypeMV009;
 }
 
-interface ProjectServerOld_migrationV0_0_9 {
-    name: string,
-    parentRoutes: RouteParentOld_migrationV0_0_9[],
-    settings: ServerSettings_migrationV0_0_9
+export interface RouteOldMV009 {
+  id: string;
+  description: string;
+  routePath: string;
+  method: MethodMV009;
+  activeResponseIndex: number;
+  responses: RouteResponseMV009[];
+
+  paramType?: ParamTypeMV009;
+  paramValue?: string;
+  paramKey?: string;
 }
 
-
-
-///New types
-
-interface ServerHash_migrationV0_0_9 {
-    name: string,
-    parentRoutesHash: {
-        [key:string]: ParentHash_migrationV0_0_9
-    },
-    settings: ServerSettings_migrationV0_0_9
+export interface RouteParentOldMV009 {
+  id: string;
+  filename: string;
+  routes: RouteOldMV009[];
+  path: string;
 }
 
-interface ParentHash_migrationV0_0_9 {
-    id: string;
-    filename: string;
-    routesHash: {
-        [key:string]: RouteHash_migrationV0_0_9
-    };
-    path: string;
-} 
+export interface ProjectServerOldMV009 {
+  name: string;
+  parentRoutes: RouteParentOldMV009[];
+  settings: ServerSettingsMV009;
+}
 
-interface RouteHash_migrationV0_0_9 {
-    id: string;
-    description: string;
-    routePath: string;
-    method: Method;
-    activeResponseId: string;
-    responsesHash: {
-        [key:string] : RouteResponse_migrationV0_0_9
-    };
-    withParams: boolean;
-    paramType?: ParamType;
-    paramValue?: string;
-    paramKey?: string;
+/// New types
+
+export interface RouteHashMV009 {
+  id: string;
+  description: string;
+  routePath: string;
+  method: MethodMV009;
+  activeResponseId: string;
+  responsesHash: {
+    [key: string]: RouteResponseMV009;
+  };
+  withParams: boolean;
+  paramType?: ParamTypeMV009;
+  paramValue?: string;
+  paramKey?: string;
+}
+
+export interface ParentHashMV009 {
+  id: string;
+  filename: string;
+  routesHash: {
+    [key: string]: RouteHashMV009;
+  };
+  path: string;
+}
+
+export interface ServerHashMV009 {
+  name: string;
+  parentRoutesHash: {
+    [key: string]: ParentHashMV009;
+  };
+  settings: ServerSettingsMV009;
 }

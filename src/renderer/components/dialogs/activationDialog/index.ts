@@ -1,1 +1,1 @@
-export * from './activationDialog'
+export * from './activationDialog';

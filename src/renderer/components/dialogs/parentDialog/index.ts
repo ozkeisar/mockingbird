@@ -1,1 +1,1 @@
-export * from './parentDialog'
+export * from './parentDialog';

@@ -1,1 +1,1 @@
-export * from './graphqlRouteDialog'
+export * from './graphqlRouteDialog';

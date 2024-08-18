@@ -1,1 +1,1 @@
-export * from './presetDetails'
+export * from './presetDetails';

@@ -14,6 +14,7 @@ import baseConfig from './webpack.config.base';
 import webpackPaths from './webpack.paths';
 import checkNodeEnv from '../scripts/check-node-env';
 import deleteSourceMaps from '../scripts/delete-source-maps';
+
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 checkNodeEnv('production');
@@ -122,7 +123,7 @@ const configuration: webpack.Configuration = {
     }),
 
     new MonacoWebpackPlugin({
-      languages: ['json','typescript']
+      languages: ['json', 'typescript'],
     }),
 
     new HtmlWebpackPlugin({
