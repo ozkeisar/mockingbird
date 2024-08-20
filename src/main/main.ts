@@ -9,50 +9,56 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain, session } from 'electron';
+import { app, BrowserWindow, shell, dialog, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import './events'
-import { detectIPAddressChanges } from '../backend/utils';
+// import './events';
+import {
+  detectIPAddressChanges,
+  getActiveProjectName,
+  getProjectPath,
+} from '../backend/utils';
 import { closeInternalServer, startInternalServer } from '../backend';
-import { closeProjectServers } from '../server';
-import { socketIo } from '../backend/app';
+import { closeProjectServers } from '../backend/server';
 import { EVENT_KEYS } from '../types/events';
 
+// eslint-disable-next-line import/no-mutable-exports
+let mainWindow: BrowserWindow | null = null;
 
 autoUpdater.autoDownload = true;
 autoUpdater.autoInstallOnAppQuit = true;
 
-let clearAutoUpdateInterval: (ReturnType<typeof setInterval>) | null = null;
-let updateAvailable = false
+let clearAutoUpdateInterval: ReturnType<typeof setInterval> | null = null;
+let updateAvailable = false;
 
-const checkForUpdate = ()=>{
-  console.log('start checking for update....')
-  mainWindow?.webContents.send("debugLog",{ message: 'start checking for update....', updateAvailable})
+const checkForUpdate = () => {
+  console.log('start checking for update....');
+  mainWindow?.webContents.send('EVENT_KEYS.DEBUG_LOG', {
+    message: 'start checking for update....',
+    updateAvailable,
+  });
 
   try {
-    if(!updateAvailable){
+    if (!updateAvailable) {
       autoUpdater.checkForUpdatesAndNotify();
     }
   } catch (error) {
-    mainWindow?.webContents.send('debugLog',{'message': 'failed checking for update' })
+    mainWindow?.webContents.send('EVENT_KEYS.DEBUG_LOG', {
+      message: 'failed checking for update',
+    });
   }
-}
+};
 
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
     autoUpdater.logger = log;
-    setTimeout(checkForUpdate, 10000)
-    clearAutoUpdateInterval = setInterval(checkForUpdate, 1000 * 60 * 60 * 5)
+    setTimeout(checkForUpdate, 10000);
+    clearAutoUpdateInterval = setInterval(checkForUpdate, 1000 * 60 * 60 * 5);
   }
 }
-
-
-
-let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -83,7 +89,7 @@ const createWindow = async () => {
   if (isDebug) {
     await installExtensions();
   }
-  startInternalServer()
+  startInternalServer();
 
   const RESOURCES_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'assets')
@@ -133,38 +139,49 @@ const createWindow = async () => {
     return { action: 'deny' };
   });
 
-  detectIPAddressChanges((ip: string)=>{
-    socketIo.emit(EVENT_KEYS.IP_CHANGED, {ip})
-  })
+  detectIPAddressChanges((ip: string) => {
+    mainWindow?.webContents.send(EVENT_KEYS.IP_CHANGED, { ip });
+  });
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   autoUpdater.on('update-available',(e)=>{
-    mainWindow?.webContents.send("debugLog",{e, event: 'update-available'})
-  
-  })
-  autoUpdater.on('update-not-available',(e)=>{
-    mainWindow?.webContents.send("debugLog",{e, event: 'update-not-available'})
-
-  
-  })
-  autoUpdater.on('update-downloaded',(e)=>{
-    updateAvailable = true;
-    setTimeout(()=>{
-      updateAvailable = false;
-    }, 1000 * 60 * 60 * 5)
-    mainWindow?.webContents.send("debugLog",{e, event: 'update-downloaded'})
-  
-  })
-  autoUpdater.on('error',(e)=>{
-    mainWindow?.webContents.send("debugLog",{e, event: 'error'})
-
-  })
-
-  autoUpdater.on("download-progress", progressObj => {
-    mainWindow?.webContents.send("debugLog",{progressObj, event: 'download-progress'})
+    mainWindow?.webContents.send(EVENT_KEYS.DEBUG_LOG, {
+      e,
+      event: 'update-available',
+    });
   });
-   
+  autoUpdater.on('update-not-available', (e) => {
+    mainWindow?.webContents.send('EVENT_KEYS.DEBUG_LOG', {
+      e,
+      event: 'update-not-available',
+    });
+  });
+  autoUpdater.on('update-downloaded', (e) => {
+    updateAvailable = true;
+    setTimeout(
+      () => {
+        updateAvailable = false;
+      },
+      1000 * 60 * 60 * 5,
+    );
+    mainWindow?.webContents.send('EVENT_KEYS.DEBUG_LOG', {
+      e,
+      event: 'update-downloaded',
+    });
+  });
+  autoUpdater.on('error', (e) => {
+    mainWindow?.webContents.send('EVENT_KEYS.DEBUG_LOG', { e, event: 'error' });
+  });
+
+  autoUpdater.on('download-progress', (progressObj) => {
+    mainWindow?.webContents.send('EVENT_KEYS.DEBUG_LOG', {
+      progressObj,
+      event: 'download-progress',
+    });
+  });
+
+  // eslint-disable-next-line no-new
   new AppUpdater();
 };
 
@@ -175,18 +192,18 @@ const createWindow = async () => {
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
-  if(clearAutoUpdateInterval){
-    clearInterval(clearAutoUpdateInterval)
+  if (clearAutoUpdateInterval) {
+    clearInterval(clearAutoUpdateInterval);
   }
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
-app.on('before-quit', (event) => {
+app.on('before-quit', () => {
   closeProjectServers();
-  closeInternalServer()
-})
+  closeInternalServer();
+});
 
 app
   .whenReady()
@@ -200,5 +217,42 @@ app
   })
   .catch(console.log);
 
+// export { mainWindow };
 
-export { mainWindow }
+/// events
+
+ipcMain.on('devtools', async (event) => {
+  try {
+    mainWindow?.webContents.openDevTools();
+  } catch (error) {
+    console.log('Error devtools:', error);
+    event.reply('devtools', { success: false, error });
+  }
+});
+
+ipcMain.on('selectDirectory', async (event) => {
+  const dir = await dialog.showOpenDialog(mainWindow as BrowserWindow, {
+    properties: ['openDirectory'],
+  });
+  event.reply('selectDirectory', {
+    success: true,
+    directoryPath: `${dir.filePaths[0]}/`,
+  });
+});
+
+ipcMain.on('openProjectDirectory', async (event) => {
+  try {
+    const activeProjectName = await getActiveProjectName();
+    if (activeProjectName) {
+      const projectPath = await getProjectPath(activeProjectName);
+      shell.showItemInFolder(projectPath); // Show the given file in a file manager. If possible, select the file.
+    } else {
+      event.reply('openProjectDirectory', {
+        success: false,
+        activeProjectName,
+      });
+    }
+  } catch (error) {
+    event.reply('openProjectDirectory', { success: false, error });
+  }
+});

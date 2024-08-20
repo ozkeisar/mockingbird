@@ -1,1 +1,1 @@
-export * from './responseDetails'
+export * from './responseDetails';

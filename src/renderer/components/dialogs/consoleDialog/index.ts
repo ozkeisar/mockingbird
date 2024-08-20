@@ -1,1 +1,1 @@
-export * from './consoleDialog'
+export * from './consoleDialog';

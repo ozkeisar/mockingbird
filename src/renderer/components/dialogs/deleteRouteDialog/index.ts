@@ -1,1 +1,1 @@
-export * from './deleteRouteDialog'
+export * from './deleteRouteDialog';

@@ -1,1 +1,1 @@
-export * from './logRow'
+export { default as LogRow } from './logRow';

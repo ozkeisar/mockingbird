@@ -1,1 +1,1 @@
-export * from './routeDetails'
+export * from './routeDetails';

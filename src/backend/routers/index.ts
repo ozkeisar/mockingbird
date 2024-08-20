@@ -2,10 +2,10 @@ import express from 'express';
 import { presetsRouter } from './presets';
 import { routesRouter } from './routes';
 import { serverRouter } from './server';
-import {parentsRouter} from './parents';
-import {appDataRouter} from './appData';
-import {actionsRouter} from './actions';
-import {serverLogsRouter} from './serverLogs';
+import { parentsRouter } from './parents';
+import { appDataRouter } from './appData';
+import { actionsRouter } from './actions';
+import { serverLogsRouter } from './serverLogs';
 
 export const routes = express.Router();
 

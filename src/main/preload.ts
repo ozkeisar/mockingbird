@@ -3,20 +3,17 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 import { EVENT_KEYS } from '../types/events';
 
-
-
 const electronHandler = {
   ipcRenderer: {
     sendMessage(channel: EVENT_KEYS, ...args: unknown[]) {
-      console.log('sendMessage:',channel, ...args)
+      console.log('sendMessage:', channel, ...args);
       ipcRenderer.send(channel, ...args);
     },
     on(channel: EVENT_KEYS, func: (...args: unknown[]) => void) {
-      const subscription = (_event: IpcRendererEvent, ...args: unknown[]) =>
-        {
-          console.log('on:',channel, ...args)
-          func(...args)
-        };
+      const subscription = (_event: IpcRendererEvent, ...args: unknown[]) => {
+        console.log('on:', channel, ...args);
+        func(...args);
+      };
       ipcRenderer.on(channel, subscription);
 
       return () => {

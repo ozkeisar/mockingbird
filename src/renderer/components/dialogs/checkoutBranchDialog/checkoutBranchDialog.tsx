@@ -1,36 +1,44 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material"
-import { BUTTONS } from "../../../../consts/analytics";
-import { reportButtonClick } from "../../../utils";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@mui/material';
+import { BUTTONS } from '../../../../consts/analytics';
+import { reportButtonClick } from '../../../utils';
 
 type Props = {
-  onCommit: ()=>void;
-  onUndo: ()=>void;
+  onCommit: () => void;
+  onUndo: () => void;
   open: boolean;
-  onClose: ()=>void;
-}
+  onClose: () => void;
+};
 
+export function CheckoutBranchDialog({
+  open,
+  onClose,
+  onCommit,
+  onUndo,
+}: Props) {
+  const handleCommit = () => {
+    reportButtonClick(BUTTONS.CHECK_BRANCH_DIALOG_COMMIT);
+    onCommit();
+  };
 
-export const CheckoutBranchDialog = ({open, onClose, onCommit, onUndo}: Props)=>{
-
-  const handleCommit = ()=>{
-    reportButtonClick(BUTTONS.CHECK_BRANCH_DIALOG_COMMIT)
-    onCommit()
-  }
-
-  const handleUndo = ()=>{
-    reportButtonClick(BUTTONS.CHECK_BRANCH_DIALOG_UNDO)
-    onUndo()
-  }
+  const handleUndo = () => {
+    reportButtonClick(BUTTONS.CHECK_BRANCH_DIALOG_UNDO);
+    onUndo();
+  };
   return (
-      <Dialog
+    <Dialog
       open={open}
       onClose={onClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">
-        unsaved changes
-      </DialogTitle>
+      <DialogTitle id="alert-dialog-title">unsaved changes</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
           you have unsaved changes in your current brach
@@ -40,11 +48,11 @@ export const CheckoutBranchDialog = ({open, onClose, onCommit, onUndo}: Props)=>
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleUndo} >
-          undo & checkout
+        <Button onClick={handleUndo}>undo & checkout</Button>
+        <Button onClick={handleCommit} autoFocus>
+          commit & checkout
         </Button>
-        <Button onClick={handleCommit} autoFocus>commit & checkout</Button>
       </DialogActions>
     </Dialog>
-  )
+  );
 }

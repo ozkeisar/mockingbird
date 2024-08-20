@@ -4,12 +4,12 @@
 
 import webpack from 'webpack';
 import TsconfigPathsPlugins from 'tsconfig-paths-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 import webpackPaths from './webpack.paths';
 import { dependencies as externals } from '../../release/app/package.json';
-import CopyWebpackPlugin from 'copy-webpack-plugin'
 
 const configuration: webpack.Configuration = {
-  externals: [...Object.keys(externals || {}),'fsevents'],
+  externals: [...Object.keys(externals || {}), 'fsevents'],
 
   stats: 'errors-only',
 
@@ -56,13 +56,13 @@ const configuration: webpack.Configuration = {
     }),
     new CopyWebpackPlugin({
       patterns: [
-          './node_modules/swagger-ui-dist/swagger-ui.css',
-          './node_modules/swagger-ui-dist/swagger-ui-bundle.js',
-          './node_modules/swagger-ui-dist/swagger-ui-standalone-preset.js',
-          './node_modules/swagger-ui-dist/favicon-16x16.png',
-          './node_modules/swagger-ui-dist/favicon-32x32.png'
-      ]
-  })
+        './node_modules/swagger-ui-dist/swagger-ui.css',
+        './node_modules/swagger-ui-dist/swagger-ui-bundle.js',
+        './node_modules/swagger-ui-dist/swagger-ui-standalone-preset.js',
+        './node_modules/swagger-ui-dist/favicon-16x16.png',
+        './node_modules/swagger-ui-dist/favicon-32x32.png',
+      ],
+    }),
   ],
 };
 

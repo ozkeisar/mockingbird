@@ -1,1 +1,1 @@
-export * from './branchDialog'
+export * from './branchDialog';

@@ -3,7 +3,7 @@ import { TranslatableScalarTypeJsonSchema } from './Types/TranslatableScalarType
 import { TranslatableTypeJsonSchema } from './Types/TranslateableTypeJsonSchema';
 
 const hasScalarType = function (
-  schema: TranslatableTypeJsonSchema
+  schema: TranslatableTypeJsonSchema,
 ): schema is TranslatableScalarTypeJsonSchema {
   if (Array.isArray(schema.type)) {
     return true;

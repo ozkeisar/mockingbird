@@ -1,1 +1,1 @@
-export * from './responseDialog'
+export * from './responseDialog';

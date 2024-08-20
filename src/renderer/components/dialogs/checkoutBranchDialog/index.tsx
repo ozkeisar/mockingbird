@@ -1,1 +1,1 @@
-export * from './checkoutBranchDialog'
+export * from './checkoutBranchDialog';

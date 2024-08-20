@@ -1,1 +1,1 @@
-export * from './parentDetails'
+export * from './parentDetails';

@@ -1,1 +1,1 @@
-export * from './addRemoteDialog'
+export * from './addRemoteDialog';

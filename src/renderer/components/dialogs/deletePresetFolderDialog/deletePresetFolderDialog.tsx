@@ -1,53 +1,64 @@
-import LoadingButton from "@mui/lab/LoadingButton";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material"
-import { useEffect, useState } from "react";
-import { BUTTONS } from "../../../../consts/analytics";
-import { PresetsFolder } from "../../../../types";
-import { EVENT_KEYS } from "../../../../types/events";
-import { useProjectStore } from "../../../state/project";
-import { emitSocketEvent, reportButtonClick, socket } from "../../../utils";
+import LoadingButton from '@mui/lab/LoadingButton';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@mui/material';
+import { useEffect, useState } from 'react';
+import { BUTTONS } from '../../../../consts/analytics';
+import { PresetsFolder } from '../../../../types';
+import { EVENT_KEYS } from '../../../../types/events';
+import { useProjectStore } from '../../../state/project';
+import { emitSocketEvent, reportButtonClick, socket } from '../../../utils';
 
+export function DeletePresetFolderDialog({
+  presetFolder,
+  open,
+  onClose,
+}: {
+  presetFolder: PresetsFolder;
+  open: boolean;
+  onClose: () => void;
+}) {
+  const { activeProjectName, removePresetFolder, setHasDiffs } =
+    useProjectStore();
+  const [isLoading, setIsLoading] = useState(false);
 
-
-export const DeletePresetFolderDialog = ({presetFolder, open, onClose}: {presetFolder: PresetsFolder, open: boolean, onClose: ()=>void})=>{
-  const { activeProjectName, removePresetFolder, setHasDiffs } = useProjectStore();
-  const [isLoading, setIsLoading] = useState(false)
-
-  useEffect(()=>{
-
+  useEffect(() => {
     const onEvent = (arg: any) => {
-      setIsLoading(false)
+      setIsLoading(false);
       const { success, projectName, folderId, hasDiffs } = arg;
-      setHasDiffs(hasDiffs)
-      if(success && projectName === activeProjectName){
-        removePresetFolder(folderId)
+      setHasDiffs(hasDiffs);
+      if (success && projectName === activeProjectName) {
+        removePresetFolder(folderId);
         onClose();
       }
-    }
+    };
     socket.on(EVENT_KEYS.DELETE_PRESET_FOLDER, onEvent);
 
-    return ()=>{
+    return () => {
       socket.off(EVENT_KEYS.DELETE_PRESET_FOLDER, onEvent);
-    }
-},[activeProjectName]);
+    };
+  }, [activeProjectName, onClose, removePresetFolder, setHasDiffs]);
 
+  const handleDelete = () => {
+    reportButtonClick(BUTTONS.DELETE_PRESET_FOLDER_DIALOG_DELETE);
 
-  const handleDelete = ()=>{
-    reportButtonClick(BUTTONS.DELETE_PRESET_FOLDER_DIALOG_DELETE)
-
-    setIsLoading(true)
+    setIsLoading(true);
     emitSocketEvent(EVENT_KEYS.DELETE_PRESET_FOLDER, {
       projectName: activeProjectName,
       filename: presetFolder.filename,
-      folderId: presetFolder.id
-    });   
-  }
+      folderId: presetFolder.id,
+    });
+  };
 
-  const handleClose = ()=>{
-    reportButtonClick(BUTTONS.DELETE_PRESET_FOLDER_DIALOG_CANCEL)
+  const handleClose = () => {
+    reportButtonClick(BUTTONS.DELETE_PRESET_FOLDER_DIALOG_CANCEL);
     onClose();
-  }
-
+  };
 
   return (
     <Dialog
@@ -56,9 +67,7 @@ export const DeletePresetFolderDialog = ({presetFolder, open, onClose}: {presetF
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">
-        delete Preset Folder
-      </DialogTitle>
+      <DialogTitle id="alert-dialog-title">delete Preset Folder</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
           are you sure you want to delete this folder?
@@ -72,15 +81,15 @@ export const DeletePresetFolderDialog = ({presetFolder, open, onClose}: {presetF
           cancel
         </Button>
         <LoadingButton
-                loadingPosition="start"
-                variant="text"
-                color={'error'}
-                onClick={handleDelete}
-                loading={isLoading}
-            >
-                Delete
-            </LoadingButton>
+          loadingPosition="start"
+          variant="text"
+          color="error"
+          onClick={handleDelete}
+          loading={isLoading}
+        >
+          Delete
+        </LoadingButton>
       </DialogActions>
     </Dialog>
-  )
+  );
 }

@@ -1,1 +1,1 @@
-export * from './welcomeDialog'
+export * from './welcomeDialog';

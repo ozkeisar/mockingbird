@@ -15,22 +15,25 @@ class LogRowErrorBoundary extends React.Component<Props, State> {
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error: Error): State {
+  static getDerivedStateFromError(): State {
     // Update state so the next render will show the fallback UI.
     return { hasError: true };
   }
 
   componentDidCatch(error: Error, info: React.ErrorInfo): void {
-    console.error("Error caught in LogRowErrorBoundary: ", error, info);
+    // eslint-disable-next-line no-console
+    console.error('Error caught in LogRowErrorBoundary: ', error, info);
   }
 
   render() {
-    if (this.state.hasError) {
+    const { hasError } = this.state;
+    const { fallback, children } = this.props;
+    if (hasError) {
       // You can render any custom fallback UI
-      return this.props.fallback;
+      return fallback;
     }
 
-    return this.props.children;
+    return children;
   }
 }
 

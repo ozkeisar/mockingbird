@@ -5,7 +5,11 @@ import { toPascalCase } from './toPascalCase';
 import { TranslatableObjectTypeJsonSchema } from './Types/TranslatableObjectTypeJsonSchema';
 import * as errors from './errors';
 
-const handleObjectType = function ({ path, schema, direction }: {
+const handleObjectType = function ({
+  path,
+  schema,
+  direction,
+}: {
   path: string[];
   schema: TranslatableObjectTypeJsonSchema;
   direction: Direction;
@@ -16,21 +20,24 @@ const handleObjectType = function ({ path, schema, direction }: {
   const lines = [];
 
   if (!('properties' in schema)) {
-    throw new errors.SchemaInvalid(`Expected schema of type 'object' at '${toBreadcrumb(path)}' to contain properties.`);
+    throw new errors.SchemaInvalid(
+      `Expected schema of type 'object' at '${toBreadcrumb(path)}' to contain properties.`,
+    );
   }
 
-  for (const [ propertyName, propertySchema ] of Object.entries(schema.properties)) {
-    const isRequired = (
-      schema.required && schema.required.includes(propertyName)
-    ) ?? false;
+  for (const [propertyName, propertySchema] of Object.entries(
+    schema.properties,
+  )) {
+    const isRequired =
+      (schema.required && schema.required.includes(propertyName)) ?? false;
 
     const {
       typeName: propertyGraphqlTypeName,
-      typeDefinitions: propertyGraphqlTypeDefinitions
+      typeDefinitions: propertyGraphqlTypeDefinitions,
     } = parseSchema({
-      path: [ ...path, propertyName ],
+      path: [...path, propertyName],
       schema: propertySchema,
-      direction
+      direction,
     });
 
     let line = `  ${propertyName}: ${propertyGraphqlTypeName}`;
@@ -61,7 +68,7 @@ const handleObjectType = function ({ path, schema, direction }: {
 
   return {
     typeName: graphqlTypeName,
-    typeDefinitions: graphqlTypeDefinitions
+    typeDefinitions: graphqlTypeDefinitions,
   };
 };
 

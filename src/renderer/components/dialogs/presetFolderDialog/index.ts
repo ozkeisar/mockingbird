@@ -1,1 +1,1 @@
-export * from './presetFolderDialog'
+export * from './presetFolderDialog';

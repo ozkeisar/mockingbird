@@ -1,2 +1,2 @@
-export * from './general'
-export * from './files'
+export * from './general';
+export * from './files';
