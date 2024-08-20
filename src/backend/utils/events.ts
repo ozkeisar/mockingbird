@@ -1,4 +1,4 @@
-import { Socket } from 'socket.io';
+import { Socket, Server as SocketIOServer } from 'socket.io';
 import { SUPPORTED_PROJECT_DATA_VERSION } from '../../consts';
 import {
   checkIsGitInit,
@@ -15,7 +15,7 @@ import { getProjectServers, isFirstVersionGreater } from './general';
 import { getProjectPresets } from './files';
 
 export const updateClientProjectData = async (
-  socket: Socket,
+  socket: Socket | SocketIOServer,
   projectName: string,
 ) => {
   emitSocketMessage(socket, EVENT_KEYS.IS_LOADING_DATA, {});

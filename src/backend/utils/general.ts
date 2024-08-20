@@ -1,13 +1,6 @@
-import fs from 'fs';
 import os from 'os';
 import jwt from 'jsonwebtoken';
-import {
-  mainFolderPath,
-  projectsPath,
-  appSettingsFolder,
-  SECRET_KEY,
-  DEFAULT_SERVER_SETTINGS,
-} from '../../consts';
+import { SECRET_KEY, DEFAULT_SERVER_SETTINGS } from '../../consts';
 import {
   getProjectPath,
   getProjectServersNameList,
@@ -24,6 +17,7 @@ import {
   updatePresetFile,
   updateRouteParentFile,
   updateServerSettings,
+  verifyProjectFoldersExist,
 } from './files';
 import pjson from '../../../package.json';
 import {
@@ -60,24 +54,12 @@ export const addCredentialsToGitURI = (
   return updatedURI;
 };
 
-export const verifyProjectFoldersExist = () => {
-  if (!fs.existsSync(mainFolderPath)) {
-    fs.mkdirSync(mainFolderPath);
-  }
-  if (!fs.existsSync(projectsPath)) {
-    fs.mkdirSync(projectsPath);
-  }
-  if (!fs.existsSync(appSettingsFolder)) {
-    fs.mkdirSync(appSettingsFolder);
-  }
-};
-
 export const verifyProjectFolderExist = async (repoFolderName: string) => {
+  verifyProjectFoldersExist();
+
   await getProjectPath(repoFolderName);
   await getServersFolderPath(repoFolderName);
   await getProjectSettingsPath(repoFolderName);
-
-  verifyProjectFoldersExist();
 };
 
 export const verifyServerFoldersExist = (

@@ -2,14 +2,14 @@ import swaggerAutogen from 'swagger-autogen';
 
 const doc = {
   info: {
-    version: 'v1.0.0',
+    version: 'v0.0.6',
     title: 'Mockingbird API documentation',
     description:
       'A list of an api endpoints to interact with Mockingbird using api calls',
   },
   servers: [
     {
-      url: 'http://localhost:1511',
+      url: 'http://localhost:1512',
       description: '',
     },
   ],

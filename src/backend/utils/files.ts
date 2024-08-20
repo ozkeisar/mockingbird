@@ -19,6 +19,7 @@ import {
   projectsPath,
   DEFAULT_PROJECT_SETTINGS,
   SUPPORTED_PROJECT_DATA_VERSION,
+  mainFolderPath,
 } from '../../consts';
 import { listToHashmap, replaceUndefined } from './utils';
 
@@ -76,8 +77,22 @@ function formatFolderName(input: string): string {
   return formattedName;
 }
 
+export const verifyProjectFoldersExist = () => {
+  if (!fs.existsSync(mainFolderPath)) {
+    fs.mkdirSync(mainFolderPath);
+  }
+  if (!fs.existsSync(projectsPath)) {
+    fs.mkdirSync(projectsPath);
+  }
+  if (!fs.existsSync(appSettingsFolder)) {
+    fs.mkdirSync(appSettingsFolder);
+  }
+};
+
 export const createProjectPath = (projectName: string) => {
   const projectPath = `${projectsPath + formatFolderName(projectName + new Date().getTime())}/`;
+
+  verifyProjectFoldersExist();
 
   if (!fs.existsSync(projectsPath)) {
     fs.mkdirSync(projectsPath);
