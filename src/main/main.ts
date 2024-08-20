@@ -24,6 +24,12 @@ import { closeInternalServer, startInternalServer } from '../backend';
 import { closeProjectServers } from '../backend/server';
 import { EVENT_KEYS } from '../types/events';
 
+const { exec } = require('child_process');
+const { promisify } = require('util');
+
+const execAsync = promisify(exec);
+
+
 // eslint-disable-next-line import/no-mutable-exports
 let mainWindow: BrowserWindow | null = null;
 
@@ -240,12 +246,18 @@ ipcMain.on('selectDirectory', async (event) => {
   });
 });
 
-ipcMain.on('openProjectDirectory', async (event) => {
+ipcMain.on('openProjectDirectory', async (event, args) => {
   try {
+    const {platform} = args;
+    
     const activeProjectName = await getActiveProjectName();
     if (activeProjectName) {
       const projectPath = await getProjectPath(activeProjectName);
-      shell.showItemInFolder(projectPath); // Show the given file in a file manager. If possible, select the file.
+      if(platform === 'vscode'){
+        await execAsync('code .', { cwd: projectPath });
+      }else{
+        shell.showItemInFolder(projectPath); // Show the given file in a file manager. If possible, select the file.
+      }
     } else {
       event.reply('openProjectDirectory', {
         success: false,

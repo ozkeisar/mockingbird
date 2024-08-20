@@ -7,6 +7,8 @@ let socketIo: SocketIOServer | null;
 
 export const initSocketIO = (server: HttpServer) => {
   socketIo = new SocketIOServer(server, {
+    maxHttpBufferSize: 1e8,
+    pingTimeout: 60000,
     cors: {
       origin: '*',
       methods: ['GET', 'POST'],

@@ -32,6 +32,7 @@ type Commands = {
   swagger: CommandFunc;
   git: CommandFunc;
   open: CommandFunc;
+  code: CommandFunc;
 };
 
 type CommandDescriptions<C extends Commands> = {
@@ -51,6 +52,7 @@ const commandsDescription: CommandDescriptions<Commands & { git: string }> = {
   swagger: 'opens mockingbird swagger',
   git: 'all the git commands available here.',
   open: 'open the project root folder in file manager',
+  code: 'open the project in vsCode',
 };
 
 export function CommandsTerminal() {
@@ -135,6 +137,11 @@ export function CommandsTerminal() {
     },
     open: () => {
       ElectronEvents.sendMessage(EVENT_KEYS.OPEN_PROJECT_DIRECTORY);
+    },
+    code: () => {
+      ElectronEvents.sendMessage(EVENT_KEYS.OPEN_PROJECT_DIRECTORY, {
+        platform: 'vscode',
+      });
     },
   };
 
