@@ -17,7 +17,6 @@ import MonacoEditor from '@uiw/react-monacoeditor';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { Tooltip } from '@mui/material';
-import axios from 'axios';
 import { useResponseActions } from '../../../hooks/files';
 import { BUTTONS } from '../../../../consts/analytics';
 import { getRouteBGColor, reportButtonClick } from '../../../utils';
@@ -28,7 +27,6 @@ import {
   RouteParent,
   RouteResponse,
 } from '../../../../types';
-import { useProjectStore } from '../../../state/project';
 
 type Props = {
   onClose: Function;
@@ -69,8 +67,7 @@ export function ResponseDialog({
   const existingNames = Object.values(route.responsesHash || {}).map(
     (item) => item.name,
   );
-  const { activeProjectName } = useProjectStore();
-  const { createResponse } = useResponseActions();
+  const { createResponse, updateResponse } = useResponseActions();
   const isEdit = !!data?.id;
 
   useEffect(() => {
@@ -102,7 +99,7 @@ export function ResponseDialog({
     }
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     reportButtonClick(BUTTONS.RESPONSE_DIALOG_SAVE);
     const isNewResponse = !data?.id;
     try {
@@ -120,13 +117,7 @@ export function ResponseDialog({
       if (isNewResponse) {
         createResponse(server, parent, route, responseData);
       } else {
-        // updateResponse(server, parent, route, responseData);
-        await axios.patch(
-          `http://localhost:1511/routes/${activeProjectName}/${server.name}/${parent.id}/${route.id}}`,
-          {
-            updated: route,
-          },
-        );
+        updateResponse(server, parent, route, responseData);
       }
       onClose();
     } catch (error) {
