@@ -57,6 +57,12 @@ export const reportEventReceived = (
         ...args,
       });
     }
+    if (EVENT_COUNTER[event] === 1) {
+      reportEvent(`event received - ${event}:1`, {
+        eventName: `${event}:1`,
+        ...args,
+      });
+    }
     return;
   }
 
