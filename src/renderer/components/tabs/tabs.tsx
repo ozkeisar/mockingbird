@@ -1,8 +1,3 @@
-
-
-
-export const Tabs = ()=>{
-    return <div>
-        
-    </div>
+export function Tabs() {
+  return <div />;
 }

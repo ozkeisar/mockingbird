@@ -8,11 +8,11 @@
 
 # Mockingbird
 
-Mockingbird is a robust tool for creating and managing mock environments, enhancing productivity, and streamlining integration. It integrates with Git for a simple and secure solution to develop and test APIs without additional servers.
+Mockingbird is your go-to solution for efficiently creating and managing mock environments. It integrates effortlessly with Git, offering a secure and server-free method to develop and test APIs. With Mockingbird, you can quickly simulate various scenarios, significantly boosting your productivity and streamlining the integration process. It also supports mocking GraphQL APIs, multiple response options for each route, and the ability to create presets for easy scenario switching, making it an incredibly versatile tool for any development workflow. environments, enhancing productivity, and streamlining integration. It integrates with Git for a simple and secure solution to develop and test APIs without additional servers.
 
 
 <p align="center">
-    <img src="https://github.com/ozkeisar/mockingbird/assets/34401842/5e3f1aa5-a730-444f-9715-9c82dfdc67d9" width="500"  >
+    <img src="https://github.com/user-attachments/assets/73315dfb-051b-4304-a6bb-133a0c84b057" width="750"  >
 <p>
 
 

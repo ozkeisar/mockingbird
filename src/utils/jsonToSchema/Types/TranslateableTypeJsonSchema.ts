@@ -3,8 +3,8 @@ import { TranslatableObjectTypeJsonSchema } from './TranslatableObjectTypeJsonSc
 import { TranslatableScalarTypeJsonSchema } from './TranslatableScalarTypeJsonSchema';
 
 type TranslatableTypeJsonSchema =
-  TranslatableScalarTypeJsonSchema |
-  TranslatableArrayTypeJsonSchema |
-  TranslatableObjectTypeJsonSchema;
+  | TranslatableScalarTypeJsonSchema
+  | TranslatableArrayTypeJsonSchema
+  | TranslatableObjectTypeJsonSchema;
 
 export type { TranslatableTypeJsonSchema };

@@ -1,8 +1,8 @@
 .section {
-    width: 250px;
+    display: flex;
+    flex: 1;
     height: 100%;
     overflow-x: auto;
-    display: flex;
     flex-direction: column;
 }
   
@@ -13,7 +13,8 @@
 }
   
 .sectionList {
+    display: flex;
+    flex-grow: 1;
     overflow-y: auto;
     overflow-x: auto;
-    flex: 1;
 }

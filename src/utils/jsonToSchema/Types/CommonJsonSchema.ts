@@ -2,7 +2,12 @@
 // unmodified and unrestricted. The original type can be found here:
 // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/c6a5bf9836f8347746630289193c529480067c0b/types/json-schema/index.d.ts#L618
 
-import { JSONSchema7, JSONSchema7Definition, JSONSchema7Type } from 'json-schema';
+import {
+  JSONSchema7,
+  JSONSchema7Definition,
+  JSONSchema7Type,
+} from 'json-schema';
+
 interface CommonJsonSchema {
   $id?: string;
   $schema?: string;

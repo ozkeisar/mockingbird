@@ -1,13 +1,17 @@
+import { stripIndent } from 'common-tags';
 import { Direction } from './Types/Direction';
 import { parseType } from './parseType';
 import { parseUnion } from './parseUnion';
-import { stripIndent } from 'common-tags';
 import { toBreadcrumb } from './toBreadcrumb';
 import { toPascalCase } from './toPascalCase';
 import { TranslatableJsonSchema } from './Types/TranslatableJsonSchema';
 import * as errors from './errors';
 
-const parseSchema = function ({ path, schema, direction }: {
+const parseSchema = function ({
+  path,
+  schema,
+  direction,
+}: {
   path: string[];
   schema: TranslatableJsonSchema;
   direction: Direction;
@@ -19,7 +23,9 @@ const parseSchema = function ({ path, schema, direction }: {
   } else if ('oneOf' in schema || 'anyOf' in schema) {
     result = parseUnion({ path, schema, direction });
   } else {
-    throw new errors.SchemaInvalid(`Structure at '${toBreadcrumb(path)}' not recognized.`);
+    throw new errors.SchemaInvalid(
+      `Structure at '${toBreadcrumb(path)}' not recognized.`,
+    );
   }
 
   if (result.typeName.includes('|')) {

@@ -13,8 +13,7 @@ import webpackPaths from './webpack.paths';
 // checkNodeEnv('production');
 
 const configuration: webpack.Configuration = {
-
-  target:'node',
+  target: 'node',
 
   mode: 'production',
 
@@ -43,7 +42,6 @@ const configuration: webpack.Configuration = {
     //   analyzerMode: process.env.ANALYZE === 'true' ? 'server' : 'disabled',
     //   analyzerPort: 8888,
     // }),
-
     // /**
     //  * Create global constants which can be configured at compile time.
     //  *
@@ -58,7 +56,6 @@ const configuration: webpack.Configuration = {
     //   DEBUG_PROD: false,
     //   START_MINIMIZED: false,
     // }),
-
     // new webpack.DefinePlugin({
     //   'process.type': '"browser"',
     // }),

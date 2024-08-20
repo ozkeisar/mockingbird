@@ -1,4 +1,4 @@
 export * from './routes';
-export * from './settings'
-export * from './logger'
-export * from './project'
+export * from './settings';
+export * from './logger';
+export * from './project';

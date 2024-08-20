@@ -10,6 +10,7 @@ import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import baseConfig from './webpack.config.base';
 import webpackPaths from './webpack.paths';
 import checkNodeEnv from '../scripts/check-node-env';
+
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 // When an ESLint server is running, we can't set the NODE_ENV so we'll check if it's
@@ -128,7 +129,7 @@ const configuration: webpack.Configuration = {
 
     new webpack.NoEmitOnErrorsPlugin(),
     new MonacoWebpackPlugin({
-      languages: ['json','typescript']
+      languages: ['json', 'typescript'],
     }),
     /**
      * Create global constants which can be configured at compile time.

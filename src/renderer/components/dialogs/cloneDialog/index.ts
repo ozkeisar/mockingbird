@@ -1,1 +1,1 @@
-export * from './cloneDialog'
+export * from './cloneDialog';

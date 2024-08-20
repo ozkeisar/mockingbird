@@ -38,5 +38,5 @@ export default {
   distRendererPath,
   buildPath,
   srcBackendPath,
-  distBackendPath
+  distBackendPath,
 };

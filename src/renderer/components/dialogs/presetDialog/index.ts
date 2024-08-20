@@ -1,1 +1,1 @@
-export * from './presetDialog'
+export * from './presetDialog';

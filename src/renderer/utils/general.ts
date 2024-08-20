@@ -1,78 +1,88 @@
-import { cloneDeep } from "lodash";
-import { GraphQlRouteType, Method, ParamType, Preset, PresetRoute, ServersHash } from "../../types";
+import { cloneDeep } from 'lodash';
+import {
+  GraphQlRouteType,
+  Method,
+  ParamType,
+  Preset,
+  PresetRoute,
+  ServersHash,
+} from '../../types';
 
-  export const JSONStringifyExtra = (obj:any)=>JSON.stringify(obj, function(key, value) {
+export const JSONStringifyExtra = (obj: any) =>
+  JSON.stringify(obj, (key, value) => {
     if (typeof value === 'function') {
       return value.toString();
-    } else {
-      return value;
     }
+    return value;
   });
 
-  export const openInNewTab = (url:string) => {
-    const newWindow = window.open('http://'+url, '_blank', 'noopener,noreferrer')
-    if (newWindow) newWindow.opener = null
+export const openInNewTab = (url: string) => {
+  const newWindow = window.open(
+    `http://${url}`,
+    '_blank',
+    'noopener,noreferrer',
+  );
+  if (newWindow) newWindow.opener = null;
+};
+
+export const getRouteBGColor = (method: Method) => {
+  switch (method) {
+    case 'delete':
+      return '#f93e3e';
+
+    case 'get':
+      return '#61affe';
+
+    case 'patch':
+      return '#50e3c2';
+
+    case 'post':
+      return '#49cc90';
+
+    case 'put':
+      return '#fca130';
+
+    default:
+      return '#61affe';
+  }
+};
+
+export const getGraphqlRouteBGColor = (method: GraphQlRouteType) => {
+  switch (method) {
+    case 'Query':
+      return '#61affe';
+
+    case 'Mutation':
+      return '#49cc90';
+
+    default:
+      return '#61affe';
+  }
+};
+
+export const formatDate = (date: Date) => {
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
+
+  return `${hours}:${minutes}:${seconds}:${milliseconds}`;
+};
+
+export const removeLastPartOfUri = (uri: string) => {
+  // Find the last occurrence of '/'
+  const lastSlashIndex = uri.lastIndexOf('/');
+
+  // If '/' is not found, return the original URI
+  if (lastSlashIndex === -1) {
+    return uri;
   }
 
-  export const getRouteBGColor = (method: Method)=>{
-    switch (method) {
-      case 'delete':
-        return '#f93e3e'
+  // Extract the part before the last '/'
+  const modifiedUri = uri.substring(0, lastSlashIndex);
 
-      case 'get':
-        return '#61affe'
-
-      case 'patch':
-        return '#50e3c2'
-
-      case 'post':
-        return '#49cc90'
-
-      case 'put':
-        return '#fca130'
-    
-      default:
-        break;
-    }
-  }
-
-  export const getGraphqlRouteBGColor = (method: GraphQlRouteType)=>{
-    switch (method) {
-      case 'Query':
-        return '#61affe'
-
-      case 'Mutation':
-        return '#49cc90'
-    
-      default:
-        break;
-    }
-  }
-
-  export const formatDate = (date: Date) =>{
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-    const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
-    
-    return `${hours}:${minutes}:${seconds}:${milliseconds}`;
-  }
-  
-
-  export const removeLastPartOfUri = (uri: string) => {
-    // Find the last occurrence of '/'
-    const lastSlashIndex = uri.lastIndexOf('/');
-
-    // If '/' is not found, return the original URI
-    if (lastSlashIndex === -1) {
-        return uri;
-    }
-
-    // Extract the part before the last '/'
-    const modifiedUri = uri.substring(0, lastSlashIndex);
-
-    return modifiedUri;
-}
+  return modifiedUri;
+};
 
 export const getLastPartOfUri = (uri: string) => {
   // Find the position of '?'
@@ -86,78 +96,90 @@ export const getLastPartOfUri = (uri: string) => {
 
   // If '/' is not found, return the original URI
   if (lastSlashIndex === -1 || lastSlashIndex === cleanUri.length - 1) {
-      return cleanUri;
+    return cleanUri;
   }
 
   // Extract the part after the last '/'
   const lastPart = cleanUri.substring(lastSlashIndex + 1);
 
   return lastPart;
-}
+};
 
-
-export const removeQueryParams = (uri:string) =>  {
+export const removeQueryParams = (uri: string) => {
   const queryStringIndex = uri.indexOf('?');
   if (queryStringIndex !== -1) {
-      return uri.substring(0, queryStringIndex);
+    return uri.substring(0, queryStringIndex);
   }
   return uri;
-}
+};
 
-type params = {[key:string]: any}
-export const getKeyValuePairReq = (body:params, query: params, params: params): {key: string, value: string, type:ParamType} => {
-
+type params = { [key: string]: any };
+export const getKeyValuePairReq = (
+  body: params,
+  query: params,
+  params: params,
+): { key: string; value: string; type: ParamType } => {
   // Extract key-value pair from body params
   for (const key in body) {
-      if (typeof body[key] === 'string') {
-          return { key, value: body[key], type: 'body' };
-      }
+    if (typeof body[key] === 'string') {
+      return { key, value: body[key], type: 'body' };
+    }
   }
 
-  
   // If no string value found in body  params, extract from params
   for (const key in params) {
-      if (typeof params[key] === 'string') {
-          return { key, value: params[key], type: 'params' };
-      }
+    if (typeof params[key] === 'string') {
+      return { key, value: params[key], type: 'params' };
+    }
   }
 
-  // If no string value found  params, extract from query 
+  // If no string value found  params, extract from query
   for (const key in query) {
-      if (typeof query[key] === 'string') {
-        return { key, value: query[key], type: 'query' };
-      }
-}
-
+    if (typeof query[key] === 'string') {
+      return { key, value: query[key], type: 'query' };
+    }
+  }
 
   return { key: '', value: '', type: 'body' };
-}
+};
 
 const validFilenameRegex = /^[\w\-.]+$/;
 export const isValidFilename = (filename: string) => {
-    return validFilenameRegex.test(filename);
-}
-  
+  return validFilenameRegex.test(filename);
+};
 
-export const checkIsPresetRouteExist = (serversHash: ServersHash, presetRoute: PresetRoute)=>{
-  const {serverId, parentId, routeId, responseId} = presetRoute;
+export const checkIsPresetRouteExist = (
+  serversHash: ServersHash,
+  presetRoute: PresetRoute,
+) => {
+  const { serverId, parentId, routeId, responseId } = presetRoute;
 
-  const graphQlRoute = !!serversHash[serverId]?.parentRoutesHash[parentId]?.graphQlRouteHash?.[routeId]?.responsesHash?.[responseId]
-  const restRoute = !!serversHash[serverId]?.parentRoutesHash[parentId]?.routesHash?.[routeId]?.responsesHash?.[responseId]
+  const graphQlRoute =
+    !!serversHash[serverId]?.parentRoutesHash[parentId]?.graphQlRouteHash?.[
+      routeId
+    ]?.responsesHash?.[responseId];
+  const restRoute =
+    !!serversHash[serverId]?.parentRoutesHash[parentId]?.routesHash?.[routeId]
+      ?.responsesHash?.[responseId];
 
-  return graphQlRoute || restRoute
-}
+  return graphQlRoute || restRoute;
+};
 
-export const checkIsAllRoutesExists = (serversHash: ServersHash, preset: Preset | null)=>{
-  if(!preset){
-      return false
+export const checkIsAllRoutesExists = (
+  serversHash: ServersHash,
+  preset: Preset | null,
+) => {
+  if (!preset) {
+    return false;
   }
-  return Object.values(preset.routesHash || {}).every((presetRoute)=>checkIsPresetRouteExist(serversHash, presetRoute))
-}
-
+  return Object.values(preset.routesHash || {}).every((presetRoute) =>
+    checkIsPresetRouteExist(serversHash, presetRoute),
+  );
+};
 
 export const formatFileName = (input: string): string => {
   // Remove special characters not allowed in file names
+  // eslint-disable-next-line no-useless-escape
   const sanitizedFileName = input.replace(/[\/\\?%*:|"<>]/g, '');
 
   // Replace spaces with underscores
@@ -168,7 +190,7 @@ export const formatFileName = (input: string): string => {
   const truncatedFileName = fileNameWithoutSpaces.slice(0, maxLength);
 
   return truncatedFileName;
-}
+};
 
 export function combineNestedObjects(data: any) {
   if (Array.isArray(data) && data.length > 0) {
@@ -189,13 +211,14 @@ export function combineNestedObjects(data: any) {
       return acc;
     }, {});
     return [result];
-  } else if (typeof data === 'object' && data !== null) {
+  }
+  if (typeof data === 'object' && data !== null) {
     // Handle nested object
     const result = {} as any;
     for (const key in data) {
       if (Array.isArray(data[key]) && data[key].length > 0) {
         result[key] = combineNestedObjects(data[key]);
-      } else if(Array.isArray(data[key]) && data[key].length === 0){
+      } else if (Array.isArray(data[key]) && data[key].length === 0) {
         result[key] = data[key];
       } else if (typeof data[key] === 'object' && data[key] !== null) {
         result[key] = combineNestedObjects(data[key]);
@@ -208,121 +231,113 @@ export function combineNestedObjects(data: any) {
   return data;
 }
 
-
 interface MyObject {
   [key: string]: any;
 }
 
-export function prepareObjectToSchema(obj: MyObject): MyObject {
-  const verifyObject = (obj: MyObject, i:number): MyObject => {
-
-    if(Array.isArray(obj) && obj.length === 0){
-      obj.push("")
-      return obj
+export function prepareObjectToSchema(object: MyObject): MyObject {
+  const verifyObject = (obj: MyObject, i: number): MyObject => {
+    if (Array.isArray(obj) && obj.length === 0) {
+      obj.push('');
+      return obj;
     }
 
     if (Array.isArray(obj) && obj.length > 0) {
-      obj.forEach((item: any)=>{
-        if(typeof item === 'object' || Array.isArray(item)){
-          verifyObject(item,++i)
+      obj.forEach((item: any) => {
+        if (typeof item === 'object' || Array.isArray(item)) {
+          verifyObject(item, ++i);
         }
-      })
-      return obj
+      });
+      return obj;
     }
 
     for (const key in obj) {
-      if(obj[key] !== null && obj[key] !== undefined){
+      if (obj[key] !== null && obj[key] !== undefined) {
         if (Array.isArray(obj[key]) && obj[key].length === 0) {
-          obj[key].push("");
-        } if (Array.isArray(obj[key]) && obj[key].length > 0) {
-          verifyObject(obj[key], ++i)
-        } else if(typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0 ){
-          obj[key] = "" 
-        } else if(typeof obj[key] === 'object' && Object.keys(obj[key]).length > 0 ){
-          verifyObject(obj[key],++i)
-        }else if(typeof obj[key] === 'string'){
-          obj[key] = "" 
-        } else if(typeof obj[key] === 'number'){
-          obj[key] = 0.1
+          obj[key].push('');
         }
-      }else{
-        obj[key] = "" 
+        if (Array.isArray(obj[key]) && obj[key].length > 0) {
+          verifyObject(obj[key], ++i);
+        } else if (
+          typeof obj[key] === 'object' &&
+          Object.keys(obj[key]).length === 0
+        ) {
+          obj[key] = '';
+        } else if (
+          typeof obj[key] === 'object' &&
+          Object.keys(obj[key]).length > 0
+        ) {
+          verifyObject(obj[key], ++i);
+        } else if (typeof obj[key] === 'string') {
+          obj[key] = '';
+        } else if (typeof obj[key] === 'number') {
+          obj[key] = 0.1;
+        }
+      } else {
+        obj[key] = '';
       }
     }
-    return obj
-  }
+    return obj;
+  };
 
-  const modifiedObj = cloneDeep(obj);
-  return verifyObject(modifiedObj,0);
+  const modifiedObj = cloneDeep(object);
+  return verifyObject(modifiedObj, 0);
 }
-
 
 export function isGraphQLRequest(reqBody: any): boolean {
   if (typeof reqBody !== 'object' || reqBody === null) {
-      return false; // Not an object
+    return false; // Not an object
   }
 
   // Check if the object has a 'query' field
   if ('query' in reqBody && typeof reqBody.query === 'string') {
-      return true;
+    return true;
   }
 
   return false;
-}
-
-function mergeObjectsRecursive(target: Record<string, any>, source: Record<string, any>) {
-  for (const key in source) {
-    if (source.hasOwnProperty(key)) {
-      if (typeof source[key] === 'object' && !Array.isArray(source[key])) {
-        target[key] = target[key] || {};
-        mergeObjectsRecursive(target[key], source[key]);
-      } else {
-        target[key] = source[key];
-      }
-    }
-  }
-}
-
-export function mergeObjects(objects: Record<string, any>[]): Record<string, any> {
-  const result: Record<string, any> = {};
-
-  for (const obj of objects) {
-    mergeObjectsRecursive(result, obj);
-  }
-
-  return result;
 }
 
 interface TreeNode {
   [key: string]: TreeNode | {};
 }
 
-export const isSomeChildrenLeafs = (obj: TreeNode)=>{
-  return Object.values(obj || {}).some((child)=>Object.keys(child).length === 0)
-}
+export const isSomeChildrenLeafs = (obj: TreeNode) => {
+  return Object.values(obj || {}).some(
+    (child) => Object.keys(child).length === 0,
+  );
+};
 
-export type ParsedQuery =  {key:string, schemaPath: string, level: number}
+export type ParsedQuery = { key: string; schemaPath: string; level: number };
 
-
-export function getAllLeafParents(schemaPath: string, level: number, obj: any): ParsedQuery[] {
+export function getAllLeafParents(
+  schemaPath: string,
+  level: number,
+  obj: any,
+): ParsedQuery[] {
   if (typeof obj !== 'object' || Object.keys(obj).length === 0) {
     return [];
   }
-  
+
   const keys = Object.keys(obj);
-  let parentKeys: {key:string,schemaPath:string,level:number}[] = [];
-  
-  keys.forEach(key => {
+  let parentKeys: { key: string; schemaPath: string; level: number }[] = [];
+
+  keys.forEach((key) => {
     const child = obj[key];
     if (typeof child === 'object' && Object.keys(child).length > 0) {
-
-      if(isSomeChildrenLeafs(child)){
-        if(level > 0){
-          parentKeys.push({key,schemaPath, level});
+      if (isSomeChildrenLeafs(child)) {
+        if (level > 0) {
+          parentKeys.push({ key, schemaPath, level });
         }
       } else {
-        const updatedPath = schemaPath.length > 0 ? schemaPath +'.'+ key : key  
-        parentKeys = parentKeys.concat(getAllLeafParents(level > 0 ? updatedPath : schemaPath ,++level, child))
+        const updatedPath =
+          schemaPath.length > 0 ? `${schemaPath}.${key}` : key;
+        parentKeys = parentKeys.concat(
+          getAllLeafParents(
+            level > 0 ? updatedPath : schemaPath,
+            ++level,
+            child,
+          ),
+        );
       }
     }
   });
@@ -341,18 +356,18 @@ type ObjectType = {
 };
 
 export const flattenObject = (
-originalObject: ObjectType,
-prefix = '',
+  originalObject: ObjectType,
+  prefix = '',
 ): Record<string, string | number | boolean> =>
-Object.keys(originalObject).reduce((result: ObjectType, prop: string) => {
-  const pre = prefix.length ? prefix + '.' : '';
-  if (
-  typeof originalObject[prop] === 'object' &&
-  originalObject[prop] !== null
-  ) {
-  Object.assign(result, flattenObject(originalObject[prop], pre + prop));
-  } else {
-  result[pre + prop] = originalObject[prop];
-  }
-  return result;
-}, {});
+  Object.keys(originalObject).reduce((result: ObjectType, prop: string) => {
+    const pre = prefix.length ? `${prefix}.` : '';
+    if (
+      typeof originalObject[prop] === 'object' &&
+      originalObject[prop] !== null
+    ) {
+      Object.assign(result, flattenObject(originalObject[prop], pre + prop));
+    } else {
+      result[pre + prop] = originalObject[prop];
+    }
+    return result;
+  }, {});

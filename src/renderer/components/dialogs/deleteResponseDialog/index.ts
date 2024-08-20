@@ -1,1 +1,1 @@
-export * from './deleteResponseDialog'
+export * from './deleteResponseDialog';

@@ -1,1 +1,1 @@
-export * from './deleteServerDialog'
+export * from './deleteServerDialog';

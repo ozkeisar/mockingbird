@@ -1,1 +1,1 @@
-export * from './restLogRow'
+export * from './restLogRow';

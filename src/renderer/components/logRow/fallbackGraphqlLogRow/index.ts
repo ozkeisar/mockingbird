@@ -1,1 +1,1 @@
-export * from './fallbackGraphqlLogRow'
+export * from './fallbackGraphqlLogRow';

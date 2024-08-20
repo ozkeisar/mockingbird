@@ -3,7 +3,11 @@ import { parseSchema } from './parseSchema';
 import { TranslatableTypeJsonSchema } from './Types/TranslateableTypeJsonSchema';
 import { TranslatableUnionJsonSchema } from './Types/TranslatableUnionJsonSchema';
 
-const parseUnion = function ({ path, schema, direction }: {
+const parseUnion = function ({
+  path,
+  schema,
+  direction,
+}: {
   path: string[];
   schema: TranslatableUnionJsonSchema;
   direction: Direction;
@@ -16,23 +20,27 @@ const parseUnion = function ({ path, schema, direction }: {
     subSchemas = schema.anyOf;
   }
 
-  const graphqlTypeDefinitions: string[] = [],
-        graphqlTypeNames: string[] = [];
+  const graphqlTypeDefinitions: string[] = [];
+  const graphqlTypeNames: string[] = [];
 
   subSchemas.forEach((subSchema, index): void => {
-    const result = parseSchema({ schema: subSchema, direction, path: [ ...path, `I${index}` ]});
+    const result = parseSchema({
+      schema: subSchema,
+      direction,
+      path: [...path, `I${index}`],
+    });
 
     graphqlTypeNames.push(result.typeName);
     graphqlTypeDefinitions.push(...result.typeDefinitions);
   });
 
-  const graphqlTypeName = graphqlTypeNames.
-    filter((name): boolean => name.trim() !== '').
-    join(' | ');
+  const graphqlTypeName = graphqlTypeNames
+    .filter((name): boolean => name.trim() !== '')
+    .join(' | ');
 
   return {
     typeName: graphqlTypeName,
-    typeDefinitions: graphqlTypeDefinitions
+    typeDefinitions: graphqlTypeDefinitions,
   };
 };
 

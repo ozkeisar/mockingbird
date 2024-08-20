@@ -1,4 +1,3 @@
 export interface ISocketEvent {
-    message: string;
+  message: string;
 }
-  

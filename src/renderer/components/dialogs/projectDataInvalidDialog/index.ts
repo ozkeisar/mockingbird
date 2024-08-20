@@ -1,1 +1,1 @@
-export * from './projectDataInvalidDialog'
+export * from './projectDataInvalidDialog';

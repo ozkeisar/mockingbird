@@ -1,1 +1,1 @@
-export * from './routeDialog'
+export * from './routeDialog';

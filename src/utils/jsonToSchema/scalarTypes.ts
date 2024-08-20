@@ -4,7 +4,7 @@ const scalarTypes: Record<ScalarType, string> = {
   boolean: 'Boolean',
   integer: 'Int',
   number: 'Float',
-  string: 'String'
+  string: 'String',
 };
 
 export { scalarTypes };

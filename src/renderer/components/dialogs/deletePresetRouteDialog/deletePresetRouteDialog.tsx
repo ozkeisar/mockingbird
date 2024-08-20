@@ -1,43 +1,64 @@
-import LoadingButton from "@mui/lab/LoadingButton";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material"
-import cloneDeep from "lodash/cloneDeep";
-import { useEffect, useState } from "react";
-import { BUTTONS } from "../../../../consts/analytics";
-import { EVENT_KEYS } from "../../../../types/events";
-import { useProjectStore } from "../../../state/project";
-import { emitSocketEvent, reportButtonClick, socket } from "../../../utils";
+import LoadingButton from '@mui/lab/LoadingButton';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@mui/material';
+import cloneDeep from 'lodash/cloneDeep';
+import { useEffect, useState } from 'react';
+import { BUTTONS } from '../../../../consts/analytics';
+import { EVENT_KEYS } from '../../../../types/events';
+import { useProjectStore } from '../../../state/project';
+import { emitSocketEvent, reportButtonClick, socket } from '../../../utils';
 
+export function DeletePresetRouteDialog({
+  presetFolderId,
+  presetId,
+  presetRouteId,
+  open,
+  onClose,
+}: {
+  presetFolderId: string;
+  presetId: string;
+  presetRouteId: string;
+  open: boolean;
+  onClose: () => void;
+}) {
+  const {
+    activeProjectName,
+    setHasDiffs,
+    addUpdatePresetFolder,
+    presetFoldersHash,
+  } = useProjectStore();
+  const [isLoading, setIsLoading] = useState(false);
 
-
-export const DeletePresetRouteDialog = ({presetFolderId, presetId, presetRouteId, open, onClose}: {presetFolderId: string, presetId: string, presetRouteId: string, open: boolean, onClose: ()=>void})=>{
-  const { activeProjectName, setHasDiffs, addUpdatePresetFolder, presetFoldersHash } = useProjectStore();
-  const [isLoading, setIsLoading] = useState(false)
-
-  useEffect(()=>{
+  useEffect(() => {
     const onEvent = (arg: any) => {
       setIsLoading(false);
-      const {success, presetFolder, projectName, hasDiffs} = arg;
-      setHasDiffs(hasDiffs)
+      const { success, presetFolder, projectName, hasDiffs } = arg;
+      setHasDiffs(hasDiffs);
 
-      if(success && projectName === activeProjectName ){
-          addUpdatePresetFolder(presetFolder)
-          onClose()
+      if (success && projectName === activeProjectName) {
+        addUpdatePresetFolder(presetFolder);
+        onClose();
       }
-  }
-    socket.on(EVENT_KEYS.UPDATE_PRESET_FILE,onEvent);
-    return ()=>{
-      socket.off(EVENT_KEYS.UPDATE_PRESET_FILE, onEvent)
-    }
-  },[activeProjectName])
+    };
+    socket.on(EVENT_KEYS.UPDATE_PRESET_FILE, onEvent);
+    return () => {
+      socket.off(EVENT_KEYS.UPDATE_PRESET_FILE, onEvent);
+    };
+  }, [activeProjectName, addUpdatePresetFolder, onClose, setHasDiffs]);
 
-
-  const handleDelete = ()=>{
-    reportButtonClick(BUTTONS.DELETE_PRESET_ROUTE_DIALOG_DELETE)
+  const handleDelete = () => {
+    reportButtonClick(BUTTONS.DELETE_PRESET_ROUTE_DIALOG_DELETE);
     const presetFolder = cloneDeep(presetFoldersHash[presetFolderId]);
 
     const preset = presetFolder?.presetsHash?.[presetId];
 
-    if(preset){
+    if (preset) {
       delete preset.routesHash?.[presetRouteId];
     }
 
@@ -46,15 +67,14 @@ export const DeletePresetRouteDialog = ({presetFolderId, presetId, presetRouteId
     emitSocketEvent(EVENT_KEYS.UPDATE_PRESET_FILE, {
       presetFolder,
       projectName: activeProjectName,
-    });   
-  }
+    });
+  };
 
-  const handleClose = ()=>{
-    reportButtonClick(BUTTONS.DELETE_PRESET_ROUTE_DIALOG_CANCEL)
+  const handleClose = () => {
+    reportButtonClick(BUTTONS.DELETE_PRESET_ROUTE_DIALOG_CANCEL);
 
     onClose();
-  }
-
+  };
 
   return (
     <Dialog
@@ -63,9 +83,7 @@ export const DeletePresetRouteDialog = ({presetFolderId, presetId, presetRouteId
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">
-        delete route
-      </DialogTitle>
+      <DialogTitle id="alert-dialog-title">delete route</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
           are you sure you want to delete this route from preset?
@@ -76,15 +94,15 @@ export const DeletePresetRouteDialog = ({presetFolderId, presetId, presetRouteId
           cancel
         </Button>
         <LoadingButton
-                loadingPosition="start"
-                variant="text"
-                color={'error'}
-                onClick={handleDelete}
-                loading={isLoading}
-            >
-                Delete
-            </LoadingButton>
+          loadingPosition="start"
+          variant="text"
+          color="error"
+          onClick={handleDelete}
+          loading={isLoading}
+        >
+          Delete
+        </LoadingButton>
       </DialogActions>
     </Dialog>
-  )
+  );
 }

@@ -1,1 +1,1 @@
-export * from './presetFolderDetails'
+export * from './presetFolderDetails';
