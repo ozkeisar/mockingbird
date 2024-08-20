@@ -139,7 +139,7 @@ export function RestLogRow({
 
   const matchedParents = useMemo(
     () =>
-      Object.values(routesParents)?.filter((parent) =>
+      Object.values(routesParents || {})?.filter((parent) =>
         requestUrl.includes(parent.path),
       ),
     [routesParents, requestUrl],
