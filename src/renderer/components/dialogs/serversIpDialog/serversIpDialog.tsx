@@ -43,9 +43,12 @@ export function ServersIpDialog({ onClose, open }: Props) {
     };
   }, []);
 
-  const rows = Object.values(serversHash).map(({ name, settings }) => {
-    return { name, address: `http://${host}:${settings.port}` };
-  });
+  const rows = [
+    { name: 'base url', address: `http://${host}` },
+    ...Object.values(serversHash).map(({ name, settings }) => {
+      return { name, address: `http://${host}:${settings.port}` };
+    }),
+  ];
 
   const handleClose = () => {
     reportButtonClick(BUTTONS.SERVERS_IPS_DIALOG_CLOSE);
