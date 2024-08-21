@@ -96,13 +96,13 @@ To apply a preset:
 1. Select the desired preset from the list.
 2. Apply the preset to update all active responses.
 
-## Using Docker
+## creating Docker image
 
-Folder contains scripts to run the project as a standalone server.
+Docker folder contains scripts to run the project as a standalone server.
 
-npm run build:backend to build teh JS files required for the standalone server.
+`npm run build:backend` to build teh JS files required for the standalone server.
 
-Then use docker build . -t mockingbird to create the image.
+Then use `docker build . -t {username}/mockingbird` to create the image.
 
 ## Licensing
 
