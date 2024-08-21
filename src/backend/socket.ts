@@ -18,15 +18,15 @@ export const initSocketIO = (server: HttpServer) => {
   return socketIo;
 };
 
-// export const getSocketIo = () => {
-//   if (!socketIo) {
-//     throw new Error('Socket.io not initialized!');
-//   }
-//   return socketIo;
-// };
+export const getGlobalSocketIo = () => {
+  if (!socketIo) {
+    throw new Error('Socket.io not initialized!');
+  }
+  return socketIo;
+};
 
 export const emitSocketMessage = (
-  socket: Socket,
+  socket: Socket | SocketIOServer,
   key: EVENT_KEYS,
   args: any,
 ) => {

@@ -96,6 +96,14 @@ To apply a preset:
 1. Select the desired preset from the list.
 2. Apply the preset to update all active responses.
 
+## Using Docker
+
+Folder contains scripts to run the project as a standalone server.
+
+npm run build:backend to build teh JS files required for the standalone server.
+
+Then use docker build . -t mockingbird to create the image.
+
 ## Licensing
 
 Mockingbird is dual-licensed under the GNU Affero General Public License v3.0 (AGPLv3) for open-source use and a commercial license for proprietary use. For more details, see [LICENSE](./LICENSE) and [COMMERCIAL_LICENSE](./COMMERCIAL_LICENSE).

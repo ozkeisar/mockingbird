@@ -1,4 +1,4 @@
-import chokidar from 'chokidar';
+// import chokidar from 'chokidar';
 import path from 'path';
 import { SUPPORTED_PROJECT_DATA_VERSION } from '../../consts';
 import {
@@ -56,38 +56,35 @@ class ProjectsManager {
     // socketIo.emit('reload', {projectName});
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private async watchProjectFolder(projectName: string) {
     const projectPath = await getProjectPath(projectName);
 
-    const watcher = chokidar.watch(projectPath, {
-      // eslint-disable-next-line no-useless-escape
-      ignored: /(^|[\/\\])\.git/,
-      persistent: true,
-      ignoreInitial: true,
-      depth: 99, // Adjust depth as needed
-    });
+    // const watcher = chokidar.watch(projectPath, {
+    // eslint-disable-next-line no-useless-escape
+    //     ignored: /(^|[\/\\])\.git/,
+    //     persistent: true,
+    //     ignoreInitial: true,
+    //     depth: 99, // Adjust depth as needed
+    // });
 
-    watcher
-      .on('add', (filePath) =>
-        this.handleProjectDataChanged(projectName, 'File added', filePath),
-      )
-      .on('change', (filePath) =>
-        this.handleProjectDataChanged(projectName, 'File changed', filePath),
-      )
-      .on('unlink', (filePath) =>
-        this.handleProjectDataChanged(projectName, 'File removed', filePath),
-      )
-      .on('addDir', (dirPath) =>
-        this.handleProjectDataChanged(projectName, 'Directory added', dirPath),
-      )
-      .on('unlinkDir', (dirPath) =>
-        this.handleProjectDataChanged(
-          projectName,
-          'Directory removed',
-          dirPath,
-        ),
-      )
-      .on('error', (error) => console.error('Error watching files:', error));
+    // watcher
+    //     .on('add', (filePath) =>
+    //    this.handleProjectDataChanged(projectName, 'File added', filePath),
+    //     .on('change', (filePath) =>
+    //    this.handleProjectDataChanged(projectName, 'File changed', filePath),
+    //     .on('unlink', (filePath) =>
+    //    this.handleProjectDataChanged(projectName, 'File removed', filePath),
+    //     .on('addDir', (dirPath) =>
+    //    this.handleProjectDataChanged(projectName, 'Directory added', dirPath),
+    //     .on('unlinkDir', (dirPath) =>
+    //    this.handleProjectDataChanged(
+    //      projectName,
+    //      'Directory removed',
+    //      dirPath,
+    //    ),
+    //  )
+    //     .on('error', (error) => console.error('Error watching files:', error));
 
     console.log(`---Watching changes for ${projectName} in: ${projectPath}`);
   }
