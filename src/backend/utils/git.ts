@@ -116,7 +116,6 @@ function formatBranchName(name: string) {
 
   return formattedName;
 }
-
 export const checkoutToBranch = async (
   projectName: string,
   branchName: string,
@@ -124,19 +123,41 @@ export const checkoutToBranch = async (
 ) => {
   try {
     const currentRepoFolderPath = await getProjectPath(projectName);
-
     const git = simpleGit(currentRepoFolderPath);
+
+    // Check if the branch is remote
+    const isRemoteBranch = branchName.startsWith('remotes/origin/');
+    const localBranchName = isRemoteBranch
+      ? branchName.replace('remotes/origin/', '')
+      : branchName;
+
     if (createIfNotExist) {
-      await git.checkoutLocalBranch(formatBranchName(branchName));
+      if (isRemoteBranch) {
+        // For remote branches, we need to fetch first
+        await git.fetch('origin');
+        // Then create a new local branch tracking the remote branch
+        await git.checkoutBranch(localBranchName, `origin/${localBranchName}`);
+      } else {
+        await git.checkoutLocalBranch(formatBranchName(localBranchName));
+      }
+    } else if (isRemoteBranch) {
+      // For remote branches, we need to fetch first
+      await git.fetch('origin');
+      // Then checkout the branch, creating a local branch that tracks the remote
+      await git.checkout([
+        '-B',
+        localBranchName,
+        `origin/${localBranchName}`,
+        '--force',
+      ]);
     } else {
-      await git.checkout(branchName, ['--force']);
+      await git.checkout(localBranchName, ['--force']);
     }
   } catch (error) {
     console.error(`Error checking out to branch '${branchName}':`, error);
     throw error;
   }
 };
-
 export const getCurrentBranch = async (projectName: string) => {
   try {
     const currentRepoFolderPath = await getProjectPath(projectName);
