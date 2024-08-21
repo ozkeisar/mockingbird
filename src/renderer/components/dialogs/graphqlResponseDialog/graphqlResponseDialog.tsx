@@ -459,9 +459,6 @@ export function GraphqlResponseDialog({
         }}
         height="100%"
         onChange={(item) => {
-          if (!item) {
-            return;
-          }
           setSchema(item);
         }}
       />
