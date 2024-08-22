@@ -15,10 +15,13 @@ const appPackagePath = path.join(appPath, 'package.json');
 const appNodeModulesPath = path.join(appPath, 'node_modules');
 const srcNodeModulesPath = path.join(srcPath, 'node_modules');
 
+const dockerPath = path.join(rootPath, 'docker');
+
 const distPath = path.join(appPath, 'dist');
 const distMainPath = path.join(distPath, 'main');
-const distBackendPath = path.join(rootPath, 'docker');
+const distBackendPath = dockerPath;
 const distRendererPath = path.join(distPath, 'renderer');
+const distRendererWebPath = path.join(dockerPath, 'web');
 
 const buildPath = path.join(releasePath, 'build');
 
@@ -39,4 +42,5 @@ export default {
   buildPath,
   srcBackendPath,
   distBackendPath,
+  distRendererWebPath,
 };
