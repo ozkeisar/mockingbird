@@ -5,7 +5,6 @@
 
 
 
-
 # Mockingbird
 
 Mockingbird is a tool designed to help software developers test their apps without needing the real server or backend ready. Imagine you’re building a new app, but the part of the system that handles data isn’t finished yet. Instead of waiting around, you can use Mockingbird to create a pretend version of that system. This allows you to keep working and testing your app as if everything is already set up, saving time and frustration. 
@@ -69,14 +68,6 @@ Mockingbird is dual-licensed under the GNU Affero General Public License v3.0 (A
 ## Contributing
 
 We welcome contributions to Mockingbird! Please read and agree to our Contributor License Agreement (CLA) before contributing. For more details, see [CONTRIBUTING](./CONTRIBUTING.md).
-
----
-
-For more details, visit the following articles:
-- [Mockingbird: New tool for your mock environments](https://dev.to/ozkeisar/mockingbird-new-tool-for-your-mock-environments-49j)
-- [Setting Up Your Mock Server with Mockingbird](https://dev.to/ozkeisar/setting-up-your-mock-server-with-mockingbird-1b72)
-
-
 
 
 ## Troubleshooting
