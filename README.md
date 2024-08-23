@@ -44,75 +44,9 @@ Mockingbird is a tool designed to help software developers test their apps witho
 
 9. **Docker image**: mockingbird have a docker image that let's you set it up as part of your ci/cd, make it suitable for your e2e testing. 
 
-## Getting Started
+## Guides 
 
-### Download and Installation
 
-1. Download the latest version from the [Releases](https://github.com/ozkeisar/mockingbird/releases) page.
-2. Run the installer and follow the instructions.
-
-### Initializing Your Project
-
-1. **Launch Mockingbird**: Open the application.
-2. **Start a New Project**: 
-   - Clone an existing project from your Git service.
-   - Create a new local project (you can connect it to Git later).
-   - Open an existing project.
-
-### Cloning a Project
-
-1. Choose HTTPS or SSH cloning.
-2. Enter the repository URL and provide a unique name.
-3. Click `CLONE` to set up your project.
-
-### Setting Up Your Server
-
-1. **New Server**: Click `+ new server`, name it, and hit `SAVE`.
-2. **New Parent**: Add a parent to hold routes, specify the path and filename.
-3. **Add Route**: Define the HTTP method and path, then add the route.
-4. **Add Response**: Choose between function, object, or proxy responses, set response details, and save.
-
-### Running Your Server
-
-- Start your server and get the server address.
-- Change the `baseUrl` in your project to direct API calls to the Mockingbird server.
-- Use the console to view requests handled by Mockingbird.
-
-## Advanced Setup
-
-### Configuring Your Mock Server
-
-1. **Set Up Your Server**: 
-   - Open server details.
-   - Enter your real server's base URL in the Target URL field to let Mockingbird act as a proxy.
-
-2. **Redirect Your Application**: 
-   - Click `Start Server`.
-   - Replace your live server URL with the Mockingbird server URL in your application code.
-
-3. **Monitoring API Calls**: 
-   - Use the Mockingbird console to view all API requests and how they are handled.
-
-4. **Creating Local Routes**: 
-   - Add Parent: Define the parent path.
-   - Add Route: Add specific routes.
-   - Add Response: Define responses for routes.
-
-## Presets
-
-Presets in Mockingbird are collections of routes with selected responses. Applying a preset updates the active responses on all routes in the preset to their specified responses. This feature is particularly useful for:
-
-- **QA Automation and Manual QA**: Quickly switch between different test scenarios.
-- **Developers**: Debug specific scenarios efficiently without manually changing each route.
-
-To create a preset:
-1. Define a collection of routes.
-2. Select the desired responses for each route.
-3. Save the preset.
-
-To apply a preset:
-1. Select the desired preset from the list.
-2. Apply the preset to update all active responses.
 
 ## creating Docker image
 
