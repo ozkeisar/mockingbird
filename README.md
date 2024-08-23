@@ -19,28 +19,28 @@ Mockingbird is a tool designed to help software developers test their apps witho
 ## Main Features
 
 1. **Multiple Responses for Each Route**: 
-   - Create different responses for the same API route, allowing you to simulate various scenarios like successful requests or errors. This helps you test how your app handles different situations.
+   Create different responses for the same API route, allowing you to simulate various scenarios like successful requests or errors. This helps you test how your app handles different situations.
 
 2. **Presets**: 
-   - Easily switch between different sets of responses with just one click. This feature allows you to test how your app behaves in various scenarios without manually changing the responses each time.
+   Easily switch between different sets of responses with just one click. This feature allows you to test how your app behaves in various scenarios without manually changing the responses each time.
 
 3. **Git Integration**: 
-   - All mock data is stored in a Git repository, providing version control and security without the need for additional servers. You can track changes over time and collaborate more effectively.
+   All mock data is stored in a Git repository, providing version control and security without the need for additional servers. You can track changes over time and collaborate more effectively.
 
 4. **Proxy Functionality**: 
-   - Mockingbird can listen to actual API requests and responses, helping you quickly create mocks based on real API calls. This saves time by automating part of the setup process.
+   Mockingbird can listen to actual API requests and responses, helping you quickly create mocks based on real API calls. This saves time by automating part of the setup process.
 
 5. **API Call Monitoring**: 
-   - Monitor all incoming API calls to see exactly what requests are being made by your app and how they’re handled by Mockingbird.
+   Monitor all incoming API calls to see exactly what requests are being made by your app and how they’re handled by Mockingbird.
 
 6. **GraphQL Support**: 
-   - Full support for creating and managing GraphQL mocks, making it easy to work with GraphQL APIs during development.
+   Full support for creating and managing GraphQL mocks, making it easy to work with GraphQL APIs during development.
 
 7. **Multiple Projects and Servers**: 
-   - Manage different projects and servers within Mockingbird, making it a versatile tool for teams working on multiple applications.
+   Manage different projects and servers within Mockingbird, making it a versatile tool for teams working on multiple applications.
 
 8. **Built-in API for Testing**: 
-   - Includes a built-in API that allows you to control Mockingbird during automated tests, helping you seamlessly integrate it into your testing workflow.
+   Includes a built-in API that allows you to control Mockingbird during automated tests, helping you seamlessly integrate it into your testing workflow.
 
 9. **Docker image**: mockingbird have a docker image that let's you set it up as part of your ci/cd, make it suitable for your e2e testing. 
 
