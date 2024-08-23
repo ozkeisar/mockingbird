@@ -46,9 +46,9 @@ Mockingbird is a tool designed to help software developers test their apps witho
 ## Mockingbird Guides 
 
 1. [Mockingbird: New Tool for Your Mock Environments](https://dev.to/ozkeisar/mockingbird-new-tool-for-your-mock-environments-49j)
-2. [Setting Up Your Mock Server with Mockingbird](https://dev.to/ozkeisar/setting-up-your-mock-server-with-mockingbird-2hda)
-3. [Mockingbird Presets: Optimizing API Development Workflows](https://dev.to/ozkeisar/mockingbird-presets-optimizing-api-development-workflows-3k7e)
-4. [Creating and Managing Multiple Projects and Servers with Mockingbird](https://dev.to/ozkeisar/creating-and-managing-multiple-projects-and-servers-with-mockingbird-3o8k)
+2. [Setting Up Your Mock Server with Mockingbird](https://dev.to/ozkeisar/setting-up-your-mock-server-with-mockingbird-1b72)
+3. [Mockingbird Presets: Optimizing API Development Workflows](https://dev.to/ozkeisar/optimizing-api-development-workflows-with-mockingbird-presets-17hc)
+4. [Creating and Managing Multiple Projects and Servers with Mockingbird](https://dev.to/ozkeisar/creating-and-managing-multiple-projects-and-servers-with-mockingbird-a7b)
 5. [I built a new way of mocking GraphQL server](https://dev.to/ozkeisar/i-built-a-new-way-of-mocking-graphql-server-i94)
 6. [Dockerize Your Mockingbird Setup: A Quickstart Guide](https://dev.to/ozkeisar/how-to-use-the-mockingbird-docker-image-29mf) 
 
