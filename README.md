@@ -59,7 +59,7 @@ Docker folder contains scripts to run the project as a standalone server.
 
 `npm run build:backend` to build teh JS files required for the standalone server.
 
-Then use `docker build . -t {username}/mockingbird` to create the image.
+Then use `docker build . -t {username}/mockingbird:{version}` to create the image.
 
 ## Licensing
 
