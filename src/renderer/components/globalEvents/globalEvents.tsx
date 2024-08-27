@@ -317,7 +317,7 @@ export function GlobalEvents() {
 
       if (success) {
         setIsServerUp(true);
-        setServerHost(host);
+        setServerHost(isElectronEnabled ? host : window.location.hostname);
       }
 
       if (!success && serverDisabledUntil) {
