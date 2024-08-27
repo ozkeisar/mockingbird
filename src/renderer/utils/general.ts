@@ -18,7 +18,7 @@ export const JSONStringifyExtra = (obj: any) =>
 
 export const openInNewTab = (url: string) => {
   const newWindow = window.open(
-    `http://${url}`,
+    url,
     '_blank',
     'noopener,noreferrer',
   );

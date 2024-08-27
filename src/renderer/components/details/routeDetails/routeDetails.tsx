@@ -159,7 +159,7 @@ export function RouteDetails() {
             variant="caption"
             onClick={() => {
               reportButtonClick(BUTTONS.ROUTE_DETAILS_ROUTE_LINK);
-              openInNewTab(linkUrl);
+              openInNewTab(`http://${linkUrl}`);
             }}
           >
             {linkUrl}

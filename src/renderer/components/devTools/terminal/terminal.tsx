@@ -129,7 +129,7 @@ export function CommandsTerminal() {
     swagger: () => {
       reportCommandExecuted(COMMANDS.SWAGGER);
       if(isElectronEnabled){
-        openInNewTab('localhost:1511/api-docs');
+        openInNewTab('http://localhost:1511/api-docs');
       }else{
         const baseURl = window.location.href
         openInNewTab(baseURl+'api-docs');

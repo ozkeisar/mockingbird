@@ -14,7 +14,7 @@ export const emitSocketEvent = (
 ) => {
   // eslint-disable-next-line no-console
   console.log(
-    'emitSocketEvent',
+    'emitSocketEvent: ',
     event,
     args,
     flattenObject(args?.withAnalyticsParams ? args : {}),
