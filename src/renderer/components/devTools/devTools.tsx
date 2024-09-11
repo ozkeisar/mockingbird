@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useLoggerStore } from '../../state/logger';
 import { Console } from './console';
 import { CommandsTerminal } from './terminal/terminal';
@@ -7,8 +7,9 @@ import styles from './devTools.module.css';
 import { ConsoleDialog } from '../dialogs/consoleDialog';
 import { reportButtonClick } from '../../utils';
 import { BUTTONS } from '../../../consts/analytics';
+import { ServersLogs } from './serversLogs';
 
-type TabIds = 'console' | 'terminal';
+type TabIds = 'console' | 'terminal' | 'serversLogs';
 
 interface Tab {
   id: TabIds;
@@ -27,13 +28,19 @@ function DevTools({ onMinimize, onCenter, onMaximize, devToolsHeight }: Props) {
   const { resetLoggerState, serverLogs } = useLoggerStore();
   const [openConsoleDialog, setOpenConsoleDialog] = useState(false);
   const [search, setSearch] = useState('');
+  const serversLogsRef = useRef<{ clear: () => void } | null>(null)
 
   const [selectedId, setSelectedId] = useState<TabIds>('console');
-  const isConsole = selectedId === 'console';
+  const showClear = [ 'console', 'serversLogs'].includes(selectedId);
+  const isConsole = 'console' === selectedId
 
   const handleClear = () => {
     reportButtonClick(BUTTONS.CONSOLE_CLEAR);
-    resetLoggerState();
+    if(selectedId === 'console'){
+      resetLoggerState();
+    }else if(selectedId === 'serversLogs' && serversLogsRef.current?.clear){
+      serversLogsRef.current.clear()
+    }
   };
 
   const tabs: Tab[] = [
@@ -45,6 +52,11 @@ function DevTools({ onMinimize, onCenter, onMaximize, devToolsHeight }: Props) {
     {
       id: 'terminal',
       title: 'terminal',
+      counter: 0,
+    },
+    {
+      id: 'serversLogs',
+      title: 'servers logs',
       counter: 0,
     },
   ];
@@ -82,7 +94,7 @@ function DevTools({ onMinimize, onCenter, onMaximize, devToolsHeight }: Props) {
           showMinimize={devToolsHeight !== 40}
           showCenter={devToolsHeight !== '50%'}
           showFullScreen={isConsole}
-          showClear={isConsole}
+          showClear={showClear}
           showSearch={isConsole}
         />
       </div>
@@ -95,7 +107,17 @@ function DevTools({ onMinimize, onCenter, onMaximize, devToolsHeight }: Props) {
         >
           <CommandsTerminal />
         </div>
+
+        <div
+          style={
+            selectedId === 'serversLogs' ? { height: '100%' } : { display: 'none' }
+          }
+        >
+          <ServersLogs ref={serversLogsRef}/>
+        </div>
+
         {selectedId === 'console' && <Console search={search} />}
+
         {/* {selectedId === 2 && <div>Logger Component</div>} */}
       </div>
       {openConsoleDialog && (

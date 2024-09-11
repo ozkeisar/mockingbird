@@ -10,7 +10,7 @@ import { migrateProjectData } from '../utils/migrations';
 import { listToHashmap } from '../utils/utils';
 import { ProjectDataNew } from '../../types';
 import {
-  checkIsGitInit,
+  isGitRepository,
   getBranches,
   getCurrentBranch,
   hasUncommittedChanges,
@@ -99,7 +99,7 @@ class ProjectsManager {
   }
 
   private async readProjectData(projectName: string): Promise<void> {
-    const isGitInit = await checkIsGitInit(projectName);
+    const isGitInit = await isGitRepository(projectName);
     const currentBranch = await getCurrentBranch(projectName);
     const branches = (await getBranches(projectName)) as string[];
     const hasDiffs = await hasUncommittedChanges(projectName);
