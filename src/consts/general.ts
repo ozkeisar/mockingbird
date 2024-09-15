@@ -8,8 +8,6 @@ export const appSettingsFolder = `${mainFolderPath}settings/`;
 
 export const SUPPORTED_PROJECT_DATA_VERSION = '0.0.9';
 
-export const SECRET_KEY = 'verysecretkey';
-
 export const DEFAULT_APP_SETTINGS: AppSettings = Object.freeze({
   userApproveAnalytics: false,
   serverDisabledUntil: null,
