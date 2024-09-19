@@ -22,14 +22,9 @@ import cloneDeep from 'lodash/cloneDeep';
 import styles from './presetRouteDialog.module.css';
 import { useProjectStore } from '../../../state/project';
 import {
-  GraphQlRouteHash,
-  GraphQlRouteResponseHash,
   Method,
   PresetRoute,
   PresetRouteHash,
-  RouteHash,
-  RouteParentHash,
-  RouteResponseHash,
   ServersHash,
 } from '../../../../types';
 import {
@@ -73,41 +68,52 @@ function CustomRouteLabel({
   );
 }
 
-export function processPresetRouteHash(
+export function isRouteDisabled(
+  routeId: string,
+  parentId: string,
+  serverId: string,
   existingPresets: PresetRouteHash,
+): boolean {
+  return Object.values(existingPresets).some(
+    (preset) =>
+      preset.serverId === serverId &&
+      preset.parentId === parentId &&
+      preset.routeId === routeId,
+  );
+}
+
+export function isParentDisabled(
+  parentId: string,
+  serverId: string,
   serversHash: ServersHash,
-  parentRoutesHash: RouteParentHash,
-  routesHash: RouteHash | GraphQlRouteHash,
-  responsesHash: GraphQlRouteResponseHash | RouteResponseHash,
-) {
-  const usedServers = new Set<string>();
-  const usedParents = new Set<string>();
-  const usedRoutes = new Set<string>();
-  const usedResponses = new Set<string>();
+  existingPresets: PresetRouteHash,
+): boolean {
+  const server = serversHash[serverId];
+  if (!server) return false;
 
-  Object.values(existingPresets).forEach((preset) => {
-    usedServers.add(preset.serverId);
-    usedParents.add(preset.parentId);
-    usedRoutes.add(preset.routeId);
-    usedResponses.add(preset.responseId);
-  });
+  const parent = server.parentRoutesHash[parentId];
+  if (!parent) return false;
 
-  const serverIds = Object.keys(serversHash);
-  const parentIds = Object.keys(parentRoutesHash);
-  const routeIds = Object.keys(routesHash);
-  const responseIds = Object.keys(responsesHash);
+  const isGraphqlParent = parent?.type === 'GraphQl';
+  const routesHash = isGraphqlParent
+    ? parent.graphQlRouteHash
+    : parent.routesHash;
+  return Object.keys(routesHash ?? {}).every((routeId) =>
+    isRouteDisabled(routeId, parentId, serverId, existingPresets),
+  );
+}
 
-  return {
-    disabledServers: serverIds.filter(
-      (id) => usedResponses.size === responseIds.length && usedServers.has(id),
-    ),
-    disabledParents: parentIds.filter(
-      (id) => usedRoutes.size === routeIds.length && usedParents.has(id),
-    ),
-    disabledRoutes: routeIds.filter(
-      (id) => usedParents.size === parentIds.length && usedRoutes.has(id),
-    ),
-  };
+export function isServerDisabled(
+  serverId: string,
+  serversHash: ServersHash,
+  existingPresets: PresetRouteHash,
+): boolean {
+  const server = serversHash[serverId];
+  if (!server) return false;
+
+  return Object.keys(server.parentRoutesHash).every((parentId) =>
+    isParentDisabled(parentId, serverId, serversHash, existingPresets),
+  );
 }
 
 export function PresetRouteDialog({
@@ -152,15 +158,8 @@ export function PresetRouteDialog({
   const route = getRoute();
   const isGraphqlParent = parent?.type === 'GraphQl';
 
-  const { disabledServers, disabledParents, disabledRoutes } =
-    processPresetRouteHash(
-      presetFoldersHash[folderId]?.presetsHash?.[presetId].routesHash ?? {},
-      serversHash,
-      server?.parentRoutesHash || {},
-      (isGraphqlParent ? parent?.graphQlRouteHash : parent?.routesHash) || {},
-      route?.responsesHash || {},
-    );
-
+  const existingPresets =
+    presetFoldersHash[folderId]?.presetsHash?.[presetId].routesHash ?? {};
   const isAllSelected = _serverId && _parentId && _routeId && _responseId;
 
   useEffect(() => {
@@ -232,7 +231,11 @@ export function PresetRouteDialog({
               {Object.values(serversHash).map((item) => {
                 return (
                   <MenuItem
-                    disabled={disabledServers.includes(item.name)}
+                    disabled={isServerDisabled(
+                      item.name,
+                      serversHash,
+                      existingPresets,
+                    )}
                     dense
                     selected={_serverId === item.name}
                     onClick={() => {
@@ -266,7 +269,12 @@ export function PresetRouteDialog({
                 const isGraphql = item.type === 'GraphQl';
                 return (
                   <MenuItem
-                    disabled={disabledParents.includes(item.id)}
+                    disabled={isParentDisabled(
+                      item.id,
+                      _serverId ?? '',
+                      serversHash,
+                      existingPresets,
+                    )}
                     dense
                     selected={_parentId === item.id}
                     onClick={() => {
@@ -299,7 +307,12 @@ export function PresetRouteDialog({
                 ? Object.values(parent?.graphQlRouteHash || {}).map((item) => {
                     return (
                       <MenuItem
-                        disabled={disabledRoutes.includes(item.id)}
+                        disabled={isRouteDisabled(
+                          item.id,
+                          _parentId ?? '',
+                          _serverId ?? '',
+                          existingPresets,
+                        )}
                         dense
                         selected={_routeId === item.id}
                         onClick={() => {
@@ -324,7 +337,12 @@ export function PresetRouteDialog({
                 : Object.values(parent?.routesHash || {}).map((item) => {
                     return (
                       <MenuItem
-                        disabled={disabledRoutes.includes(item.id)}
+                        disabled={isRouteDisabled(
+                          item.id,
+                          _parentId ?? '',
+                          _serverId ?? '',
+                          existingPresets,
+                        )}
                         dense
                         selected={_routeId === item.id}
                         onClick={() => {
