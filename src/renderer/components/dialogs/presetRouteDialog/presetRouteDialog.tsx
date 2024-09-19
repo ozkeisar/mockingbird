@@ -21,7 +21,17 @@ import CloudQueueIcon from '@mui/icons-material/CloudQueue';
 import cloneDeep from 'lodash/cloneDeep';
 import styles from './presetRouteDialog.module.css';
 import { useProjectStore } from '../../../state/project';
-import { Method, PresetRoute } from '../../../../types';
+import {
+  GraphQlRouteHash,
+  GraphQlRouteResponseHash,
+  Method,
+  PresetRoute,
+  PresetRouteHash,
+  RouteHash,
+  RouteParentHash,
+  RouteResponseHash,
+  ServersHash,
+} from '../../../../types';
 import {
   emitSocketEvent,
   getRouteBGColor,
@@ -61,6 +71,44 @@ function CustomRouteLabel({
       {label}
     </div>
   );
+}
+
+export function processPresetRouteHash(
+  existingPresets: PresetRouteHash,
+  serversHash: ServersHash,
+  parentRoutesHash: RouteParentHash,
+  routesHash: RouteHash | GraphQlRouteHash,
+  responsesHash: GraphQlRouteResponseHash | RouteResponseHash,
+) {
+  const usedServers = new Set<string>();
+  const usedParents = new Set<string>();
+  const usedRoutes = new Set<string>();
+  const usedResponses = new Set<string>();
+
+  Object.values(existingPresets).forEach((preset) => {
+    usedServers.add(preset.serverId);
+    usedParents.add(preset.parentId);
+    usedRoutes.add(preset.routeId);
+    usedResponses.add(preset.responseId);
+  });
+
+  const serverIds = Object.keys(serversHash);
+  const parentIds = Object.keys(parentRoutesHash);
+  const routeIds = Object.keys(routesHash);
+  const responseIds = Object.keys(responsesHash);
+
+  return {
+    disabledServers: serverIds.filter(
+      (id) => usedResponses.size === responseIds.length && usedServers.has(id),
+    ),
+    disabledParents: parentIds.filter(
+      (id) => usedRoutes.size === routeIds.length && usedParents.has(id),
+    ),
+    disabledRoutes: routeIds.filter(
+      (id) => usedParents.size === parentIds.length && usedRoutes.has(id),
+    ),
+    disabledResponses: responseIds.filter((id) => usedResponses.has(id)),
+  };
 }
 
 export function PresetRouteDialog({
@@ -104,6 +152,15 @@ export function PresetRouteDialog({
   };
   const route = getRoute();
   const isGraphqlParent = parent?.type === 'GraphQl';
+
+  const { disabledServers, disabledParents, disabledRoutes } =
+    processPresetRouteHash(
+      presetFoldersHash[folderId]?.presetsHash?.[presetId].routesHash ?? {},
+      serversHash,
+      server?.parentRoutesHash || {},
+      (isGraphqlParent ? parent?.graphQlRouteHash : parent?.routesHash) || {},
+      route?.responsesHash || {},
+    );
 
   const isAllSelected = _serverId && _parentId && _routeId && _responseId;
 
@@ -176,6 +233,7 @@ export function PresetRouteDialog({
               {Object.values(serversHash).map((item) => {
                 return (
                   <MenuItem
+                    disabled={disabledServers.includes(item.name)}
                     dense
                     selected={_serverId === item.name}
                     onClick={() => {
@@ -209,6 +267,7 @@ export function PresetRouteDialog({
                 const isGraphql = item.type === 'GraphQl';
                 return (
                   <MenuItem
+                    disabled={disabledParents.includes(item.id)}
                     dense
                     selected={_parentId === item.id}
                     onClick={() => {
@@ -241,6 +300,7 @@ export function PresetRouteDialog({
                 ? Object.values(parent?.graphQlRouteHash || {}).map((item) => {
                     return (
                       <MenuItem
+                        disabled={disabledRoutes.includes(item.id)}
                         dense
                         selected={_routeId === item.id}
                         onClick={() => {
@@ -265,6 +325,7 @@ export function PresetRouteDialog({
                 : Object.values(parent?.routesHash || {}).map((item) => {
                     return (
                       <MenuItem
+                        disabled={disabledRoutes.includes(item.id)}
                         dense
                         selected={_routeId === item.id}
                         onClick={() => {
@@ -329,7 +390,7 @@ export function PresetRouteDialog({
           loading={isLoading}
           disabled={!isAllSelected}
         >
-          save
+          add
         </LoadingButton>
       </DialogActions>
     </Dialog>

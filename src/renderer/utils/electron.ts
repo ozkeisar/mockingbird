@@ -2,10 +2,9 @@ import { EVENT_KEYS } from '../../types/events';
 import { reportSendEvent } from './analytics';
 import { handleReceiveEvent } from './events';
 
-export const isElectronEnabled = !!window.electron?.ipcRenderer
+export const isElectronEnabled = !!window.electron?.ipcRenderer;
 
 const sendMessage = (channel: EVENT_KEYS, ...args: any) => {
-
   if (!isElectronEnabled) {
     return;
   }
@@ -14,7 +13,6 @@ const sendMessage = (channel: EVENT_KEYS, ...args: any) => {
 };
 
 const on = (channel: EVENT_KEYS, func: (...args: any) => void) => {
-
   if (!isElectronEnabled) {
     return () => {};
   }
@@ -23,7 +21,6 @@ const on = (channel: EVENT_KEYS, func: (...args: any) => void) => {
     func(arg);
   });
 };
-
 
 export const ElectronEvents = {
   sendMessage,
