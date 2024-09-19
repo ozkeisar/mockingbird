@@ -107,7 +107,6 @@ export function processPresetRouteHash(
     disabledRoutes: routeIds.filter(
       (id) => usedParents.size === parentIds.length && usedRoutes.has(id),
     ),
-    disabledResponses: responseIds.filter((id) => usedResponses.has(id)),
   };
 }
 
