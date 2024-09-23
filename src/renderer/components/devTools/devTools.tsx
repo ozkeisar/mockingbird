@@ -28,18 +28,18 @@ function DevTools({ onMinimize, onCenter, onMaximize, devToolsHeight }: Props) {
   const { resetLoggerState, serverLogs } = useLoggerStore();
   const [openConsoleDialog, setOpenConsoleDialog] = useState(false);
   const [search, setSearch] = useState('');
-  const serversLogsRef = useRef<{ clear: () => void } | null>(null)
+  const serversLogsRef = useRef<{ clear: () => void } | null>(null);
 
   const [selectedId, setSelectedId] = useState<TabIds>('console');
-  const showClear = [ 'console', 'serversLogs'].includes(selectedId);
-  const isConsole = 'console' === selectedId
+  const showClear = ['console', 'serversLogs'].includes(selectedId);
+  const isConsole = selectedId === 'console';
 
   const handleClear = () => {
     reportButtonClick(BUTTONS.CONSOLE_CLEAR);
-    if(selectedId === 'console'){
+    if (selectedId === 'console') {
       resetLoggerState();
-    }else if(selectedId === 'serversLogs' && serversLogsRef.current?.clear){
-      serversLogsRef.current.clear()
+    } else if (selectedId === 'serversLogs' && serversLogsRef.current?.clear) {
+      serversLogsRef.current.clear();
     }
   };
 
@@ -110,10 +110,12 @@ function DevTools({ onMinimize, onCenter, onMaximize, devToolsHeight }: Props) {
 
         <div
           style={
-            selectedId === 'serversLogs' ? { height: '100%' } : { display: 'none' }
+            selectedId === 'serversLogs'
+              ? { height: '100%' }
+              : { display: 'none' }
           }
         >
-          <ServersLogs ref={serversLogsRef}/>
+          <ServersLogs ref={serversLogsRef} />
         </div>
 
         {selectedId === 'console' && <Console search={search} />}

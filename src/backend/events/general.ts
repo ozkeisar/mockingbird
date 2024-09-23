@@ -2,7 +2,6 @@ import { execSync } from 'child_process';
 import { Socket } from 'socket.io';
 import { checkIServerUp, closeProjectServers } from '../server';
 import {
-  activateProgram,
   getActiveProjectName,
   getProjectPath,
   getProjectsNameList,
@@ -136,15 +135,6 @@ export const generalEvents = (socket: Socket) => {
         success: false,
         currentRepoFolderPath,
       });
-    }
-  });
-
-  socket.on(EVENT_KEYS.ACTIVATE, async (arg) => {
-    try {
-      const success = await activateProgram(arg.activationKey);
-      emitSocketMessage(socket, EVENT_KEYS.ACTIVATE, { success });
-    } catch (error) {
-      emitSocketMessage(socket, EVENT_KEYS.ACTIVATE, { success: false });
     }
   });
 

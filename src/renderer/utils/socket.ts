@@ -4,9 +4,9 @@ import { reportSendEvent } from './analytics';
 import { isElectronEnabled } from './electron';
 import { flattenObject } from './general';
 
-const baseURl = window.location.href
+const baseURl = window.location.href;
 
-export const socket = io(isElectronEnabled?'http://localhost:1511':baseURl);
+export const socket = io(isElectronEnabled ? 'http://localhost:1511' : baseURl);
 
 export const emitSocketEvent = (
   event: EVENT_KEYS,

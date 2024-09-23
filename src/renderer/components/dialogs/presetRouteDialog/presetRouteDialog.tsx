@@ -21,7 +21,12 @@ import CloudQueueIcon from '@mui/icons-material/CloudQueue';
 import cloneDeep from 'lodash/cloneDeep';
 import styles from './presetRouteDialog.module.css';
 import { useProjectStore } from '../../../state/project';
-import { Method, PresetRoute } from '../../../../types';
+import {
+  Method,
+  PresetRoute,
+  PresetRouteHash,
+  ServersHash,
+} from '../../../../types';
 import {
   emitSocketEvent,
   getRouteBGColor,
@@ -60,6 +65,54 @@ function CustomRouteLabel({
       )}
       {label}
     </div>
+  );
+}
+
+export function isRouteDisabled(
+  routeId: string,
+  parentId: string,
+  serverId: string,
+  existingPresets: PresetRouteHash,
+): boolean {
+  return Object.values(existingPresets).some(
+    (preset) =>
+      preset.serverId === serverId &&
+      preset.parentId === parentId &&
+      preset.routeId === routeId,
+  );
+}
+
+export function isParentDisabled(
+  parentId: string,
+  serverId: string,
+  serversHash: ServersHash,
+  existingPresets: PresetRouteHash,
+): boolean {
+  const server = serversHash[serverId];
+  if (!server) return false;
+
+  const parent = server.parentRoutesHash[parentId];
+  if (!parent) return false;
+
+  const isGraphqlParent = parent?.type === 'GraphQl';
+  const routesHash = isGraphqlParent
+    ? parent.graphQlRouteHash
+    : parent.routesHash;
+  return Object.keys(routesHash ?? {}).every((routeId) =>
+    isRouteDisabled(routeId, parentId, serverId, existingPresets),
+  );
+}
+
+export function isServerDisabled(
+  serverId: string,
+  serversHash: ServersHash,
+  existingPresets: PresetRouteHash,
+): boolean {
+  const server = serversHash[serverId];
+  if (!server) return false;
+
+  return Object.keys(server.parentRoutesHash).every((parentId) =>
+    isParentDisabled(parentId, serverId, serversHash, existingPresets),
   );
 }
 
@@ -105,6 +158,8 @@ export function PresetRouteDialog({
   const route = getRoute();
   const isGraphqlParent = parent?.type === 'GraphQl';
 
+  const existingPresets =
+    presetFoldersHash[folderId]?.presetsHash?.[presetId].routesHash ?? {};
   const isAllSelected = _serverId && _parentId && _routeId && _responseId;
 
   useEffect(() => {
@@ -176,6 +231,11 @@ export function PresetRouteDialog({
               {Object.values(serversHash).map((item) => {
                 return (
                   <MenuItem
+                    disabled={isServerDisabled(
+                      item.name,
+                      serversHash,
+                      existingPresets,
+                    )}
                     dense
                     selected={_serverId === item.name}
                     onClick={() => {
@@ -209,6 +269,12 @@ export function PresetRouteDialog({
                 const isGraphql = item.type === 'GraphQl';
                 return (
                   <MenuItem
+                    disabled={isParentDisabled(
+                      item.id,
+                      _serverId ?? '',
+                      serversHash,
+                      existingPresets,
+                    )}
                     dense
                     selected={_parentId === item.id}
                     onClick={() => {
@@ -241,6 +307,12 @@ export function PresetRouteDialog({
                 ? Object.values(parent?.graphQlRouteHash || {}).map((item) => {
                     return (
                       <MenuItem
+                        disabled={isRouteDisabled(
+                          item.id,
+                          _parentId ?? '',
+                          _serverId ?? '',
+                          existingPresets,
+                        )}
                         dense
                         selected={_routeId === item.id}
                         onClick={() => {
@@ -265,6 +337,12 @@ export function PresetRouteDialog({
                 : Object.values(parent?.routesHash || {}).map((item) => {
                     return (
                       <MenuItem
+                        disabled={isRouteDisabled(
+                          item.id,
+                          _parentId ?? '',
+                          _serverId ?? '',
+                          existingPresets,
+                        )}
                         dense
                         selected={_routeId === item.id}
                         onClick={() => {
@@ -329,7 +407,7 @@ export function PresetRouteDialog({
           loading={isLoading}
           disabled={!isAllSelected}
         >
-          save
+          add
         </LoadingButton>
       </DialogActions>
     </Dialog>
