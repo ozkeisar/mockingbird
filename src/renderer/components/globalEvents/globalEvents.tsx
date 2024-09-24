@@ -12,7 +12,7 @@ import {
 } from '../dialogs';
 import { ProjectDataInvalidDialog } from '../dialogs/projectDataInvalidDialog';
 import { ProjectDataUnsupported } from '../projectDataUnsupported';
-import { emitSocketEvent, socket } from '../../utils';
+import { emitSocketEvent, isElectronEnabled, socket } from '../../utils';
 
 export function GlobalEvents() {
   const [openIpDialog, setOpenIpDialog] = useState(false);
@@ -104,15 +104,19 @@ export function GlobalEvents() {
     const onEvent = (arg: any) => {
       console.log(EVENT_KEYS.DEBUG_LOG, arg);
     };
-
-    const removeListener = window.electron.ipcRenderer.on(
-      EVENT_KEYS.DEBUG_LOG,
-      onEvent,
-    );
     socket.on(EVENT_KEYS.DEBUG_LOG, onEvent);
+    if (isElectronEnabled) {
+      const removeListener = window.electron.ipcRenderer.on(
+        EVENT_KEYS.DEBUG_LOG,
+        onEvent,
+      );
 
+      return () => {
+        removeListener();
+        socket.off(EVENT_KEYS.DEBUG_LOG, onEvent);
+      };
+    }
     return () => {
-      removeListener();
       socket.off(EVENT_KEYS.DEBUG_LOG, onEvent);
     };
   }, []);
@@ -288,16 +292,19 @@ export function GlobalEvents() {
   }, [addServerLog]);
 
   useEffect(() => {
-    const removeListener = window.electron.ipcRenderer.on(
-      EVENT_KEYS.IP_CHANGED,
-      () => {
-        if (isServerUp) {
-          setOpenIpDialog(true);
-        }
-      },
-    );
+    if (isElectronEnabled) {
+      const removeListener = window.electron.ipcRenderer.on(
+        EVENT_KEYS.IP_CHANGED,
+        () => {
+          if (isServerUp) {
+            setOpenIpDialog(true);
+          }
+        },
+      );
 
-    return () => removeListener();
+      return () => removeListener();
+    }
+    return () => {};
   }, [setOpenIpDialog, isServerUp]);
 
   useEffect(() => {
@@ -310,7 +317,7 @@ export function GlobalEvents() {
 
       if (success) {
         setIsServerUp(true);
-        setServerHost(host);
+        setServerHost(isElectronEnabled ? host : window.location.hostname);
       }
 
       if (!success && serverDisabledUntil) {

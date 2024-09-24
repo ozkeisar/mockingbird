@@ -1,9 +1,12 @@
 import { io } from 'socket.io-client';
 import { EVENT_KEYS } from '../../types/events';
 import { reportSendEvent } from './analytics';
+import { isElectronEnabled } from './electron';
 import { flattenObject } from './general';
 
-export const socket = io('http://localhost:1511');
+const baseURl = window.location.href
+
+export const socket = io(isElectronEnabled?'http://localhost:1511':baseURl);
 
 export const emitSocketEvent = (
   event: EVENT_KEYS,
@@ -11,7 +14,7 @@ export const emitSocketEvent = (
 ) => {
   // eslint-disable-next-line no-console
   console.log(
-    'emitSocketEvent',
+    'emitSocketEvent: ',
     event,
     args,
     flattenObject(args?.withAnalyticsParams ? args : {}),

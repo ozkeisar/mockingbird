@@ -1,6 +1,6 @@
 import os from 'os';
 import jwt from 'jsonwebtoken';
-import { SECRET_KEY, DEFAULT_SERVER_SETTINGS } from '../../consts';
+import { DEFAULT_SERVER_SETTINGS } from '../../consts';
 import {
   getProjectPath,
   getProjectServersNameList,
@@ -144,24 +144,6 @@ const verifyJWT = (jwtToken: string, username: string, secretKey: string) => {
     console.log('verifyJWT decoded error', error);
     return false;
   }
-};
-
-export const activateProgram = async (key: string) => {
-  const { username } = os.userInfo();
-
-  const isValid = verifyJWT(key, username, SECRET_KEY);
-
-  if (isValid) {
-    const appSettings = await readAppSettings();
-
-    await updateAppSettings({
-      ...appSettings,
-      activationKey: key,
-    });
-
-    return true;
-  }
-  return false;
 };
 
 export const getActiveProjectName = async () => {

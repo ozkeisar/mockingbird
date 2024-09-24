@@ -12,6 +12,7 @@ import { CloneDialog } from '../cloneDialog';
 import { EVENT_KEYS } from '../../../../types/events';
 import {
   emitSocketEvent,
+  isElectronEnabled,
   openInNewTab,
   reportButtonClick,
   socket,
@@ -84,7 +85,12 @@ export function SettingsDialog({ open, onClose }: props) {
             <LoadingButton
               endIcon={<OpenInNewIcon />}
               onClick={() => {
-                openInNewTab('localhost:1511/api-docs');
+                if(isElectronEnabled){
+                  openInNewTab('http://localhost:1511/api-docs');
+                }else{
+                  const baseURl = window.location.href
+                  openInNewTab(baseURl+'api-docs');
+                }
               }}
               variant="outlined"
               style={{ marginBottom: '15px' }}

@@ -1,21 +1,47 @@
 import simpleGit, { SimpleGit, SimpleGitOptions } from 'simple-git';
 import { getProjectPath } from './files';
 
-export const isGitInstalled = async () => {
+async function isGitInstalled(): Promise<boolean> {
   try {
-    // Attempt to execute a Git command
-    await simpleGit().listRemote(['--get-url']);
-    // If the command executed successfully, Git is installed
+    // Initialize simple-git with the default options
+    const git: SimpleGit = simpleGit();
+    await git.version(); // This will throw an error if Git is not installed
     return true;
   } catch (error) {
-    // If an error occurs, Git is not installed or not properly configured
+    console.error('Git is not installed:', error);
+    return false;
+  }
+}
+
+export const isGitRepository = async (projectName: string) => {
+  try {
+    if(!await isGitInstalled()){
+      return false
+    }
+    const currentRepoFolderPath = await getProjectPath(projectName);
+
+    // Specify the path to the folder
+    const git = simpleGit(currentRepoFolderPath);
+
+    // Check if the folder is a Git repository
+    const isRepo = await git.checkIsRepo();
+
+    return isRepo;
+  } catch (error) {
+    console.error('isGitRepository error', error);
+
+    // If an error occurs, the folder is not a Git repository or Git is not properly configured
     return false;
   }
 };
 
+
 export async function checkGitConnection(projectName: string) {
   const currentRepoFolderPath = await getProjectPath(projectName);
 
+  if(!await isGitRepository(projectName)){
+    return false
+  }
   const git = simpleGit(currentRepoFolderPath);
 
   try {
@@ -28,24 +54,7 @@ export async function checkGitConnection(projectName: string) {
   }
 }
 
-export const checkIsGitInit = async (projectName: string) => {
-  try {
-    const currentRepoFolderPath = await getProjectPath(projectName);
 
-    // Specify the path to the folder
-    const git = simpleGit(currentRepoFolderPath);
-
-    // Check if the folder is a Git repository
-    const isRepo = await git.checkIsRepo();
-
-    return isRepo;
-  } catch (error) {
-    console.log('======checkIsGitInit error', error);
-
-    // If an error occurs, the folder is not a Git repository or Git is not properly configured
-    return false;
-  }
-};
 
 export const isCurrentBranchWithoutRemote = async (projectName: string) => {
   try {
@@ -69,6 +78,9 @@ export const isCurrentBranchWithoutRemote = async (projectName: string) => {
 
 export const hasUncommittedChanges = async (projectName: string) => {
   try {
+    if(!await isGitRepository(projectName)){
+      return false
+    }
     const currentRepoFolderPath = await getProjectPath(projectName);
 
     // Specify the path to your Git repository
@@ -158,8 +170,12 @@ export const checkoutToBranch = async (
     throw error;
   }
 };
+
 export const getCurrentBranch = async (projectName: string) => {
   try {
+    if(!await isGitRepository(projectName)){
+      return null
+    }
     const currentRepoFolderPath = await getProjectPath(projectName);
 
     const options: Partial<SimpleGitOptions> = {
@@ -235,21 +251,6 @@ export const commitAndPushChanges = async (
 
   // Push changes to the current branch
   await git.push(['--force']);
-};
-
-export const getRemoteRepositoryUrl = async (projectName: string) => {
-  try {
-    const currentRepoFolderPath = await getProjectPath(projectName);
-    const git = simpleGit(currentRepoFolderPath);
-
-    // Get the URL of the remote repository named 'origin'
-    const remoteUrl = await git.remote(['get-url', 'origin']);
-
-    return remoteUrl?.trim();
-  } catch (error) {
-    console.error('Error getting remote repository URL:', error);
-    throw error;
-  }
 };
 
 export const pushChanges = async (projectName: string) => {

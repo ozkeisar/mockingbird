@@ -7,6 +7,7 @@ import { useProjectStore } from '../../../state/project';
 import {
   ElectronEvents,
   emitSocketEvent,
+  isElectronEnabled,
   openInNewTab,
   reportCommandExecuted,
   socket,
@@ -127,7 +128,13 @@ export function CommandsTerminal() {
     // },
     swagger: () => {
       reportCommandExecuted(COMMANDS.SWAGGER);
-      openInNewTab('localhost:1511/api-docs');
+      if(isElectronEnabled){
+        openInNewTab('http://localhost:1511/api-docs');
+      }else{
+        const baseURl = window.location.href
+        openInNewTab(baseURl+'api-docs');
+      }
+      
     },
     git: (args, print) => {
       reportCommandExecuted(COMMANDS.GIT, {

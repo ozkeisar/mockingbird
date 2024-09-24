@@ -9,6 +9,11 @@ import swaggerOutput from './swagger_output.json';
 import { initSocketIO } from './socket';
 import { socketController } from './controllers/socketController';
 
+const path = require('path');
+
+const CSS_URL =
+  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui.min.css';
+
 const app = express();
 const server = http.createServer(app);
 
@@ -22,8 +27,11 @@ app.use(logger('[:date[clf]] :method :url :status - :response-time ms'));
 // Routes
 app.use('/', routes);
 
-const CSS_URL =
-  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui.min.css';
+app.use('/', express.static(`${__dirname}/web`));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'web', 'index.html'));
+});
 
 app.use(
   '/api-docs',
@@ -31,7 +39,7 @@ app.use(
   swaggerUi.setup(swaggerOutput, { customCssUrl: CSS_URL }),
 );
 // Serve static files
-app.use(express.static('public'));
+// app.use(express.static('public'));
 
 // Initialize Socket.IO
 const socketIO = initSocketIO(server);

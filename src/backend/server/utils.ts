@@ -12,6 +12,8 @@ import {
 import { getGraphqlSchemaFromJsonSchema } from '../../utils/jsonToSchema';
 import { updateLog } from './logger';
 import { mergeObjects } from '../../utils/utils';
+import { emitGlobalSocketMessage } from '../socket';
+import { EVENT_KEYS } from '../../types/events';
 
 const expressPlayground =
   require('graphql-playground-middleware-express').default;
@@ -163,13 +165,78 @@ export const getSelectedRoute = (
   return selectedRoute || null;
 };
 
-export const reviveFunctions = (value: any) => {
+
+const customConsole = {
+  log: (serverName: string) => (...args: any) => {
+    emitGlobalSocketMessage(EVENT_KEYS.SERVERS_CONSOLE, {method: 'log', data:[`${serverName}:`, ...args]})
+  },
+  error: (serverName: string) => (...args: any) => {
+    emitGlobalSocketMessage(EVENT_KEYS.SERVERS_CONSOLE, {method: 'error', data:[`${serverName}:`, ...args]})
+  },
+  warn: (serverName: string) => (...args: any) => {
+    emitGlobalSocketMessage(EVENT_KEYS.SERVERS_CONSOLE, {method: 'warn', data:[`${serverName}:`, ...args]})
+  },
+  info: (serverName: string) => (...args: any) => {
+    emitGlobalSocketMessage(EVENT_KEYS.SERVERS_CONSOLE, {method: 'info', data:[`${serverName}:`, ...args]})
+  },
+  debug: (serverName: string) => (...args: any) => {
+    emitGlobalSocketMessage(EVENT_KEYS.SERVERS_CONSOLE, {method: 'debug', data:[`${serverName}:`, ...args]})
+  },
+  // Add other methods as needed
+};
+
+export const reviveFunctionRest = (serverName: string, fnString: string) => {
   try {
+    const script = `
+
+      (req, res) => {
+        const console = {
+          log: customConsole.log(serverName),
+          error: customConsole.error(serverName),
+          warn: customConsole.warn(serverName),
+          info: customConsole.info(serverName),
+          debug: customConsole.debug(serverName),
+        };
+
+        const func = (${fnString.trim()})
+        func(req, res)
+
+      }
+    `;
+
     // eslint-disable-next-line no-eval
-    const func = eval(`(${value.trim()})`);
-    return func;
+    const func = eval(`(${script.trim()})`);
+
+    return func
   } catch (error) {
-    throw new Error('fail to revive function');
+    throw new Error('fail to revive function rest');
+  }
+};
+
+export const reviveFunctionGraphql = (serverName: string, fnString: string) => {
+  try {
+    const script = `
+      (args, context, info) => {
+        const console = {
+          log: customConsole.log(serverName),
+          error: customConsole.error(serverName),
+          warn: customConsole.warn(serverName),
+          info: customConsole.info(serverName),
+          debug: customConsole.debug(serverName),
+        };
+
+        const func = (${fnString.trim()})
+        return func(args, context, info)
+
+      }
+    `;
+
+    // eslint-disable-next-line no-eval
+    const func = eval(`(${script.trim()})`);
+
+    return func
+  } catch (error) {
+    throw new Error('fail to revive function graphql');
   }
 };
 
@@ -247,7 +314,7 @@ export const handleResponse = async ({
       return;
     }
     if (response.type === 'func' && !!response.exec) {
-      const func = reviveFunctions(response.exec);
+      const func = reviveFunctionRest(serverName, response.exec);
       updateLog((req as any).id, { logType: 'local', serverName });
 
       func(req, res);
@@ -337,7 +404,7 @@ export const handleGraphqlResponse = (
       try {
         const response = route.responsesHash?.[route.activeResponseId];
         if (response?.type === 'func') {
-          const func = reviveFunctions(response?.exec);
+          const func = reviveFunctionGraphql(serverName, response?.exec || '');
           updateLog(req.id, { logType: 'local', serverName });
 
           return func(args, context, info);

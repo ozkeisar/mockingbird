@@ -9,7 +9,7 @@ const doc = {
   },
   servers: [
     {
-      url: 'http://localhost:1512',
+      url: 'http://localhost:1511',
       description: '',
     },
   ],

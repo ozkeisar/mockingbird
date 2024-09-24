@@ -13,7 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import styles from './cloneProject.module.css';
 import { emitSocketEvent, reportButtonClick, socket } from '../../utils';
 import { useGeneralStore } from '../../state';
-import { ElectronEvents } from '../../utils/electron';
+import { ElectronEvents, isElectronEnabled } from '../../utils/electron';
 import { EVENT_KEYS } from '../../../types/events';
 import { BUTTONS } from '../../../consts/analytics';
 
@@ -158,9 +158,9 @@ export function CloneProject({
           <ToggleButton value="LOCAL" aria-label="centered">
             LOCAL
           </ToggleButton>
-          <ToggleButton value="OPEN" aria-label="centered">
+          {isElectronEnabled && <ToggleButton value="OPEN" aria-label="centered">
             OPEN
-          </ToggleButton>
+          </ToggleButton>}
         </ToggleButtonGroup>
 
         {cloneType === 'HTTPS' && (

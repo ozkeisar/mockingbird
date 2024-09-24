@@ -1,7 +1,7 @@
 import { Socket, Server as SocketIOServer } from 'socket.io';
 import { SUPPORTED_PROJECT_DATA_VERSION } from '../../consts';
 import {
-  checkIsGitInit,
+  isGitRepository,
   getBranches,
   getCurrentBranch,
   hasUncommittedChanges,
@@ -20,7 +20,7 @@ export const updateClientProjectData = async (
 ) => {
   emitSocketMessage(socket, EVENT_KEYS.IS_LOADING_DATA, {});
   try {
-    const isGitInit = await checkIsGitInit(projectName);
+    const isGitInit = await isGitRepository(projectName);
     const currentBranch = await getCurrentBranch(projectName);
     const branches = (await getBranches(projectName)) as string[];
     const hasDiffs = await hasUncommittedChanges(projectName);
