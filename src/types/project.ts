@@ -48,7 +48,7 @@ export interface ProjectData {
 }
 
 export interface ProjectDataNew {
-  serversHash: ServersHash | null;
+  serversHash: ServersHash;
   settings: ProjectSettings | null;
   presetFoldersHash: PresetsFolderHash | null;
   name: string;

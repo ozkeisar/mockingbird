@@ -4,7 +4,8 @@ import {
   ProjectServer,
   RouteParent,
 } from '../../types';
-import { mergeObjects, removeParameters } from '../../utils/utils';
+import { findMatchedGraphqlParent } from '../../utils/parent';
+import { mergeObjects } from '../../utils/utils';
 import {
   isSomeChildrenLeafs,
   ParsedQuery,
@@ -31,54 +32,7 @@ export function determineQueryType(query: string): GraphQlRouteType {
   return 'Query';
 }
 
-export const findMatchedGraphqlParent = (
-  schemaPath: string,
-  path: string,
-  type: GraphQlRouteType | null,
-  server: ProjectServer,
-) => {
-  return Object.values(server.parentRoutesHash).find((parent) => {
-    return (
-      parent.type === 'GraphQl' &&
-      parent.path === path &&
-      parent.graphqlQueriesType === type &&
-      removeParameters(parent.schemaPath) === removeParameters(schemaPath)
-    );
-  });
-};
 
-export const findMatchedGraphqlRoute = (
-  schemaPath: string,
-  path: string,
-  type: GraphQlRouteType,
-  server: ProjectServer,
-) => {
-  const route = Object.values(server.parentRoutesHash).reduce(
-    (acc, parent) => {
-      const queries = Object.values(parent.graphQlRouteHash || {});
-      if (
-        parent.type === 'GraphQl' &&
-        parent.path === path &&
-        parent.graphqlQueriesType === type &&
-        schemaPath?.startsWith(parent.schemaPath || '') &&
-        queries.length > 0
-      ) {
-        const _route = queries.find((query) => {
-          return (
-            removeParameters(`${parent.schemaPath}.${query.name}`) ===
-            removeParameters(schemaPath)
-          );
-        });
-        return acc || _route || null;
-      }
-
-      return acc;
-    },
-    null as GraphQlRoute | null,
-  );
-
-  return route;
-};
 
 type TreeObject = {
   [key: string]: TreeObject | {};
