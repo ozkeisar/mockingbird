@@ -8,7 +8,6 @@ import { RouteParent } from '../../../types';
 import { useProjectStore } from '../../state/project';
 import { CloneProject } from '../../components/cloneProject';
 import { BottomBar } from '../../components/bottomBar';
-import { MainSideBarTabs } from '../../../types/general';
 import { MainSideBar } from '../../components/mainSideBar';
 import { useResizeElement } from '../../hooks';
 import { WelcomeDialog } from '../../components/dialogs/welcomeDialog';
@@ -16,11 +15,9 @@ import { useGeneralStore } from '../../state';
 import DevTools from '../../components/devTools/devTools';
 
 export function Main() {
-  const { appSettings } = useGeneralStore();
+  const { appSettings, selectedTab, setSelectedTab } = useGeneralStore();
   const { activeProjectName, isLoadingData } = useProjectStore();
-  const [selectedTab, setSelectedTab] = useState<MainSideBarTabs | null>(
-    'routes',
-  );
+ 
   const [isParentDialogOpen, setIsParentDialogOpen] = useState(false);
   const [editParentData, setEditParentData] = useState<RouteParent | null>(
     null,
@@ -70,8 +67,13 @@ export function Main() {
           <div className="body">
             <MainSideBar
               selectedTab={selectedTab}
-              onSelectedTab={(val) =>
-                setSelectedTab((prev) => (prev === val ? null : val))
+              onSelectedTab={(val) =>{
+                if(selectedTab === val){
+                  setSelectedTab(null)
+                }else{
+                  setSelectedTab(val)
+                }
+              }
               }
             />
             <div className="body-content-wrapper">
