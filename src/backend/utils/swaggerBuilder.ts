@@ -219,32 +219,24 @@ export const pareseSwaggerJson = (swaggerData: any)=>{
 }
 
 export const addRoutesFromSwaggerUrl = async(projectName: string, serverName: string, swaggerUrl: string)=>{
-  try {
+  // try {
     const swaggerJson = await fetchSwaggerEndpoints(swaggerUrl);
     const endpoints = pareseSwaggerJson(swaggerJson)
     await buildRoutesFromSwaggerData(projectName, serverName, endpoints)
   
 
-  } catch (error: any) {
-    console.error('Failed to retrieve endpoints:', error.message);
-  }
+  // } catch (error: any) {
+  //   console.error('Failed to retrieve endpoints:', error.message);
+  // }
 }
 
 export const addRoutesFromSwaggerJson = async(projectName: string, serverName: string, swaggerJson: any)=>{
-  try {
+  // try {
     const endpoints = pareseSwaggerJson(swaggerJson)
     await buildRoutesFromSwaggerData(projectName, serverName, endpoints)
   
 
-  } catch (error: any) {
-    console.error('Failed to retrieve endpoints:', error.message);
-  }
+  // } catch (error: any) {
+  //   console.error('Failed to retrieve endpoints:', error.message);
+  // }
 }
-
-
-
-
-
-// const swaggerUrl = 'https://petstore.swagger.io/v2/swagger.json'; // Replace with the actual Swagger URL
-
-// addRoutesFromSwaggerUrl('test','test', swaggerUrl)

@@ -7,6 +7,8 @@ import {
   handleRestartServer,
   handleStartServer,
 } from '../actions';
+import { addRoutesFromSwaggerJson, addRoutesFromSwaggerUrl } from '../utils';
+import { checkIServerUp } from '../server';
 
 const serverRouter = Router();
 
@@ -97,6 +99,48 @@ serverRouter.post('/restart', async (req: Request, res: Response) => {
     logger('Error restart server', error?.message);
 
     res.status(500).send({ success: false, message: 'fail to restart server' });
+  }
+});
+
+
+
+serverRouter.post('/load-swagger', async (req: Request, res: Response) => {
+  try {
+    const { projectName, serverName, type, swaggerUrl, swaggerJson } = req.body as {
+      projectName: string,
+      serverName: string,
+      type: 'json' | 'url',
+      swaggerUrl: string,
+      swaggerJson: any
+    };
+
+    const iServerUp = checkIServerUp()
+    /// check if server is running
+    if(iServerUp){
+      handleCloseServer();
+    }
+
+    logger('start load from swagger', { projectName, serverName });
+
+    if(type === 'url'){
+      await addRoutesFromSwaggerUrl(projectName, serverName, swaggerUrl)
+    } else if(type === 'json'){
+      await addRoutesFromSwaggerJson(projectName, serverName, JSON.parse(swaggerJson))
+    }else {
+      throw new Error("type must be type 'url' | 'json' ");
+    }
+
+    /// check if server was running
+    if(iServerUp){
+      await handleStartServer(projectName);
+    }
+
+    res.status(200).send({ success: true });
+  } catch (error: any) {
+    console.log(error);
+    logger('Error load from swagger', error?.message);
+
+    res.status(500).send({ success: false, message: error?.message || 'fail to load from swagger' });
   }
 });
 

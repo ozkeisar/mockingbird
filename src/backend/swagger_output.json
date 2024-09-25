@@ -202,6 +202,45 @@
         }
       }
     },
+    "/servers/load-swagger": {
+      "post": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "projectName": {
+                    "example": "any"
+                  },
+                  "serverName": {
+                    "example": "any"
+                  },
+                  "type": {
+                    "example": "any"
+                  },
+                  "swaggerUrl": {
+                    "example": "any"
+                  },
+                  "swaggerJson": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/parents/{projectName}/{serverName}/{parentId}": {
       "get": {
         "description": "",
