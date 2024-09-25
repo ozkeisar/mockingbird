@@ -143,7 +143,9 @@ export function CommandsTerminal() {
       handleCommands(args, print);
     },
     open: () => {
-      ElectronEvents.sendMessage(EVENT_KEYS.OPEN_PROJECT_DIRECTORY);
+      ElectronEvents.sendMessage(EVENT_KEYS.OPEN_PROJECT_DIRECTORY, {
+        platform: 'filemanager',
+      });
     },
     code: () => {
       ElectronEvents.sendMessage(EVENT_KEYS.OPEN_PROJECT_DIRECTORY, {
