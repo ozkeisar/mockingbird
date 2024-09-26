@@ -19,7 +19,6 @@ import { EVENT_KEYS } from '../../../../types/events';
 import { useProjectStore } from '../../../state/project';
 import {
   emitSocketEvent,
-  formatFileName,
   isValidFilename,
   reportButtonClick,
 } from '../../../utils';
@@ -30,10 +29,8 @@ import {
   RouteParent,
 } from '../../../../types';
 import styles from './parentDialog.module.css';
-import {
-  findMatchedGraphqlParent,
-  findMatchedGraphqlRoute,
-} from '../../../utils/graphql';
+import { formatFileName } from '../../../../utils/utils';
+import { isParentExist, parentsProperties } from '../../../../utils/parent';
 
 const METHODS: GraphQlRouteType[] = ['Query', 'Mutation'];
 
@@ -65,72 +62,56 @@ export function ParentDialog({
   const isEdit = !!data?.id;
   const isGraphQl = type === 'GraphQl';
 
-  const { filenames, paths, graphQlNames, restPaths, graphQlPaths } =
-    Object.values(selectedServer.parentRoutesHash || {}).reduce(
-      (acc, parent) => {
-        acc.filenames.push(parent.filename.toLowerCase());
-        acc.paths.push(parent.path.toLowerCase());
 
-        if (parent.type === 'GraphQl') {
-          acc.graphQlPaths.push(parent.path.toLowerCase());
-        } else {
-          acc.restPaths.push(parent.path.toLowerCase());
-        }
-        if (parent.name) {
-          acc.graphQlNames.push(parent.name.toLowerCase());
-        }
+  const {  
+    filenames,
+    paths,
+    graphQlNames, 
+    restPaths, 
+    graphQlPaths
+  } = parentsProperties(selectedServer)
 
-        return acc;
-      },
-      {
-        filenames: [],
-        paths: [],
-        graphQlNames: [],
-        restPaths: [],
-        graphQlPaths: [],
-      } as {
-        filenames: string[];
-        paths: string[];
-        restPaths: string[];
-        graphQlPaths: string[];
-        graphQlNames: string[];
-      },
-    );
 
   const [graphqlPath, setGraphqlPath] = useState<string>(
     data?.path || graphQlPaths[0] || '/graphql',
   );
 
+
+  const {matchedQueries, matchedGraphqlParent, ...existingObj} = isParentExist(selectedServer, {  
+    filenames,
+    paths,
+    graphQlNames, 
+    restPaths, 
+    graphQlPaths
+  } , {
+    id: '',
+    filename,
+    name,
+    type,
+    path: isGraphQl? graphqlPath: restPath,
+    routesHash: {}, 
+    graphQlRouteHash: {},
+    graphqlQueriesType, 
+    schemaPath
+  })
+
   const filenameAlreadyExist =
-    filenames?.includes(filename.toLowerCase()) &&
+  existingObj.filenameAlreadyExist &&
     data?.filename?.toLowerCase() !== filename.toLowerCase();
   const nameAlreadyExist =
-    graphQlNames?.includes(name.toLowerCase()) &&
+  existingObj.nameAlreadyExist &&
     data?.name?.toLowerCase() !== name.toLowerCase();
   const pathAlreadyExist =
-    paths?.includes(restPath.toLowerCase()) &&
+  existingObj.pathAlreadyExist &&
     data?.path?.toLowerCase() !== restPath.toLowerCase();
   const restPathAlreadyExist =
-    restPaths?.includes(graphqlPath.toLowerCase()) &&
+  existingObj.restPathAlreadyExist &&
     data?.path?.toLowerCase() !== graphqlPath.toLowerCase();
-
-  const matchedParent = findMatchedGraphqlParent(
-    schemaPath || '',
-    graphqlPath,
-    graphqlQueriesType,
-    selectedServer,
-  );
-  const matchedQueries = findMatchedGraphqlRoute(
-    schemaPath || '',
-    graphqlPath,
-    graphqlQueriesType,
-    selectedServer,
-  );
 
   const schemaAlreadyExistError =
     (!!matchedQueries ||
-      (!!matchedParent &&
-        (!isEdit || (isEdit && data?.id !== matchedParent?.id)))) &&
+      (!!matchedGraphqlParent &&
+        (!isEdit || (isEdit && data?.id !== matchedGraphqlParent?.id)))) &&
     !!schemaPath;
 
   const isSaveBtnDisabled =
@@ -301,9 +282,9 @@ export function ParentDialog({
             This path is taken!
           </Typography>
         )}
-        {!!matchedParent && schemaAlreadyExistError && (
+        {!!matchedGraphqlParent && schemaAlreadyExistError && (
           <Typography variant="subtitle2" gutterBottom style={{ color: 'red' }}>
-            Parent {matchedParent.name} have same Schema path
+            Parent {matchedGraphqlParent.name} have same Schema path
           </Typography>
         )}
         {!!matchedQueries && schemaAlreadyExistError && (

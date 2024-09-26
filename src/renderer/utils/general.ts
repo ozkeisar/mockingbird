@@ -177,20 +177,7 @@ export const checkIsAllRoutesExists = (
   );
 };
 
-export const formatFileName = (input: string): string => {
-  // Remove special characters not allowed in file names
-  // eslint-disable-next-line no-useless-escape
-  const sanitizedFileName = input.replace(/[\/\\?%*:|"<>]/g, '');
 
-  // Replace spaces with underscores
-  const fileNameWithoutSpaces = sanitizedFileName.replace(/\s+/g, '_');
-
-  // Truncate file name if it exceeds the maximum allowed length
-  const maxLength = 255; // Windows limit for file name length
-  const truncatedFileName = fileNameWithoutSpaces.slice(0, maxLength);
-
-  return truncatedFileName;
-};
 
 export function combineNestedObjects(data: any) {
   if (Array.isArray(data) && data.length > 0) {

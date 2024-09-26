@@ -1,12 +1,11 @@
 import { io } from 'socket.io-client';
 import { EVENT_KEYS } from '../../types/events';
+import { BASE_URL } from '../const/general';
 import { reportSendEvent } from './analytics';
-import { isElectronEnabled } from './electron';
 import { flattenObject } from './general';
 
-const baseURl = window.location.href
 
-export const socket = io(isElectronEnabled?'http://localhost:1511':baseURl);
+export const socket = io(BASE_URL);
 
 export const emitSocketEvent = (
   event: EVENT_KEYS,

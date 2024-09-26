@@ -16,6 +16,7 @@ import {
 import { useProjectStore } from '../../../state/project';
 import { EVENT_KEYS } from '../../../../types/events';
 import { BUTTONS } from '../../../../consts/analytics';
+import { useGeneralStore } from '../../../state';
 
 type Props = {
   onClose: Function;
@@ -40,6 +41,7 @@ function findFreePort(existingPorts: number[]): number {
 export function ServerDialog({ onClose, open }: Props) {
   const { serversHash, activeProjectName, addServer, setHasDiffs } =
     useProjectStore();
+    const {setSelectedRoute} = useGeneralStore()
 
   const serversPorts = Object.values(serversHash || {}).reduce((acc, item) => {
     acc.push(item.settings.port);
@@ -62,6 +64,7 @@ export function ServerDialog({ onClose, open }: Props) {
       setHasDiffs(hasDiffs);
       if (success && projectName === activeProjectName) {
         addServer(server);
+        setSelectedRoute({serverName: server.name, parentId: null, routeId:null})
         onClose();
       }
     };

@@ -23,9 +23,9 @@ import {
   RouteParent,
 } from '../../../../types';
 import {
-  findMatchedGraphqlParent,
   getNonNativeTypesFromSignature,
 } from '../../../utils/graphql';
+import { findMatchedGraphqlParent } from '../../../../utils/parent';
 
 type Props = {
   onClose: Function;

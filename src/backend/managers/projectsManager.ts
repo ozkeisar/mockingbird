@@ -1,4 +1,3 @@
-// import chokidar from 'chokidar';
 import path from 'path';
 import { SUPPORTED_PROJECT_DATA_VERSION } from '../../consts';
 import {
@@ -8,7 +7,7 @@ import {
 } from '../utils/files';
 import { migrateProjectData } from '../utils/migrations';
 import { listToHashmap } from '../utils/utils';
-import { ProjectDataNew } from '../../types';
+import { ProjectDataNew, ServersHash } from '../../types';
 import {
   isGitRepository,
   getBranches,
@@ -19,14 +18,19 @@ import { getProjectServers, isFirstVersionGreater } from '../utils/general';
 // import { socketIo } from "../app";
 
 class ProjectsManager {
+  private projectChange: {
+    [key: string]: boolean
+  } = {};
+
   private projects: {
     [key: string]: ProjectDataNew;
   } = {};
 
   // constructor() {}
 
-  public async getProjectServersHash(projectName: string) {
+  public async getProjectServersHash(projectName: string): Promise<ServersHash> {
     await this.loadProject(projectName);
+
     return this.projects[projectName].serversHash;
   }
 
@@ -45,57 +49,17 @@ class ProjectsManager {
     return this.projects[projectName];
   }
 
-  private handleProjectDataChanged(
-    projectName: string,
-    changeType: string,
-    itemPath: string,
-  ): void {
-    const relativePath = path.relative(process.cwd(), itemPath);
-    console.log(`changes in: ${projectName} :${changeType}: ${relativePath}`);
-    this.readProjectData(projectName);
-    // socketIo.emit('reload', {projectName});
+  public setProjectChanged(projectName: string){
+    this.projectChange[projectName] = true;
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  private async watchProjectFolder(projectName: string) {
-    const projectPath = await getProjectPath(projectName);
-
-    // const watcher = chokidar.watch(projectPath, {
-    // eslint-disable-next-line no-useless-escape
-    //     ignored: /(^|[\/\\])\.git/,
-    //     persistent: true,
-    //     ignoreInitial: true,
-    //     depth: 99, // Adjust depth as needed
-    // });
-
-    // watcher
-    //     .on('add', (filePath) =>
-    //    this.handleProjectDataChanged(projectName, 'File added', filePath),
-    //     .on('change', (filePath) =>
-    //    this.handleProjectDataChanged(projectName, 'File changed', filePath),
-    //     .on('unlink', (filePath) =>
-    //    this.handleProjectDataChanged(projectName, 'File removed', filePath),
-    //     .on('addDir', (dirPath) =>
-    //    this.handleProjectDataChanged(projectName, 'Directory added', dirPath),
-    //     .on('unlinkDir', (dirPath) =>
-    //    this.handleProjectDataChanged(
-    //      projectName,
-    //      'Directory removed',
-    //      dirPath,
-    //    ),
-    //  )
-    //     .on('error', (error) => console.error('Error watching files:', error));
-
-    console.log(`---Watching changes for ${projectName} in: ${projectPath}`);
-  }
-
+ 
   private async loadProject(projectName: string) {
-    if (this.projects[projectName]) {
+    if (this.projects[projectName] && !this.projectChange[projectName]) {
       console.log('project already loaded');
     } else {
       await this.readProjectData(projectName);
-      await this.watchProjectFolder(projectName);
-    }
+    } 
   }
 
   private async readProjectData(projectName: string): Promise<void> {
@@ -141,7 +105,7 @@ class ProjectsManager {
     } catch (error) {
       this.projects[projectName] = {
         presetFoldersHash: null,
-        serversHash: null,
+        serversHash: {},
         settings: null,
         name: projectName,
         isDataUnsupported: false,

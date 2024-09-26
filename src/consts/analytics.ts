@@ -97,6 +97,9 @@ export enum BUTTONS {
   PULL_DIALOG_CLOSE = 'pull dialog close',
   PULL_DIALOG_CONFIRM = 'pull dialog confirm',
   START_MOCKING = 'welcome dialog start mocking',
+  IMPORT_SWAGGER_DIALOG_IMPORT = 'import swagger dialog import',
+  IMPORT_SWAGGER_DIALOG_CLOSE = 'import swagger dialog close',
+  SERVER_DETAILS_IMPORT = 'server details import'
 }
 
 export enum ELEMENTS {

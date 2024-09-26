@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { produce } from 'immer';
 import { AppSettings } from '../../../types';
 import {
+  MainSideBarTabs,
   SelectedType,
   setSelectedPreset,
   setSelectedRouteType,
@@ -14,6 +15,7 @@ export type StateFuncs = {
     parentId,
     routeId,
   }: setSelectedRouteType) => void;
+  setSelectedTab: (tab: MainSideBarTabs | null)=> void;
   clearSelectedRoute: () => void;
   setSelectedPreset: ({ folderId, presetId }: setSelectedPreset) => void;
   setServerHost: (serverHost: string) => void;
@@ -31,6 +33,7 @@ export type StateProps = {
   selectedRouteId: string | null;
   selectedParentId: string | null;
   selectedServerName: string | null;
+  selectedTab: MainSideBarTabs | null;
   isServerUp: boolean;
   isServerLoading: boolean;
   host: string | null;
@@ -48,6 +51,7 @@ const INIT_STATE: StateProps = {
   selectedRouteId: null,
   selectedParentId: null,
   selectedServerName: null,
+  selectedTab: 'routes',
   isServerUp: false,
   host: null,
   isServerLoading: false,
@@ -64,6 +68,14 @@ export const useGeneralStore = create<State>((set) => ({
         state.selectedFolderId = folderId;
         state.selectedPresetId = presetId;
         state.selectedType = 'preset';
+        state.selectedTab = state.selectedTab === 'routes' ? 'presets' : state.selectedTab
+      }),
+    );
+  },
+  setSelectedTab: (tab: MainSideBarTabs | null) => {
+    set(
+      produce<State>((state: State) => {
+        state.selectedTab = tab;
       }),
     );
   },
@@ -89,6 +101,8 @@ export const useGeneralStore = create<State>((set) => ({
         state.selectedParentId = parentId;
         state.selectedServerName = serverName;
         state.selectedType = 'route';
+        state.selectedTab = state.selectedTab === 'presets' ? 'routes' : state.selectedTab
+
       }),
     );
   },

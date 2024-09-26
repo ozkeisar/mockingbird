@@ -33,7 +33,7 @@
 }
 
 .route-method {
-    width: 80px;
+    min-width: 80px;
     height: 32px;
     color: white;
     border-radius: 5px;
@@ -53,7 +53,7 @@
     word-break: break-word;
     letter-spacing: -0.1ch;
     margin-right: 10px;
-
+    flex-shrink: 0;
 }
 
 .route-header {
