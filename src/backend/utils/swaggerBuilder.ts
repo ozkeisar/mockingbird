@@ -219,24 +219,13 @@ export const pareseSwaggerJson = (swaggerData: any)=>{
 }
 
 export const addRoutesFromSwaggerUrl = async(projectName: string, serverName: string, swaggerUrl: string)=>{
-  // try {
-    const swaggerJson = await fetchSwaggerEndpoints(swaggerUrl);
-    const endpoints = pareseSwaggerJson(swaggerJson)
-    await buildRoutesFromSwaggerData(projectName, serverName, endpoints)
-  
-
-  // } catch (error: any) {
-  //   console.error('Failed to retrieve endpoints:', error.message);
-  // }
+  const swaggerJson = await fetchSwaggerEndpoints(swaggerUrl);
+  const endpoints = pareseSwaggerJson(swaggerJson)
+  await buildRoutesFromSwaggerData(projectName, serverName, endpoints)
 }
 
 export const addRoutesFromSwaggerJson = async(projectName: string, serverName: string, swaggerJson: any)=>{
-  // try {
-    const endpoints = pareseSwaggerJson(swaggerJson)
-    await buildRoutesFromSwaggerData(projectName, serverName, endpoints)
+  const endpoints = pareseSwaggerJson(swaggerJson)
+  await buildRoutesFromSwaggerData(projectName, serverName, endpoints)
   
-
-  // } catch (error: any) {
-  //   console.error('Failed to retrieve endpoints:', error.message);
-  // }
 }
