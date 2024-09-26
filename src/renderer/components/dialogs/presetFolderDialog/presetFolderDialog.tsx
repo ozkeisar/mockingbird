@@ -12,13 +12,13 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { PresetsFolder } from '../../../../types';
 import {
   emitSocketEvent,
-  isValidFilename,
   reportButtonClick,
   socket,
 } from '../../../utils';
 import { useProjectStore } from '../../../state/project';
 import { EVENT_KEYS } from '../../../../types/events';
 import { BUTTONS } from '../../../../consts/analytics';
+import { formatToValidFilename } from '../../../../utils/utils';
 
 type Props = {
   onClose: Function;
@@ -48,6 +48,12 @@ export function PresetFolderDialog({ onClose, open, data }: Props) {
     presetsFilenames?.includes(name) && data?.name !== name;
   const filenameAlreadyExist =
     existingFilenames?.includes(filename) && data?.filename !== filename;
+
+  useEffect(()=>{
+    if(!isEdit){
+      setFilename(formatToValidFilename(name))
+    }
+  }, [isEdit, name])
 
   useEffect(() => {
     const onEvent = (arg: any) => {
@@ -116,8 +122,8 @@ export function PresetFolderDialog({ onClose, open, data }: Props) {
         )}
 
         <TextField
-          disabled={isEdit}
-          value={filename}
+          disabled
+          value={filename + '.json'}
           required
           margin="dense"
           id="filename"
@@ -126,11 +132,6 @@ export function PresetFolderDialog({ onClose, open, data }: Props) {
           type="text"
           fullWidth
           variant="outlined"
-          onChange={(e) => {
-            if (isValidFilename(e.target.value) || !e.target.value.length) {
-              setFilename(e.target.value);
-            }
-          }}
           error={!!filenameAlreadyExist}
         />
         {!!filenameAlreadyExist && (

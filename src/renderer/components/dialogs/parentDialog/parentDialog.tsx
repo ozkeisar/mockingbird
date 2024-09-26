@@ -4,7 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Typography from '@mui/material/Typography';
 import { v4 as uuid } from 'uuid';
@@ -29,10 +29,11 @@ import {
   RouteParent,
 } from '../../../../types';
 import styles from './parentDialog.module.css';
-import { formatFileName } from '../../../../utils/utils';
+import { formatToValidFilename } from '../../../../utils/utils';
 import { isParentExist, parentsProperties } from '../../../../utils/parent';
 
 const METHODS: GraphQlRouteType[] = ['Query', 'Mutation'];
+
 
 type Props = {
   onClose: Function;
@@ -61,6 +62,12 @@ export function ParentDialog({
   );
   const isEdit = !!data?.id;
   const isGraphQl = type === 'GraphQl';
+
+  useEffect(()=>{
+    if(!isEdit){
+      setFilename(formatToValidFilename(isGraphQl ? name :restPath))
+    }
+  }, [isEdit, restPath, name, isGraphQl])
 
 
   const {  
@@ -162,13 +169,6 @@ export function ParentDialog({
 
   const handleNameChanged = (e: any) => {
     setName(e.target.value);
-
-    if (
-      (filename.length === 0 || e.target.value.includes(filename)) &&
-      !isEdit
-    ) {
-      setFilename(formatFileName(e.target.value));
-    }
   };
 
   const handleSchemaPathChanged = (e: any) => {
@@ -177,13 +177,6 @@ export function ParentDialog({
 
   const handleRestPathChanged = (e: any) => {
     setRestPath(e.target.value);
-
-    if (
-      (!isEdit && filename.length === 0) ||
-      e.target.value.includes(filename)
-    ) {
-      setFilename(formatFileName(e.target.value));
-    }
   };
 
   const handleServerChange = (event: SelectChangeEvent) => {
@@ -359,8 +352,8 @@ export function ParentDialog({
         </div>
         {type === 'Rest' ? renderRestType() : renderGraphQlType()}
         <TextField
-          disabled={isEdit}
-          value={filename}
+          disabled
+          value={filename + '.json'}
           required
           margin="dense"
           id="filename"
@@ -369,14 +362,6 @@ export function ParentDialog({
           type="text"
           fullWidth
           variant="outlined"
-          onChange={(e) => {
-            if (
-              isValidFilename(e.target.value) ||
-              e.target.value.length === 0
-            ) {
-              setFilename(e.target.value);
-            }
-          }}
           error={!!filenameAlreadyExist}
         />
         {!!filenameAlreadyExist && (
