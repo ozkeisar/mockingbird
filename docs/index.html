@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mockingbird - Mock API Testing Tool</title>
+    <style>
+        :root {
+            --primary-color: #805231;
+            --secondary-color: #000000;
+            --accent-color: #D4AF37;
+            --background-color: #f5f5f5;
+            --text-color: #333;
+            --light-text: #ffffff;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--secondary-color);
+            color: var(--light-text);
+            padding: 1rem 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            max-width: 150px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style-type: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        main {
+            /* padding: 2rem 0; */
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+            background-color: var(--primary-color);
+            color: var(--light-text);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--light-text);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .cta {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--secondary-color);
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: var(--secondary-color);
+            color: var(--accent-color);
+        }
+
+        footer {
+            background-color: var(--secondary-color);
+            color: var(--light-text);
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 3rem;
+        }
+
+        .articles {
+            margin-top: 3rem;
+        }
+
+        .article-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .article-list li {
+            margin-bottom: 1rem;
+        }
+
+        .article-list a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .article-list a:hover {
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+            }
+
+            nav ul li {
+                margin: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <img src="https://github.com/ozkeisar/mockingbird/assets/34401842/51320104-1f8d-4734-b964-661a8882c27e" alt="Mockingbird Logo" class="logo">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#articles">Articles</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <h1>Mockingbird</h1>
+                <p>Empower your development with seamless API mocking</p>
+                <a href="#getting-started" class="button">Get Started</a>
+            </div>
+        </section>
+
+        <section id="about" class="container">
+            <h2>About Mockingbird</h2>
+            <p>Mockingbird is a powerful tool designed to help software developers test their apps without needing the real server or backend ready. It allows you to create a mock version of your API, enabling continuous development and testing even when the backend isn't complete.</p>
+        </section>
+
+        <section id="features" class="container">
+            <h2>Key Features</h2>
+            <div class="features">
+                <div class="feature">
+                    <h3>Multiple Responses</h3>
+                    <p>Create different responses for the same API route to simulate various scenarios.</p>
+                </div>
+                <div class="feature">
+                    <h3>Presets</h3>
+                    <p>Easily switch between different sets of responses with just one click.</p>
+                </div>
+                <div class="feature">
+                    <h3>Git Integration</h3>
+                    <p>All mock data is stored in a Git repository, providing version control and security.</p>
+                </div>
+                <div class="feature">
+                    <h3>Proxy Functionality</h3>
+                    <p>Listen to actual API requests and responses to quickly create mocks based on real API calls.</p>
+                </div>
+                <div class="feature">
+                    <h3>GraphQL Support</h3>
+                    <p>Full support for creating and managing GraphQL mocks.</p>
+                </div>
+                <div class="feature">
+                    <h3>Docker Image</h3>
+                    <p>Set up Mockingbird as part of your CI/CD pipeline for seamless integration.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="articles" class="container articles">
+            <h2>Mockingbird Guides</h2>
+            <ul class="article-list">
+                <li><a href="https://dev.to/ozkeisar/mockingbird-new-tool-for-your-mock-environments-49j">Mockingbird: New Tool for Your Mock Environments</a></li>
+                <li><a href="https://dev.to/ozkeisar/setting-up-your-mock-server-with-mockingbird-1b72">Setting Up Your Mock Server with Mockingbird</a></li>
+                <li><a href="https://dev.to/ozkeisar/optimizing-api-development-workflows-with-mockingbird-presets-17hc">Mockingbird Presets: Optimizing API Development Workflows</a></li>
+                <li><a href="https://dev.to/ozkeisar/creating-and-managing-multiple-projects-and-servers-with-mockingbird-a7b">Creating and Managing Multiple Projects and Servers with Mockingbird</a></li>
+                <li><a href="https://dev.to/ozkeisar/i-built-a-new-way-of-mocking-graphql-server-i94">I built a new way of mocking GraphQL server</a></li>
+                <li><a href="https://dev.to/ozkeisar/how-to-use-the-mockingbird-docker-image-29mf">Dockerize Your Mockingbird Setup: A Quickstart Guide</a></li>
+            </ul>
+        </section>
+
+        <section id="getting-started" class="container">
+            <h2>Getting Started</h2>
+            <p>Follow these steps to start using Mockingbird:</p>
+            <ol>
+                <li>Install Mockingbird or pull & run the Docker image</li>
+                <li>Set up your project and define your API routes</li>
+                <li>Create mock responses for your routes</li>
+                <li>Press 'start server' and start testing your application</li>
+            </ol>
+            <p>For detailed instructions, check out our <a href="https://dev.to/ozkeisar/setting-up-your-mock-server-with-mockingbird-1b72">Getting Started Guide</a>.</p>
+        </section>
+
+        <section id="faq" class="container">
+            <h2>Frequently Asked Questions</h2>
+            <h3>What is Mockingbird?</h3>
+            <p>Mockingbird is a tool that helps developers create and manage mock APIs for testing and development purposes.</p>
+            
+            <h3>How does Mockingbird differ from other mocking tools?</h3>
+            <p>Mockingbird offers unique features like Scenario switching, Git integration, presets, GraphQL support, and smooth UI making it a versatile choice for modern development workflows.</p>
+            
+            <h3>Can I use Mockingbird in my CI/CD pipeline?</h3>
+            <p>Yes, Mockingbird provides a Docker image that can be easily integrated into your CI/CD pipeline for automated testing.</p>
+        </section>
+
+        <section class="cta container">
+            <h2>Ready to get started?</h2>
+            <a href="https://github.com/ozkeisar/mockingbird/releases" class="button">Download Mockingbird</a>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>For support or inquiries, contact us at ozkeisar@gmail.com</p>
+            <p>Spread your wings with Mockingbird! 🚀</p>
+        </div>
+    </footer>
+</body>
+</html>
