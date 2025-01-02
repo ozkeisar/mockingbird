@@ -11,28 +11,28 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
+import axios from 'axios';
 import { BUTTONS } from '../../../../consts/analytics';
 import { useProjectStore } from '../../../state/project';
 import { reportButtonClick } from '../../../utils';
-import axios from 'axios'
 import { BASE_URL } from '../../../const/general';
 
 export function ImportSwaggerDialog({
   open,
   onClose,
-  serverName
+  serverName,
 }: {
   open: boolean;
   onClose: () => void;
-  serverName: string
+  serverName: string;
 }) {
   const { activeProjectName } = useProjectStore();
   const [swaggerUrl, setSwaggerUrl] = useState('');
   const [swaggerJson, setSwaggerJson] = useState('');
-  const [type, setType] = useState<'url' | 'json'>('url')
+  const [type, setType] = useState<'url' | 'json'>('url');
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false)
-  const isJson = type === 'json'
+  const [error, setError] = useState(false);
+  const isJson = type === 'json';
 
   const handleImport = async () => {
     reportButtonClick(BUTTONS.IMPORT_SWAGGER_DIALOG_IMPORT);
@@ -40,25 +40,23 @@ export function ImportSwaggerDialog({
     setIsLoading(true);
 
     try {
-      const res = await axios.post(BASE_URL+'/servers/load-swagger', {
-        "projectName": activeProjectName,
-        "serverName": serverName,
-        "type": type,
-        "swaggerUrl": isJson ? '' : swaggerUrl,
-        "swaggerJson": isJson ? swaggerJson: ''
-      })
+      const res = await axios.post(`${BASE_URL}/servers/load-swagger`, {
+        projectName: activeProjectName,
+        serverName,
+        type,
+        swaggerUrl: isJson ? '' : swaggerUrl,
+        swaggerJson: isJson ? swaggerJson : '',
+      });
       setIsLoading(false);
-      if(res.status === 200){
+      if (res.status === 200) {
         onClose();
-      }else{
-        setError(true)
+      } else {
+        setError(true);
       }
-
-    } catch (error) {
+    } catch (_) {
       setIsLoading(false);
-      setError(true)
+      setError(true);
     }
-
   };
 
   const handleClose = () => {
@@ -75,31 +73,29 @@ export function ImportSwaggerDialog({
     >
       <DialogTitle id="alert-dialog-title">import swagger</DialogTitle>
       <DialogContent style={{ minWidth: '450px' }}>
-     
-
-      <ToggleButtonGroup
-        color="primary"
-        value={type}
-        exclusive
-        onChange={(_, _type)=>{
-          if(_type){
-           setType(_type)
-          }
-        }}
-        aria-label="Platform"
-      >
-        <ToggleButton value="url">url</ToggleButton>
-        <ToggleButton value="json">json</ToggleButton>
-      </ToggleButtonGroup>
+        <ToggleButtonGroup
+          color="primary"
+          value={type}
+          exclusive
+          onChange={(_, _type) => {
+            if (_type) {
+              setType(_type);
+            }
+          }}
+          aria-label="Platform"
+        >
+          <ToggleButton value="url">url</ToggleButton>
+          <ToggleButton value="json">json</ToggleButton>
+        </ToggleButtonGroup>
 
         <TextField
           style={{ width: '100%', marginTop: '8px' }}
           value={isJson ? swaggerJson : swaggerUrl}
           onChange={(e) => {
-            setError(false)
-            if(isJson){
-              setSwaggerJson(e.target.value)
-            } else{
+            setError(false);
+            if (isJson) {
+              setSwaggerJson(e.target.value);
+            } else {
               setSwaggerUrl(e.target.value);
             }
           }}
@@ -108,13 +104,13 @@ export function ImportSwaggerDialog({
           maxRows={10}
           error={error}
           className="activation key"
-          label={isJson ? "swagger json" :"swagger json url"}
-          placeholder={isJson ? '{...}' : 'https://your.swagger.domain/swagger.json'}
+          label={isJson ? 'swagger json' : 'swagger json url'}
+          placeholder={
+            isJson ? '{...}' : 'https://your.swagger.domain/swagger.json'
+          }
           variant="filled"
         />
-        {error && (
-          <Typography color="error">something went wrong</Typography>
-        )}
+        {error && <Typography color="error">something went wrong</Typography>}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} autoFocus>
@@ -124,7 +120,11 @@ export function ImportSwaggerDialog({
           variant="contained"
           onClick={handleImport}
           loading={isLoading}
-          disabled={isLoading || (!swaggerUrl.length && !isJson) || (isJson && !swaggerJson.length)}
+          disabled={
+            isLoading ||
+            (!swaggerUrl.length && !isJson) ||
+            (isJson && !swaggerJson.length)
+          }
         >
           import
         </LoadingButton>

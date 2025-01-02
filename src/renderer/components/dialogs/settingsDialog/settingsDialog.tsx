@@ -12,12 +12,12 @@ import { CloneDialog } from '../cloneDialog';
 import { EVENT_KEYS } from '../../../../types/events';
 import {
   emitSocketEvent,
-  isElectronEnabled,
   openInNewTab,
   reportButtonClick,
   socket,
 } from '../../../utils';
 import { BUTTONS } from '../../../../consts/analytics';
+import { isElectronEnabled } from '../../../const/general';
 
 type props = {
   open: boolean;
@@ -85,11 +85,11 @@ export function SettingsDialog({ open, onClose }: props) {
             <LoadingButton
               endIcon={<OpenInNewIcon />}
               onClick={() => {
-                if(isElectronEnabled){
+                if (isElectronEnabled) {
                   openInNewTab('http://localhost:1511/api-docs');
-                }else{
-                  const baseURl = window.location.href
-                  openInNewTab(baseURl+'api-docs');
+                } else {
+                  const baseURl = window.location.href;
+                  openInNewTab(`${baseURl}api-docs`);
                 }
               }}
               variant="outlined"

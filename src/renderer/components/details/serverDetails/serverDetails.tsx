@@ -1,6 +1,5 @@
 import Button from '@mui/material/Button';
 import {
-  Avatar,
   Divider,
   FormControlLabel,
   IconButton,
@@ -21,7 +20,7 @@ import { EVENT_KEYS } from '../../../../types/events';
 import { emitSocketEvent, reportButtonClick, socket } from '../../../utils';
 import { BUTTONS } from '../../../../consts/analytics';
 import { ServerSettings } from '../../../../types';
-import { ReactComponent as SwaggerIcon } from './../../../../../assets/svg/Swagger.svg';
+import { ReactComponent as SwaggerIcon } from '../../../../../assets/svg/Swagger.svg';
 import { ImportSwaggerDialog } from '../../dialogs/importSwaggerDialog';
 
 export function ServerDetails() {
@@ -30,7 +29,7 @@ export function ServerDetails() {
   const { isServerUp, host } = useGeneralStore();
   const { updateServerSettings, activeProjectName, setHasDiffs } =
     useProjectStore();
-    const [isImportSwaggerOpen, setIsImportSwaggerOpen] = useState(false)
+  const [isImportSwaggerOpen, setIsImportSwaggerOpen] = useState(false);
   const [_proxyBaseUrl, setProxyBaseUrl] = useState(
     server?.settings.proxyBaseUrl || '',
   );
@@ -150,24 +149,28 @@ export function ServerDetails() {
             <div>
               <Tooltip title="import routes from swagger">
                 <Button
-                variant="contained" 
-                startIcon={<SwaggerIcon style={{
-                  width: "20",
-                }}/>}
-                style={{
-                  backgroundColor:  "rgba(132,234,44,1)",
-                  marginRight: 15,
-                  height: '30px',
-                  padding: '12px 9px 12px 12px',
-                  textTransform: 'lowercase',
-                }}
-                onClick={()=>{
-                  reportButtonClick(BUTTONS.SERVER_DETAILS_IMPORT);
+                  variant="contained"
+                  startIcon={
+                    <SwaggerIcon
+                      style={{
+                        width: '20',
+                      }}
+                    />
+                  }
+                  style={{
+                    backgroundColor: 'rgba(132,234,44,1)',
+                    marginRight: 15,
+                    height: '30px',
+                    padding: '12px 9px 12px 12px',
+                    textTransform: 'lowercase',
+                  }}
+                  onClick={() => {
+                    reportButtonClick(BUTTONS.SERVER_DETAILS_IMPORT);
 
-                  setIsImportSwaggerOpen(true)
-                }}
+                    setIsImportSwaggerOpen(true);
+                  }}
                 >
-                  import swagger
+                  import from swagger
                 </Button>
               </Tooltip>
               <Tooltip title="Delete server">
@@ -296,13 +299,13 @@ export function ServerDetails() {
           onClose={() => setIsDeleteServerDialogOpen(false)}
         />
       )}
-      {
-        isImportSwaggerOpen && <ImportSwaggerDialog
+      {isImportSwaggerOpen && (
+        <ImportSwaggerDialog
           open
           serverName={server?.name || ''}
-          onClose={()=>setIsImportSwaggerOpen(false)} 
+          onClose={() => setIsImportSwaggerOpen(false)}
         />
-      }
+      )}
     </div>
   );
 }

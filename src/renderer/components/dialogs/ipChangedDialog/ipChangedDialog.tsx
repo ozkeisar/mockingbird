@@ -21,7 +21,7 @@ export function IpChangedDialog({
   const { activeProjectName } = useProjectStore();
 
   const handleRestart = () => {
-    reportButtonClick(BUTTONS.DELETE_IP_CHANGED_DIALOG_RESTART);
+    reportButtonClick(BUTTONS.IP_CHANGED_DIALOG_RESTART);
     emitSocketEvent(EVENT_KEYS.RESTART_SERVER, {
       projectName: activeProjectName,
     });
@@ -29,7 +29,7 @@ export function IpChangedDialog({
   };
 
   const handleClose = () => {
-    reportButtonClick(BUTTONS.DELETE_IP_CHANGED_DIALOG_CLOSE);
+    reportButtonClick(BUTTONS.IP_CHANGED_DIALOG_CLOSE);
 
     emitSocketEvent(EVENT_KEYS.CLOSE_SERVER);
 

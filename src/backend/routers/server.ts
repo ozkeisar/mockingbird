@@ -102,36 +102,39 @@ serverRouter.post('/restart', async (req: Request, res: Response) => {
   }
 });
 
-
-
 serverRouter.post('/load-swagger', async (req: Request, res: Response) => {
   try {
-    const { projectName, serverName, type, swaggerUrl, swaggerJson } = req.body as {
-      projectName: string,
-      serverName: string,
-      type: 'json' | 'url',
-      swaggerUrl: string,
-      swaggerJson: any
-    };
+    const { projectName, serverName, type, swaggerUrl, swaggerJson } =
+      req.body as {
+        projectName: string;
+        serverName: string;
+        type: 'json' | 'url';
+        swaggerUrl: string;
+        swaggerJson: any;
+      };
 
-    const iServerUp = checkIServerUp()
+    const iServerUp = checkIServerUp();
     /// check if server is running
-    if(iServerUp){
+    if (iServerUp) {
       handleCloseServer();
     }
 
     logger('start load from swagger', { projectName, serverName });
 
-    if(type === 'url'){
-      await addRoutesFromSwaggerUrl(projectName, serverName, swaggerUrl)
-    } else if(type === 'json'){
-      await addRoutesFromSwaggerJson(projectName, serverName, JSON.parse(swaggerJson))
-    }else {
+    if (type === 'url') {
+      await addRoutesFromSwaggerUrl(projectName, serverName, swaggerUrl);
+    } else if (type === 'json') {
+      await addRoutesFromSwaggerJson(
+        projectName,
+        serverName,
+        JSON.parse(swaggerJson),
+      );
+    } else {
       throw new Error("type must be type 'url' | 'json' ");
     }
 
     /// check if server was running
-    if(iServerUp){
+    if (iServerUp) {
       await handleStartServer(projectName);
     }
 
@@ -140,7 +143,10 @@ serverRouter.post('/load-swagger', async (req: Request, res: Response) => {
     console.log(error);
     logger('Error load from swagger', error?.message);
 
-    res.status(500).send({ success: false, message: error?.message || 'fail to load from swagger' });
+    res.status(500).send({
+      success: false,
+      message: error?.message || 'fail to load from swagger',
+    });
   }
 });
 

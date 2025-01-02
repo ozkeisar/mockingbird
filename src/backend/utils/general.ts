@@ -1,5 +1,4 @@
 import os from 'os';
-import jwt from 'jsonwebtoken';
 import { DEFAULT_SERVER_SETTINGS } from '../../consts';
 import {
   getProjectPath,
@@ -13,13 +12,11 @@ import {
   readAppSettings,
   readServerData,
   readServerSettings,
-  updateAppSettings,
   updatePresetFile,
   updateRouteParentFile,
   updateServerSettings,
   verifyProjectFoldersExist,
 } from './files';
-import pjson from '../../../package.json';
 import {
   ExampleGraphqlNestedData,
   ExampleGraphqlParent,
@@ -127,23 +124,6 @@ export const isFirstVersionGreater = (version1: string, version2: string) => {
 
   // If both versions are equal, return true
   return true;
-};
-
-const verifyJWT = (jwtToken: string, username: string, secretKey: string) => {
-  try {
-    const decoded = jwt.verify(jwtToken, secretKey) as any;
-
-    if (decoded.untilVersion && decoded.username) {
-      return (
-        decoded.username === username &&
-        isFirstVersionGreater(decoded.untilVersion, pjson.version)
-      );
-    }
-    return false;
-  } catch (error) {
-    console.log('verifyJWT decoded error', error);
-    return false;
-  }
 };
 
 export const getActiveProjectName = async () => {

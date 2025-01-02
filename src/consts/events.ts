@@ -166,4 +166,8 @@ export const EVENTS_SNACKBAR: EventsSnackbarType = {
     success: null,
     fail: 'failed to open project folder',
   },
+  [EVENT_KEYS.SERVERS_CONSOLE]: {
+    success: null,
+    fail: null,
+  },
 };

@@ -17,7 +17,7 @@ import DevTools from '../../components/devTools/devTools';
 export function Main() {
   const { appSettings, selectedTab, setSelectedTab } = useGeneralStore();
   const { activeProjectName, isLoadingData } = useProjectStore();
- 
+
   const [isParentDialogOpen, setIsParentDialogOpen] = useState(false);
   const [editParentData, setEditParentData] = useState<RouteParent | null>(
     null,
@@ -67,14 +67,13 @@ export function Main() {
           <div className="body">
             <MainSideBar
               selectedTab={selectedTab}
-              onSelectedTab={(val) =>{
-                if(selectedTab === val){
-                  setSelectedTab(null)
-                }else{
-                  setSelectedTab(val)
+              onSelectedTab={(val) => {
+                if (selectedTab === val) {
+                  setSelectedTab(null);
+                } else {
+                  setSelectedTab(val);
                 }
-              }
-              }
+              }}
             />
             <div className="body-content-wrapper">
               <div className="body-content">

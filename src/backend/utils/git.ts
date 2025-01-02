@@ -15,8 +15,8 @@ async function isGitInstalled(): Promise<boolean> {
 
 export const isGitRepository = async (projectName: string) => {
   try {
-    if(!await isGitInstalled()){
-      return false
+    if (!(await isGitInstalled())) {
+      return false;
     }
     const currentRepoFolderPath = await getProjectPath(projectName);
 
@@ -35,12 +35,11 @@ export const isGitRepository = async (projectName: string) => {
   }
 };
 
-
 export async function checkGitConnection(projectName: string) {
   const currentRepoFolderPath = await getProjectPath(projectName);
 
-  if(!await isGitRepository(projectName)){
-    return false
+  if (!(await isGitRepository(projectName))) {
+    return false;
   }
   const git = simpleGit(currentRepoFolderPath);
 
@@ -53,8 +52,6 @@ export async function checkGitConnection(projectName: string) {
     return false;
   }
 }
-
-
 
 export const isCurrentBranchWithoutRemote = async (projectName: string) => {
   try {
@@ -78,8 +75,8 @@ export const isCurrentBranchWithoutRemote = async (projectName: string) => {
 
 export const hasUncommittedChanges = async (projectName: string) => {
   try {
-    if(!await isGitRepository(projectName)){
-      return false
+    if (!(await isGitRepository(projectName))) {
+      return false;
     }
     const currentRepoFolderPath = await getProjectPath(projectName);
 
@@ -173,8 +170,8 @@ export const checkoutToBranch = async (
 
 export const getCurrentBranch = async (projectName: string) => {
   try {
-    if(!await isGitRepository(projectName)){
-      return null
+    if (!(await isGitRepository(projectName))) {
+      return null;
     }
     const currentRepoFolderPath = await getProjectPath(projectName);
 
