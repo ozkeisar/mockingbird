@@ -3,7 +3,7 @@ import { loader } from '@monaco-editor/react';
 import * as monaco from 'monaco-editor';
 import * as amplitude from '@amplitude/analytics-browser';
 import App from './App';
-import pj from './../../package.json'
+import pj from '../../package.json';
 
 const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
 
@@ -11,7 +11,8 @@ amplitude.init(
   isDev
     ? '16543070a2c829f8a27f46c21fc0f708'
     : 'ed51d61371d63ef1136b842900ebdae',
- {appVersion: pj.version});
+  { appVersion: pj.version },
+);
 
 loader.config({ monaco });
 

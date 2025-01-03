@@ -1,7 +1,13 @@
 import { getCurrentIPAddresses } from './utils';
 import { server } from './app';
+import { initAnalytics } from './utils/analytics';
 
-export const startInternalServer = (port?: number) => {
+export const startInternalServer = async (
+  port: number,
+  { platform }: { platform: 'docker' | 'electron' },
+) => {
+  await initAnalytics({ platform });
+
   const iPAddresses = getCurrentIPAddresses();
   const host = iPAddresses[0];
   const _port = port ?? 1511;

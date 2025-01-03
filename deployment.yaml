@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mockingbird
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mockingbird
+  template:
+    metadata:
+      labels:
+        app: mockingbird
+    spec:
+      containers:
+        - name: mockingbird
+          image: ozkeisar/mockingbird:latest
+          ports:
+            - containerPort: 1511
+            - containerPort: 3000
+            - containerPort: 3001
+            - containerPort: 3050
+          imagePullPolicy: Always
+          env:
+          - name: NODE_ENV
+            value: "production"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mockingbird-service
+spec:
+  selector:
+    app: mockingbird
+  ports:
+  - name: api-port
+    protocol: TCP
+    port: 1511
+    targetPort: 1511
+  - name: web-port-3000
+    protocol: TCP
+    port: 3000
+    targetPort: 3000
+  - name: web-port-3001
+    protocol: TCP
+    port: 3001
+    targetPort: 3001
+  - name: web-port-3050
+    protocol: TCP
+    port: 3050
+    targetPort: 3050
+  type: LoadBalancer

@@ -13,9 +13,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import styles from './cloneProject.module.css';
 import { emitSocketEvent, reportButtonClick, socket } from '../../utils';
 import { useGeneralStore } from '../../state';
-import { ElectronEvents, isElectronEnabled } from '../../utils/electron';
+import { ElectronEvents } from '../../utils/electron';
 import { EVENT_KEYS } from '../../../types/events';
 import { BUTTONS } from '../../../consts/analytics';
+import { isElectronEnabled } from '../../const/general';
 
 const httpsExample = 'https://github.com/ozkeisar/mockingbird.git';
 const hssExample = 'git@github.com:ozkeisar/mockingbird.git';
@@ -158,9 +159,11 @@ export function CloneProject({
           <ToggleButton value="LOCAL" aria-label="centered">
             LOCAL
           </ToggleButton>
-          {isElectronEnabled && <ToggleButton value="OPEN" aria-label="centered">
-            OPEN
-          </ToggleButton>}
+          {isElectronEnabled && (
+            <ToggleButton value="OPEN" aria-label="centered">
+              OPEN
+            </ToggleButton>
+          )}
         </ToggleButtonGroup>
 
         {cloneType === 'HTTPS' && (

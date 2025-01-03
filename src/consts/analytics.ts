@@ -50,8 +50,8 @@ export enum BUTTONS {
   DELETE_ROUTE_DIALOG_CANCEL = 'delete route dialog cancel',
   DELETE_SERVER_DIALOG_CANCEL = 'delete server dialog cancel',
   DELETE_SERVER_DIALOG_DELETE = 'delete server dialog delete',
-  DELETE_IP_CHANGED_DIALOG_RESTART = 'delete ip changed dialog restart',
-  DELETE_IP_CHANGED_DIALOG_CLOSE = 'delete ip changed dialog close',
+  IP_CHANGED_DIALOG_RESTART = 'ip changed dialog restart',
+  IP_CHANGED_DIALOG_CLOSE = 'ip changed dialog close',
   PARENT_DIALOG_CLOSE = 'parent dialog close',
   PARENT_DIALOG_SAVE = 'parent dialog save',
   PRESET_DIALOG_SAVE = 'preset dialog save',
@@ -99,7 +99,7 @@ export enum BUTTONS {
   START_MOCKING = 'welcome dialog start mocking',
   IMPORT_SWAGGER_DIALOG_IMPORT = 'import swagger dialog import',
   IMPORT_SWAGGER_DIALOG_CLOSE = 'import swagger dialog close',
-  SERVER_DETAILS_IMPORT = 'server details import'
+  SERVER_DETAILS_IMPORT = 'server details import',
 }
 
 export enum ELEMENTS {

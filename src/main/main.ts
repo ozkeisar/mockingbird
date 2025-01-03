@@ -29,7 +29,6 @@ const { promisify } = require('util');
 
 const execAsync = promisify(exec);
 
-
 // eslint-disable-next-line import/no-mutable-exports
 let mainWindow: BrowserWindow | null = null;
 
@@ -95,7 +94,7 @@ const createWindow = async () => {
   if (isDebug) {
     await installExtensions();
   }
-  startInternalServer();
+  startInternalServer(1511, { platform: 'electron' });
 
   const RESOURCES_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'assets')
@@ -151,7 +150,7 @@ const createWindow = async () => {
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
-  autoUpdater.on('update-available',(e)=>{
+  autoUpdater.on('update-available', (e) => {
     mainWindow?.webContents.send(EVENT_KEYS.DEBUG_LOG, {
       e,
       event: 'update-available',
@@ -248,14 +247,14 @@ ipcMain.on('selectDirectory', async (event) => {
 
 ipcMain.on('openProjectDirectory', async (event, args) => {
   try {
-    const {platform} = args;
-    
+    const { platform } = args;
+
     const activeProjectName = await getActiveProjectName();
     if (activeProjectName) {
       const projectPath = await getProjectPath(activeProjectName);
-      if(platform === 'vscode'){
+      if (platform === 'vscode') {
         await execAsync('code .', { cwd: projectPath });
-      }else{
+      } else {
         shell.showItemInFolder(projectPath); // Show the given file in a file manager. If possible, select the file.
       }
     } else {

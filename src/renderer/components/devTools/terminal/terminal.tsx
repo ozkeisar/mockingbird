@@ -7,12 +7,12 @@ import { useProjectStore } from '../../../state/project';
 import {
   ElectronEvents,
   emitSocketEvent,
-  isElectronEnabled,
   openInNewTab,
   reportCommandExecuted,
   socket,
 } from '../../../utils';
 import styles from './terminal.module.css';
+import { isElectronEnabled } from '../../../const/general';
 
 type CommandFunc = (
   args: string[],
@@ -128,13 +128,12 @@ export function CommandsTerminal() {
     // },
     swagger: () => {
       reportCommandExecuted(COMMANDS.SWAGGER);
-      if(isElectronEnabled){
+      if (isElectronEnabled) {
         openInNewTab('http://localhost:1511/api-docs');
-      }else{
-        const baseURl = window.location.href
-        openInNewTab(baseURl+'api-docs');
+      } else {
+        const baseURl = window.location.href;
+        openInNewTab(`${baseURl}api-docs`);
       }
-      
     },
     git: (args, print) => {
       reportCommandExecuted(COMMANDS.GIT, {

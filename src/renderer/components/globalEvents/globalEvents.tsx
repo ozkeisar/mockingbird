@@ -12,7 +12,8 @@ import {
 } from '../dialogs';
 import { ProjectDataInvalidDialog } from '../dialogs/projectDataInvalidDialog';
 import { ProjectDataUnsupported } from '../projectDataUnsupported';
-import { emitSocketEvent, isElectronEnabled, socket } from '../../utils';
+import { emitSocketEvent, socket } from '../../utils';
+import { isElectronEnabled } from '../../const/general';
 
 export function GlobalEvents() {
   const [openIpDialog, setOpenIpDialog] = useState(false);

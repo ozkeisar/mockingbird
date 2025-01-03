@@ -104,8 +104,6 @@
 
 .console-wrapper {
   border-top:rgb(140, 140, 140) solid 1px;
-
-
   flex-grow: 0;
   flex-shrink: 0;
   min-height: 34px;
