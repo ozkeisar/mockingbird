@@ -2,6 +2,7 @@
 <img src="https://github.com/ozkeisar/mockingbird/assets/34401842/51320104-1f8d-4734-b964-661a8882c27e" width="200" align='center' >
 <p>
 
+
 # Mockingbird
 
 Mockingbird is a tool designed to help software developers test their apps without needing the real server or backend ready. Imagine you’re building a new app, but the part of the system that handles data isn’t finished yet. Instead of waiting around, you can use Mockingbird to create a pretend version of that system. This allows you to keep working and testing your app as if everything is already set up, saving time and frustration.
@@ -38,6 +39,19 @@ Mockingbird is a tool designed to help software developers test their apps witho
 
 9. **Docker image**: mockingbird have a docker image that let's you set it up as part of your ci/cd, make it suitable for your e2e testing.
 
+## Mockingbird videos
+
+<p align="left">
+   <a href="https://youtu.be/PbwtlnNdHkQ?si=kVpj0nVWSBlk9eKg" target="_blank">
+      <img src="https://github.com/user-attachments/assets/e7ebb1c3-85a5-4ca7-8947-6115df4d0efe" width="200" align='left' >
+   How to set up mock server - Getting Started with Mockingbird
+   </a>
+   <br/>
+</p>
+<br/>
+<br/>
+<br/>
+
 ## Mockingbird Guides
 
 1. [Mockingbird: New Tool for Your Mock Environments](https://dev.to/ozkeisar/mockingbird-new-tool-for-your-mock-environments-49j)
@@ -47,7 +61,15 @@ Mockingbird is a tool designed to help software developers test their apps witho
 5. [I built a new way of mocking GraphQL server](https://dev.to/ozkeisar/i-built-a-new-way-of-mocking-graphql-server-i94)
 6. [Dockerize Your Mockingbird Setup: A Quickstart Guide](https://dev.to/ozkeisar/how-to-use-the-mockingbird-docker-image-29mf)
 
-## creating Docker image
+## Licensing
+
+Mockingbird is dual-licensed under the GNU Affero General Public License v3.0 (AGPLv3) for open-source use and a commercial license for proprietary use. For more details, see [LICENSE](./LICENSE) and [COMMERCIAL_LICENSE](./COMMERCIAL_LICENSE).
+
+## Contributing
+
+We welcome contributions to Mockingbird! Please read and agree to our Contributor License Agreement (CLA) before contributing. For more details, see [CONTRIBUTING](./CONTRIBUTING.md).
+
+### creating Docker image
 
 Docker folder contains scripts to run the project as a standalone server.
 
@@ -57,16 +79,8 @@ Then use `docker build . -t {username}/mockingbird:{version}` to create the imag
 
       `docker buildx build \
       --platform linux/amd64,linux/arm64 \
-      -t ozkeisar/mockingbird:latest \
+      -t {username}/mockingbird:{version} \
       --push .`
-
-## Licensing
-
-Mockingbird is dual-licensed under the GNU Affero General Public License v3.0 (AGPLv3) for open-source use and a commercial license for proprietary use. For more details, see [LICENSE](./LICENSE) and [COMMERCIAL_LICENSE](./COMMERCIAL_LICENSE).
-
-## Contributing
-
-We welcome contributions to Mockingbird! Please read and agree to our Contributor License Agreement (CLA) before contributing. For more details, see [CONTRIBUTING](./CONTRIBUTING.md).
 
 ## Troubleshooting
 
