@@ -51,6 +51,18 @@ Mockingbird is a tool designed to help software developers test their apps witho
 <br/>
 <br/>
 <br/>
+<br/>
+
+<p align="left">
+   <a href="https://youtu.be/wwYqo3e1ef8" target="_blank">
+      <img src="https://github.com/user-attachments/assets/ec999dbc-2715-428d-9de6-ff34a4de5610" width="200" align='left' >
+   Git + Mockingbird Tutorial: Simplify Mock API Management and Collaboration
+   </a>
+   <br/>
+</p>
+<br/>
+<br/>
+<br/>
 
 ## Mockingbird Guides
 
