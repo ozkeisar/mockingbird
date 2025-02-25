@@ -9,8 +9,7 @@ labels: 'bug'
 ## Prerequisites
 
 <!-- If the following boxes are not ALL checked, your issue is likely to be closed -->
-
-- [ ] Mockingbird version
+Mockingbird version: {version}
 - [ ] Using Docker image
 - [ ] using windows
 - [ ] using mac
