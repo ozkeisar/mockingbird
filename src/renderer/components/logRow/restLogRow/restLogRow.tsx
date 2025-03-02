@@ -10,8 +10,8 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {
   formatDate,
   getKeyValuePairReq,
+  getRequestRoute,
   removeLastPartOfUri,
-  removeQueryParams,
   reportButtonClick,
   reportElementClick,
 } from '../../../utils';
@@ -149,10 +149,7 @@ export function RestLogRow({
     () =>
       matchedParents?.reduce(
         (acc, parent) => {
-          const requestRoute = removeQueryParams(requestUrl).replace(
-            parent.path,
-            '',
-          );
+          const requestRoute = getRequestRoute(requestUrl, parent.path);
 
           if (acc.matchedRoute) {
             return acc;
@@ -215,10 +212,8 @@ export function RestLogRow({
     });
 
     const _matchedParent = sortedMatchedParent[0];
-    const requestRoute = removeQueryParams(requestUrl).replace(
-      _matchedParent.path,
-      '',
-    );
+    const requestRoute = getRequestRoute(requestUrl, _matchedParent.path);
+
     const _matchedRoute = Object.values(_matchedParent.routesHash || {}).find(
       (routeItem) => {
         return (
@@ -274,6 +269,8 @@ export function RestLogRow({
 
     const _matchedParent = sortedMatchedParent[0];
 
+    const routePath = getRequestRoute(requestUrl, _matchedParent.path);
+
     onAddRouteClick({
       serverName: server?.name,
       matchedParent: _matchedParent,
@@ -281,10 +278,7 @@ export function RestLogRow({
         paramKey: key,
         paramType: _type,
         paramValue: value,
-        routePath: removeQueryParams(requestUrl).replace(
-          _matchedParent.path,
-          '',
-        ),
+        routePath,
         method: requestMethod,
         activeResponseIndex: 0,
         responses: [],

@@ -11,6 +11,7 @@ import { Route, RouteResponse } from '../../../../types';
 import { useGeneralStore } from '../../../state';
 import { ResponseDetails } from './responseDetails';
 import {
+  buildRouteUrl,
   emitSocketEvent,
   getRouteBGColor,
   openInNewTab,
@@ -44,7 +45,12 @@ export function RouteDetails() {
   const { deleteRoute } = useRouteActions();
   const { deleteResponse } = useResponseActions();
 
-  const linkUrl = `${host}:${server?.settings.port}${parent?.path}${route?.routePath}`;
+  const linkUrl = buildRouteUrl(
+    host,
+    server?.settings.port,
+    parent?.path,
+    route?.routePath,
+  );
 
   const handleSetActive = (routeId: string, responseId: string) => {
     const localParent = cloneDeep(parent);
