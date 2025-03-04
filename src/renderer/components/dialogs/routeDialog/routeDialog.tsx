@@ -102,18 +102,22 @@ export function RouteDialog({ onClose, open, data, parent, server }: Props) {
     onClose();
   };
 
-  const alreadyExistError = isRouteExist({
-    id: data?.id || '',
-    routePath,
-    method,
-    paramKey,
-    paramType,
-    paramValue,
-    description,
-    responsesHash:{},
-    activeResponseId:'',
-    withParams
-  }, parent) &&
+  const alreadyExistError =
+    isRouteExist(
+      {
+        id: data?.id || '',
+        routePath,
+        method,
+        paramKey,
+        paramType,
+        paramValue,
+        description,
+        responsesHash: {},
+        activeResponseId: '',
+        withParams,
+      },
+      parent,
+    ) &&
     !(data?.method === method && data.routePath === routePath && !!data.id);
 
   return (

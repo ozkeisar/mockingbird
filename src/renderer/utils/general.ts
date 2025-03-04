@@ -17,11 +17,7 @@ export const JSONStringifyExtra = (obj: any) =>
   });
 
 export const openInNewTab = (url: string) => {
-  const newWindow = window.open(
-    url,
-    '_blank',
-    'noopener,noreferrer',
-  );
+  const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
   if (newWindow) newWindow.opener = null;
 };
 
@@ -113,6 +109,21 @@ export const removeQueryParams = (uri: string) => {
   return uri;
 };
 
+export const getRequestRoute = (uri: string, parentPath: string) => {
+  const routePath = removeQueryParams(uri).replace(parentPath, '');
+
+  return routePath.startsWith('/') ? routePath : `/${routePath}`;
+};
+
+export const buildRouteUrl = (
+  host: string | null,
+  port: number | undefined,
+  parentPath: string | undefined,
+  routePath: string | undefined,
+) => {
+  return `${host}:${port}${parentPath === '/' ? '' : parentPath}${routePath}`;
+};
+
 type params = { [key: string]: any };
 export const getKeyValuePairReq = (
   body: params,
@@ -176,8 +187,6 @@ export const checkIsAllRoutesExists = (
     checkIsPresetRouteExist(serversHash, presetRoute),
   );
 };
-
-
 
 export function combineNestedObjects(data: any) {
   if (Array.isArray(data) && data.length > 0) {
