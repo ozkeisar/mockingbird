@@ -1,6 +1,5 @@
 import { v4 as uuid } from 'uuid';
 
-
 export function removeParameters(input: string | null): string | null {
   if (!input) {
     return input;
@@ -40,7 +39,6 @@ export function mergeObjects(
   return result;
 }
 
-
 export const formatFileName = (input: string): string => {
   // Remove special characters not allowed in file names
   // eslint-disable-next-line no-useless-escape
@@ -56,15 +54,17 @@ export const formatFileName = (input: string): string => {
   return truncatedFileName;
 };
 
-
 export function formatToValidFilename(input: string): string {
   // List of invalid characters for Windows filenames
+  // eslint-disable-next-line no-control-regex
   const invalidWindowsChars = /[<>:"/\\|?*\x00-\x1F]/g;
   // macOS only disallows the ":" character
   const invalidMacChars = /[:]/g;
 
   // Replace invalid characters with underscores, except for the first and last characters
-  let sanitized = input.replace(invalidWindowsChars, '_').replace(invalidMacChars, '_');
+  let sanitized = input
+    .replace(invalidWindowsChars, '_')
+    .replace(invalidMacChars, '_');
 
   // Remove any invalid characters if they are at the beginning or end
   sanitized = sanitized.replace(/^[_]+|[_]+$/g, '');
@@ -74,7 +74,7 @@ export function formatToValidFilename(input: string): string {
 
   // Ensure filename is not empty
   if (sanitized === '' || sanitized === '.' || sanitized === '..') {
-      sanitized = 'untitled';
+    sanitized = 'untitled';
   }
 
   // Add a unique identifier (UUID) to the end of the filename
@@ -83,8 +83,32 @@ export function formatToValidFilename(input: string): string {
 
   // Limit the filename length to 255 characters minus the length of the unique suffix and underscore
   if (sanitized.length > 255) {
-      sanitized = sanitized.substring(0, 255 - uniqueSuffix.length - 1) + `_${uniqueSuffix}`;
+    sanitized = `${sanitized.substring(
+      0,
+      255 - uniqueSuffix.length - 1,
+    )}_${uniqueSuffix}`;
   }
 
   return sanitized;
 }
+
+export const buildUrl = (baseUrl: string, path: string) => {
+  // Ensure baseUrl is defined and is a string
+  if (!baseUrl || typeof baseUrl !== 'string') {
+    throw new Error('Base URL must be a non-empty string');
+  }
+
+  // If path is undefined or empty, just return the base URL
+  if (!path) {
+    return baseUrl;
+  }
+
+  // Normalize the base URL by ensuring it ends with a single slash
+  const normalizedBase = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+
+  // Normalize the path by removing leading slash if present
+  const normalizedPath = path.startsWith('/') ? path.substring(1) : path;
+
+  // Join the normalized base and path
+  return normalizedBase + normalizedPath;
+};
