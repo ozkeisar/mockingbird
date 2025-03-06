@@ -120,8 +120,42 @@ export const buildRouteUrl = (
   port: number | undefined,
   parentPath: string | undefined,
   routePath: string | undefined,
-) => {
-  return `${host}:${port}${parentPath === '/' ? '' : parentPath}${routePath}`;
+): string => {
+  // Handle null or empty host
+  const baseHost = host || '';
+
+  // Handle port (only append if defined)
+  const portPart = port !== undefined ? `:${port}` : '';
+
+  // Normalize paths by ensuring they start with a slash but don't end with one
+  // unless they are just "/"
+  const normalizePathPart = (path?: string): string => {
+    if (!path || path === '') return '';
+
+    // For root path "/", just return it
+    if (path === '/') return '/';
+
+    // Remove trailing slashes
+    let normalized = path.endsWith('/') ? path.slice(0, -1) : path;
+
+    // Add leading slash if missing
+    if (!normalized.startsWith('/')) {
+      normalized = `/${normalized}`;
+    }
+
+    return normalized;
+  };
+
+  const parentPathNormalized = normalizePathPart(parentPath);
+  const routePathNormalized = normalizePathPart(routePath);
+
+  // Special case: if parentPath is just "/", we don't want to include it
+  // to avoid a double slash
+  const effectiveParentPath =
+    parentPathNormalized === '/' ? '' : parentPathNormalized;
+
+  // Build the complete URL
+  return `${baseHost}${portPart}${effectiveParentPath}${routePathNormalized}`;
 };
 
 type params = { [key: string]: any };

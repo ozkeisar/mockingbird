@@ -165,23 +165,48 @@ export const getSelectedRoute = (
   return selectedRoute || null;
 };
 
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const customConsole = {
-  log: (serverName: string) => (...args: any) => {
-    emitGlobalSocketMessage(EVENT_KEYS.SERVERS_CONSOLE, {method: 'log', data:[`${serverName}:`, ...args]})
-  },
-  error: (serverName: string) => (...args: any) => {
-    emitGlobalSocketMessage(EVENT_KEYS.SERVERS_CONSOLE, {method: 'error', data:[`${serverName}:`, ...args]})
-  },
-  warn: (serverName: string) => (...args: any) => {
-    emitGlobalSocketMessage(EVENT_KEYS.SERVERS_CONSOLE, {method: 'warn', data:[`${serverName}:`, ...args]})
-  },
-  info: (serverName: string) => (...args: any) => {
-    emitGlobalSocketMessage(EVENT_KEYS.SERVERS_CONSOLE, {method: 'info', data:[`${serverName}:`, ...args]})
-  },
-  debug: (serverName: string) => (...args: any) => {
-    emitGlobalSocketMessage(EVENT_KEYS.SERVERS_CONSOLE, {method: 'debug', data:[`${serverName}:`, ...args]})
-  },
+  log:
+    (serverName: string) =>
+    (...args: any) => {
+      emitGlobalSocketMessage(EVENT_KEYS.SERVERS_CONSOLE, {
+        method: 'log',
+        data: [`${serverName}:`, ...args],
+      });
+    },
+  error:
+    (serverName: string) =>
+    (...args: any) => {
+      emitGlobalSocketMessage(EVENT_KEYS.SERVERS_CONSOLE, {
+        method: 'error',
+        data: [`${serverName}:`, ...args],
+      });
+    },
+  warn:
+    (serverName: string) =>
+    (...args: any) => {
+      emitGlobalSocketMessage(EVENT_KEYS.SERVERS_CONSOLE, {
+        method: 'warn',
+        data: [`${serverName}:`, ...args],
+      });
+    },
+  info:
+    (serverName: string) =>
+    (...args: any) => {
+      emitGlobalSocketMessage(EVENT_KEYS.SERVERS_CONSOLE, {
+        method: 'info',
+        data: [`${serverName}:`, ...args],
+      });
+    },
+  debug:
+    (serverName: string) =>
+    (...args: any) => {
+      emitGlobalSocketMessage(EVENT_KEYS.SERVERS_CONSOLE, {
+        method: 'debug',
+        data: [`${serverName}:`, ...args],
+      });
+    },
   // Add other methods as needed
 };
 
@@ -207,7 +232,7 @@ export const reviveFunctionRest = (serverName: string, fnString: string) => {
     // eslint-disable-next-line no-eval
     const func = eval(`(${script.trim()})`);
 
-    return func
+    return func;
   } catch (error) {
     throw new Error('fail to revive function rest');
   }
@@ -234,7 +259,7 @@ export const reviveFunctionGraphql = (serverName: string, fnString: string) => {
     // eslint-disable-next-line no-eval
     const func = eval(`(${script.trim()})`);
 
-    return func
+    return func;
   } catch (error) {
     throw new Error('fail to revive function graphql');
   }

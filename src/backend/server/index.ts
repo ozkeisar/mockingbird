@@ -20,6 +20,7 @@ import {
   readServerSettings,
 } from '../utils';
 import { Route, RouteParent } from '../../types';
+import { buildUrl } from '../../utils/utils';
 
 const nocache = require('nocache');
 const { v4: uuidv4 } = require('uuid');
@@ -223,7 +224,9 @@ export const startServer = async (
       });
       return;
     }
-    const proxyUrl = serverSettings.proxyBaseUrl + req.url;
+
+    const proxyUrl = buildUrl(serverSettings.proxyBaseUrl, req.url);
+
     try {
       const reqOptions = buildRequestOptions(proxyUrl, req, serverSettings);
       updateLog((req as any).id, {
