@@ -85,14 +85,14 @@ We welcome contributions to Mockingbird! Please read and agree to our Contributo
 
 Docker folder contains scripts to run the project as a standalone server.
 
-`npm run build:backend` to build teh JS files required for the standalone server.
+`npm run build:backend` to build the JS files required for the standalone server.
 
 Then use `docker build . -t {username}/mockingbird:{version}` to create the image.
 
       `docker buildx build \
       --platform linux/amd64,linux/arm64 \
       -t {username}/mockingbird:{version} \
-      --push .`
+      --load .`
 
 ## Troubleshooting
 
