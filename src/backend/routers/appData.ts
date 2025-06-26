@@ -72,7 +72,7 @@ export interface SimplifiedProjectData {
   isGitInit: boolean;
 }
 
-/// /////
+// Convert full project data into a structure used by the client
 function simplifyProjectData(
   projectData: ProjectDataNew,
 ): SimplifiedProjectData {
@@ -166,7 +166,7 @@ function simplifyProjectData(
   };
 }
 
-/// /
+// Endpoint to fetch simplified project data by project name
 appDataRouter.get('/:projectName', async (req: Request, res: Response) => {
   try {
     const { projectName } = req.params;
