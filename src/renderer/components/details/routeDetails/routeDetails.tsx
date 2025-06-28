@@ -28,12 +28,16 @@ import {
 } from '../../dialogs';
 import { EVENT_KEYS } from '../../../../types/events';
 import { BUTTONS } from '../../../../consts/analytics';
+import {
+  findPresetsUsingRoute,
+  findPresetsUsingResponse,
+} from '../../../utils';
 
 export function RouteDetails() {
   const { route, parent, server } = useSelectedRestRoute();
 
   const { setSelectedRoute, host, isServerUp } = useGeneralStore();
-  const { activeProjectName } = useProjectStore();
+  const { activeProjectName, presetFoldersHash } = useProjectStore();
   const [editRouteData, setEditRouteData] = useState<Route | null>(null);
   const [isRouteDialogOpen, setIsRouteDialogOpen] = useState(false);
   const [isDeleteRouteDialogOpen, setIsDeleteRouteDialogOpen] = useState(false);
@@ -42,6 +46,18 @@ export function RouteDetails() {
   const [isResponseDialogOpen, setIsResponseDialogOpen] = useState(false);
   const [isDeleteResponseDialogOpen, setIsDeleteResponseDialogOpen] =
     useState(false);
+  const [routePresets, setRoutePresets] = useState<
+    {
+      folder: string;
+      preset: string;
+    }[]
+  >([]);
+  const [responsePresets, setResponsePresets] = useState<
+    {
+      folder: string;
+      preset: string;
+    }[]
+  >([]);
   const { deleteRoute } = useRouteActions();
   const { deleteResponse } = useResponseActions();
 
@@ -143,7 +159,13 @@ export function RouteDetails() {
                 color="inherit"
                 onClick={() => {
                   reportButtonClick(BUTTONS.ROUTE_DETAILS_DELETE);
-
+                  const presets = findPresetsUsingRoute(
+                    presetFoldersHash,
+                    server?.name || '',
+                    parent?.id || '',
+                    route?.id || '',
+                  );
+                  setRoutePresets(presets);
                   setIsDeleteRouteDialogOpen(true);
                 }}
                 aria-label="close"
@@ -186,6 +208,14 @@ export function RouteDetails() {
                 handleSetActive(route?.id || '', response.id);
               }}
               onDelete={() => {
+                const presets = findPresetsUsingResponse(
+                  presetFoldersHash,
+                  server?.name || '',
+                  parent?.id || '',
+                  route?.id || '',
+                  response.id,
+                );
+                setResponsePresets(presets);
                 setIsDeleteResponseDialogOpen(true);
                 setEditResponseData(response);
               }}
@@ -212,6 +242,7 @@ export function RouteDetails() {
         <DeleteRouteDialog
           onClose={() => setIsDeleteRouteDialogOpen(false)}
           open={isDeleteRouteDialogOpen}
+          presets={routePresets}
           onConfirm={() => {
             deleteRoute(route, parent, server);
             setIsDeleteRouteDialogOpen(false);
@@ -226,6 +257,7 @@ export function RouteDetails() {
           <DeleteResponseDialog
             onClose={() => setIsDeleteResponseDialogOpen(false)}
             open={isDeleteResponseDialogOpen}
+            presets={responsePresets}
             onConfirm={() => {
               deleteResponse(server, parent, route, editResponseData);
               setIsDeleteResponseDialogOpen(false);

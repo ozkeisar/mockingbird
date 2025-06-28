@@ -16,6 +16,10 @@ import {
   openInNewTab,
   reportButtonClick,
 } from '../../../utils';
+import {
+  findPresetsUsingRoute,
+  findPresetsUsingResponse,
+} from '../../../utils';
 import { useProjectStore } from '../../../state/project';
 import { useResponseActions, useRouteActions } from '../../../hooks/files';
 import { useSelectedGraphQlRoute } from '../../../hooks';
@@ -31,7 +35,7 @@ export function GraphqlRouteDetails() {
   const { route, parent, server } = useSelectedGraphQlRoute();
 
   const { setSelectedRoute, host, isServerUp } = useGeneralStore();
-  const { activeProjectName } = useProjectStore();
+  const { activeProjectName, presetFoldersHash } = useProjectStore();
   const [isCopied, setIsCopied] = useState(false);
   const [isRouteDialogOpen, setIsRouteDialogOpen] = useState(false);
   const [isDeleteRouteDialogOpen, setIsDeleteRouteDialogOpen] = useState(false);
@@ -40,6 +44,18 @@ export function GraphqlRouteDetails() {
   const [isResponseDialogOpen, setIsResponseDialogOpen] = useState(false);
   const [isDeleteResponseDialogOpen, setIsDeleteResponseDialogOpen] =
     useState(false);
+  const [routePresets, setRoutePresets] = useState<
+    {
+      folder: string;
+      preset: string;
+    }[]
+  >([]);
+  const [responsePresets, setResponsePresets] = useState<
+    {
+      folder: string;
+      preset: string;
+    }[]
+  >([]);
   const { deleteRoute } = useRouteActions();
   const { deleteResponse } = useResponseActions();
 
@@ -127,7 +143,13 @@ export function GraphqlRouteDetails() {
                 color="inherit"
                 onClick={() => {
                   reportButtonClick(BUTTONS.ROUTE_DETAILS_DELETE);
-
+                  const presets = findPresetsUsingRoute(
+                    presetFoldersHash,
+                    server?.name || '',
+                    parent?.id || '',
+                    route?.id || '',
+                  );
+                  setRoutePresets(presets);
                   setIsDeleteRouteDialogOpen(true);
                 }}
                 aria-label="close"
@@ -200,6 +222,14 @@ export function GraphqlRouteDetails() {
                 handleSetActive(route?.id || '', response.id);
               }}
               onDelete={() => {
+                const presets = findPresetsUsingResponse(
+                  presetFoldersHash,
+                  server?.name || '',
+                  parent?.id || '',
+                  route?.id || '',
+                  response.id,
+                );
+                setResponsePresets(presets);
                 setIsDeleteResponseDialogOpen(true);
                 setEditResponseData(response);
               }}
@@ -226,6 +256,7 @@ export function GraphqlRouteDetails() {
         <DeleteRouteDialog
           onClose={() => setIsDeleteRouteDialogOpen(false)}
           open={isDeleteRouteDialogOpen}
+          presets={routePresets}
           onConfirm={() => {
             deleteRoute(route, parent, server);
             setIsDeleteRouteDialogOpen(false);
@@ -240,6 +271,7 @@ export function GraphqlRouteDetails() {
           <DeleteResponseDialog
             onClose={() => setIsDeleteResponseDialogOpen(false)}
             open={isDeleteResponseDialogOpen}
+            presets={responsePresets}
             onConfirm={() => {
               deleteResponse(server, parent, route, editResponseData);
               setIsDeleteResponseDialogOpen(false);
