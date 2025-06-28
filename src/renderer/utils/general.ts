@@ -6,6 +6,7 @@ import {
   Preset,
   PresetRoute,
   ServersHash,
+  PresetsFolderHash,
 } from '../../types';
 
 export const JSONStringifyExtra = (obj: any) =>
@@ -401,3 +402,55 @@ export const flattenObject = (
     }
     return result;
   }, {});
+
+export const findPresetsUsingRoute = (
+  presetFoldersHash: PresetsFolderHash,
+  serverId: string,
+  parentId: string,
+  routeId: string,
+) => {
+  const presets: { folder: string; preset: string }[] = [];
+  Object.values(presetFoldersHash || {}).forEach((folder) => {
+    Object.values(folder.presetsHash || {}).forEach((preset) => {
+      const routes = Object.values(preset.routesHash || {});
+      if (
+        routes.some(
+          (r) =>
+            r.serverId === serverId &&
+            r.parentId === parentId &&
+            r.routeId === routeId,
+        )
+      ) {
+        presets.push({ folder: folder.name, preset: preset.name });
+      }
+    });
+  });
+  return presets;
+};
+
+export const findPresetsUsingResponse = (
+  presetFoldersHash: PresetsFolderHash,
+  serverId: string,
+  parentId: string,
+  routeId: string,
+  responseId: string,
+) => {
+  const presets: { folder: string; preset: string }[] = [];
+  Object.values(presetFoldersHash || {}).forEach((folder) => {
+    Object.values(folder.presetsHash || {}).forEach((preset) => {
+      const routes = Object.values(preset.routesHash || {});
+      if (
+        routes.some(
+          (r) =>
+            r.serverId === serverId &&
+            r.parentId === parentId &&
+            r.routeId === routeId &&
+            r.responseId === responseId,
+        )
+      ) {
+        presets.push({ folder: folder.name, preset: preset.name });
+      }
+    });
+  });
+  return presets;
+};

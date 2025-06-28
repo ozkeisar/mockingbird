@@ -13,10 +13,12 @@ export function DeleteResponseDialog({
   open,
   onClose,
   onConfirm,
+  presets,
 }: {
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  presets?: { folder: string; preset: string }[];
 }) {
   const handleDelete = () => {
     reportButtonClick(BUTTONS.DELETE_RESPONSE_DIALOG_DELETE);
@@ -38,6 +40,20 @@ export function DeleteResponseDialog({
     >
       <DialogTitle id="alert-dialog-title">delete response</DialogTitle>
       <DialogContent>
+        {presets && presets.length > 0 && (
+          <>
+            <DialogContentText>
+              this response is used in the following presets:
+            </DialogContentText>
+            <ul>
+              {presets.map((p) => (
+                <li
+                  key={`${p.folder}-${p.preset}`}
+                >{`${p.folder} / ${p.preset}`}</li>
+              ))}
+            </ul>
+          </>
+        )}
         <DialogContentText id="alert-dialog-description">
           are you sure you want to delete this response?
         </DialogContentText>
