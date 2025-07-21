@@ -70,8 +70,11 @@
     ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/.erb/mocks/fileMock.js",
-      "\\.(css|less|sass|scss)$": "identity-obj-proxy"
+      "\\.(css|less|sass|scss)$": "identity-obj-proxy",
+      "^monaco-editor$": "<rootDir>/.erb/mocks/monacoMock.js",
+      "^react-monaco-editor$": "<rootDir>/.erb/mocks/monacoMock.js"
     },
+    "setupFilesAfterEnv": ["<rootDir>/.erb/scripts/jest-setup.js"],
     "setupFiles": [
       "./.erb/scripts/check-build-exists.ts"
     ],
@@ -85,7 +88,10 @@
     ],
     "transform": {
       "\\.(ts|tsx|js|jsx)$": "ts-jest"
-    }
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(uuid)/)"
+    ]
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.9.3",
@@ -305,5 +311,6 @@
       "src/main/**"
     ],
     "logLevel": "quiet"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
