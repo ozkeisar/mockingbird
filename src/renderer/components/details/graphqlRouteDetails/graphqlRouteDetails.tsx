@@ -15,8 +15,6 @@ import {
   getGraphqlRouteBGColor,
   openInNewTab,
   reportButtonClick,
-} from '../../../utils';
-import {
   findPresetsUsingRoute,
   findPresetsUsingResponse,
 } from '../../../utils';

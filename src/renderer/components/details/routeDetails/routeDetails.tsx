@@ -16,6 +16,8 @@ import {
   getRouteBGColor,
   openInNewTab,
   reportButtonClick,
+  findPresetsUsingRoute,
+  findPresetsUsingResponse,
 } from '../../../utils';
 import { useProjectStore } from '../../../state/project';
 import { useResponseActions, useRouteActions } from '../../../hooks/files';
@@ -28,10 +30,6 @@ import {
 } from '../../dialogs';
 import { EVENT_KEYS } from '../../../../types/events';
 import { BUTTONS } from '../../../../consts/analytics';
-import {
-  findPresetsUsingRoute,
-  findPresetsUsingResponse,
-} from '../../../utils';
 
 export function RouteDetails() {
   const { route, parent, server } = useSelectedRestRoute();
