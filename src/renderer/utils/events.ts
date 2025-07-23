@@ -18,7 +18,11 @@ export const handleReceiveEvent = (event: EVENT_KEYS, arg: any) => {
     if (!!success && !!enqueueSnackbar && EVENTS_SNACKBAR[event]?.success) {
       enqueueSnackbar(EVENTS_SNACKBAR[event].success, { variant: 'success' });
     }
-    if (!success && !!enqueueSnackbar && EVENTS_SNACKBAR[event]?.fail) {
+    if (
+      success === false &&
+      !!enqueueSnackbar &&
+      EVENTS_SNACKBAR[event]?.fail
+    ) {
       enqueueSnackbar(EVENTS_SNACKBAR[event].fail, { variant: 'error' });
     }
   } catch (error) {
