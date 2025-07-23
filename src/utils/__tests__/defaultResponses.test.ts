@@ -123,7 +123,7 @@ describe('defaultResponses', () => {
     });
 
     it('should have message and description for each status code', () => {
-      Object.entries(DEFAULT_STATUS_CODES).forEach(([code, info]) => {
+      Object.entries(DEFAULT_STATUS_CODES).forEach(([, info]) => {
         expect(info).toHaveProperty('message');
         expect(info).toHaveProperty('description');
         expect(typeof info.message).toBe('string');

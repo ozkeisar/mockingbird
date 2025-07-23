@@ -41,7 +41,7 @@ function findFreePort(existingPorts: number[]): number {
 export function ServerDialog({ onClose, open }: Props) {
   const { serversHash, activeProjectName, addServer, setHasDiffs } =
     useProjectStore();
-    const {setSelectedRoute} = useGeneralStore()
+  const { setSelectedRoute } = useGeneralStore();
 
   const serversPorts = Object.values(serversHash || {}).reduce((acc, item) => {
     acc.push(item.settings.port);
@@ -64,7 +64,11 @@ export function ServerDialog({ onClose, open }: Props) {
       setHasDiffs(hasDiffs);
       if (success && projectName === activeProjectName) {
         addServer(server);
-        setSelectedRoute({serverName: server.name, parentId: null, routeId:null})
+        setSelectedRoute({
+          serverName: server.name,
+          parentId: null,
+          routeId: null,
+        });
         onClose();
       }
     };
@@ -73,6 +77,7 @@ export function ServerDialog({ onClose, open }: Props) {
     return () => {
       socket.off(EVENT_KEYS.CREATE_SERVER, onEvent);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeProjectName, addServer, onClose, setHasDiffs]);
 
   const handleSave = () => {

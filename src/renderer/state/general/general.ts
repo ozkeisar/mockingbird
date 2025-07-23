@@ -15,7 +15,7 @@ export type StateFuncs = {
     parentId,
     routeId,
   }: setSelectedRouteType) => void;
-  setSelectedTab: (tab: MainSideBarTabs | null)=> void;
+  setSelectedTab: (tab: MainSideBarTabs | null) => void;
   clearSelectedRoute: () => void;
   setSelectedPreset: ({ folderId, presetId }: setSelectedPreset) => void;
   setServerHost: (serverHost: string) => void;
@@ -68,7 +68,8 @@ export const useGeneralStore = create<State>((set) => ({
         state.selectedFolderId = folderId;
         state.selectedPresetId = presetId;
         state.selectedType = 'preset';
-        state.selectedTab = state.selectedTab === 'routes' ? 'presets' : state.selectedTab
+        state.selectedTab =
+          state.selectedTab === 'routes' ? 'presets' : state.selectedTab;
       }),
     );
   },
@@ -101,8 +102,8 @@ export const useGeneralStore = create<State>((set) => ({
         state.selectedParentId = parentId;
         state.selectedServerName = serverName;
         state.selectedType = 'route';
-        state.selectedTab = state.selectedTab === 'presets' ? 'routes' : state.selectedTab
-
+        state.selectedTab =
+          state.selectedTab === 'presets' ? 'routes' : state.selectedTab;
       }),
     );
   },

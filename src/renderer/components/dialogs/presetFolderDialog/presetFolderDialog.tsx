@@ -10,11 +10,7 @@ import Typography from '@mui/material/Typography';
 import { v4 as uuid } from 'uuid';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { PresetsFolder } from '../../../../types';
-import {
-  emitSocketEvent,
-  reportButtonClick,
-  socket,
-} from '../../../utils';
+import { emitSocketEvent, reportButtonClick, socket } from '../../../utils';
 import { useProjectStore } from '../../../state/project';
 import { EVENT_KEYS } from '../../../../types/events';
 import { BUTTONS } from '../../../../consts/analytics';
@@ -49,11 +45,11 @@ export function PresetFolderDialog({ onClose, open, data }: Props) {
   const filenameAlreadyExist =
     existingFilenames?.includes(filename) && data?.filename !== filename;
 
-  useEffect(()=>{
-    if(!isEdit){
-      setFilename(formatToValidFilename(name))
+  useEffect(() => {
+    if (!isEdit) {
+      setFilename(formatToValidFilename(name));
     }
-  }, [isEdit, name])
+  }, [isEdit, name]);
 
   useEffect(() => {
     const onEvent = (arg: any) => {
@@ -123,7 +119,7 @@ export function PresetFolderDialog({ onClose, open, data }: Props) {
 
         <TextField
           disabled
-          value={filename + '.json'}
+          value={`${filename}.json`}
           required
           margin="dense"
           id="filename"
