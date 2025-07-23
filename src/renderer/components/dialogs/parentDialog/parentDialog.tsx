@@ -17,11 +17,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { BUTTONS } from '../../../../consts/analytics';
 import { EVENT_KEYS } from '../../../../types/events';
 import { useProjectStore } from '../../../state/project';
-import {
-  emitSocketEvent,
-  isValidFilename,
-  reportButtonClick,
-} from '../../../utils';
+import { emitSocketEvent, reportButtonClick } from '../../../utils';
 import {
   GraphQlRouteType,
   ParentType,
@@ -33,7 +29,6 @@ import { formatToValidFilename } from '../../../../utils/utils';
 import { isParentExist, parentsProperties } from '../../../../utils/parent';
 
 const METHODS: GraphQlRouteType[] = ['Query', 'Mutation'];
-
 
 type Props = {
   onClose: Function;
@@ -63,56 +58,53 @@ export function ParentDialog({
   const isEdit = !!data?.id;
   const isGraphQl = type === 'GraphQl';
 
-  useEffect(()=>{
-    if(!isEdit){
-      setFilename(formatToValidFilename(isGraphQl ? name :restPath))
+  useEffect(() => {
+    if (!isEdit) {
+      setFilename(formatToValidFilename(isGraphQl ? name : restPath));
     }
-  }, [isEdit, restPath, name, isGraphQl])
+  }, [isEdit, restPath, name, isGraphQl]);
 
-
-  const {  
-    filenames,
-    paths,
-    graphQlNames, 
-    restPaths, 
-    graphQlPaths
-  } = parentsProperties(selectedServer)
-
+  const { filenames, paths, graphQlNames, restPaths, graphQlPaths } =
+    parentsProperties(selectedServer);
 
   const [graphqlPath, setGraphqlPath] = useState<string>(
     data?.path || graphQlPaths[0] || '/graphql',
   );
 
-
-  const {matchedQueries, matchedGraphqlParent, ...existingObj} = isParentExist(selectedServer, {  
-    filenames,
-    paths,
-    graphQlNames, 
-    restPaths, 
-    graphQlPaths
-  } , {
-    id: '',
-    filename,
-    name,
-    type,
-    path: isGraphQl? graphqlPath: restPath,
-    routesHash: {}, 
-    graphQlRouteHash: {},
-    graphqlQueriesType, 
-    schemaPath
-  })
+  const { matchedQueries, matchedGraphqlParent, ...existingObj } =
+    isParentExist(
+      selectedServer,
+      {
+        filenames,
+        paths,
+        graphQlNames,
+        restPaths,
+        graphQlPaths,
+      },
+      {
+        id: '',
+        filename,
+        name,
+        type,
+        path: isGraphQl ? graphqlPath : restPath,
+        routesHash: {},
+        graphQlRouteHash: {},
+        graphqlQueriesType,
+        schemaPath,
+      },
+    );
 
   const filenameAlreadyExist =
-  existingObj.filenameAlreadyExist &&
+    existingObj.filenameAlreadyExist &&
     data?.filename?.toLowerCase() !== filename.toLowerCase();
   const nameAlreadyExist =
-  existingObj.nameAlreadyExist &&
+    existingObj.nameAlreadyExist &&
     data?.name?.toLowerCase() !== name.toLowerCase();
   const pathAlreadyExist =
-  existingObj.pathAlreadyExist &&
+    existingObj.pathAlreadyExist &&
     data?.path?.toLowerCase() !== restPath.toLowerCase();
   const restPathAlreadyExist =
-  existingObj.restPathAlreadyExist &&
+    existingObj.restPathAlreadyExist &&
     data?.path?.toLowerCase() !== graphqlPath.toLowerCase();
 
   const schemaAlreadyExistError =
@@ -353,7 +345,7 @@ export function ParentDialog({
         {type === 'Rest' ? renderRestType() : renderGraphQlType()}
         <TextField
           disabled
-          value={filename + '.json'}
+          value={`${filename}.json`}
           required
           margin="dense"
           id="filename"

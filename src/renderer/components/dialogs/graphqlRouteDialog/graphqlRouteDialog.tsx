@@ -22,9 +22,7 @@ import {
   ProjectServer,
   RouteParent,
 } from '../../../../types';
-import {
-  getNonNativeTypesFromSignature,
-} from '../../../utils/graphql';
+import { getNonNativeTypesFromSignature } from '../../../utils/graphql';
 import { findMatchedGraphqlParent } from '../../../../utils/parent';
 
 type Props = {

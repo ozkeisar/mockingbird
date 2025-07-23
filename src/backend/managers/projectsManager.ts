@@ -1,10 +1,5 @@
-import path from 'path';
 import { SUPPORTED_PROJECT_DATA_VERSION } from '../../consts';
-import {
-  getProjectPath,
-  getProjectPresets,
-  readProjectSettings,
-} from '../utils/files';
+import { getProjectPresets, readProjectSettings } from '../utils/files';
 import { migrateProjectData } from '../utils/migrations';
 import { listToHashmap } from '../utils/utils';
 import { ProjectDataNew, ServersHash } from '../../types';
@@ -19,7 +14,7 @@ import { getProjectServers, isFirstVersionGreater } from '../utils/general';
 
 class ProjectsManager {
   private projectChange: {
-    [key: string]: boolean
+    [key: string]: boolean;
   } = {};
 
   private projects: {
@@ -28,7 +23,9 @@ class ProjectsManager {
 
   // constructor() {}
 
-  public async getProjectServersHash(projectName: string): Promise<ServersHash> {
+  public async getProjectServersHash(
+    projectName: string,
+  ): Promise<ServersHash> {
     await this.loadProject(projectName);
 
     return this.projects[projectName].serversHash;
@@ -49,17 +46,16 @@ class ProjectsManager {
     return this.projects[projectName];
   }
 
-  public setProjectChanged(projectName: string){
+  public setProjectChanged(projectName: string) {
     this.projectChange[projectName] = true;
   }
 
- 
   private async loadProject(projectName: string) {
     if (this.projects[projectName] && !this.projectChange[projectName]) {
       console.log('project already loaded');
     } else {
       await this.readProjectData(projectName);
-    } 
+    }
   }
 
   private async readProjectData(projectName: string): Promise<void> {

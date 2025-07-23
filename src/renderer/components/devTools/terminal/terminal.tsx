@@ -205,7 +205,8 @@ export function CommandsTerminal() {
         prompt="white"
         style={{ fontWeight: 'bold', fontSize: '1em' }}
         commands={commands}
-        descriptions={commandsDescription}
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...({ descriptions: commandsDescription } as any)}
         msg="welcome to Mockingbird terminal, type Help to see the command list."
         commandPassThrough={handleCommands}
       />

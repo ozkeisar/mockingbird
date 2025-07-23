@@ -38,5 +38,5 @@ export enum EVENT_KEYS {
   TERMINAL_COMMAND_OUTPUT = 'terminal command output',
   RELOAD_PROJECT = 'reload project',
   OPEN_PROJECT_DIRECTORY = 'openProjectDirectory',
-  SERVERS_CONSOLE='SERVERS_CONSOLE'
+  SERVERS_CONSOLE = 'SERVERS_CONSOLE',
 }

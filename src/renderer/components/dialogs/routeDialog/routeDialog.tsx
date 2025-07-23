@@ -30,6 +30,10 @@ import {
   RouteParent,
 } from '../../../../types';
 import { isRouteExist } from '../../../../utils/route';
+import {
+  createDefaultResponsesHash,
+  getDefaultStatusCodesForMethod,
+} from '../../../../utils/defaultResponses';
 
 type Props = {
   onClose: Function;
@@ -60,6 +64,10 @@ export function RouteDialog({ onClose, open, data, parent, server }: Props) {
     : data?.withParams || false;
   const [withParams, setWithParams] = useState<boolean>(initWithParams);
 
+  // State for creating default responses (only show for new routes)
+  const [createDefaultResponses, setCreateDefaultResponses] =
+    useState<boolean>(!isEdit);
+
   const { updateRoute } = useRouteActions();
   const handleMethodChange = (event: SelectChangeEvent) => {
     setMethod(event.target.value as Method);
@@ -72,12 +80,23 @@ export function RouteDialog({ onClose, open, data, parent, server }: Props) {
   const handleSave = () => {
     reportButtonClick(BUTTONS.ROUTE_DIALOG_SAVE);
 
+    // Prepare responses hash and active response ID
+    let responsesHash = data?.responsesHash || {};
+    let activeResponseId = data?.activeResponseId || '';
+
+    // If creating a new route and user wants default responses
+    if (!isEdit && createDefaultResponses) {
+      const defaultResponsesData = createDefaultResponsesHash(method);
+      responsesHash = defaultResponsesData.responsesHash;
+      activeResponseId = defaultResponsesData.activeResponseId;
+    }
+
     const newObj: Route = {
       description,
       routePath,
       method,
-      activeResponseId: data?.activeResponseId || '',
-      responsesHash: data?.responsesHash || {},
+      activeResponseId,
+      responsesHash,
       withParams: withParams && paramKey.length > 0 && paramValue.length > 0,
       paramKey: withParams ? paramKey : null,
       paramType,
@@ -180,6 +199,38 @@ export function RouteDialog({ onClose, open, data, parent, server }: Props) {
             setDescription(e.target.value);
           }}
         />
+
+        {!isEdit && (
+          <div
+            className="default-responses-section"
+            style={{ marginTop: '16px', marginBottom: '8px' }}
+          >
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={createDefaultResponses}
+                    onChange={(event) =>
+                      setCreateDefaultResponses(event.target.checked)
+                    }
+                  />
+                }
+                label="Create default responses with common status codes"
+              />
+            </FormGroup>
+            <Typography
+              color={
+                createDefaultResponses ? 'text.secondary' : 'text.disabled'
+              }
+              variant="body2"
+              gutterBottom
+              style={{ marginLeft: '14px' }}
+            >
+              Automatically creates responses for:{' '}
+              {getDefaultStatusCodesForMethod(method).join(', ')}
+            </Typography>
+          </div>
+        )}
 
         <div className="advanced-info">
           <FormGroup>

@@ -4,7 +4,6 @@ import { BASE_URL } from '../const/general';
 import { reportSendEvent } from './analytics';
 import { flattenObject } from './general';
 
-
 export const socket = io(BASE_URL);
 
 export const emitSocketEvent = (
