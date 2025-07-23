@@ -32,8 +32,6 @@ export function determineQueryType(query: string): GraphQlRouteType {
   return 'Query';
 }
 
-
-
 type TreeObject = {
   [key: string]: TreeObject | {};
 };

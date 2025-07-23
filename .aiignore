@@ -1,0 +1,272 @@
+# AI Assistant Ignore File
+# Files and directories that should be excluded from AI analysis
+
+# Dependencies and Build Output
+node_modules/
+release/
+dist/
+build/
+coverage/
+.erb/dll/
+
+# Logs and Temporary Files
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+*.pid
+*.seed
+*.pid.lock
+
+# Environment and Configuration
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.vscode/
+.idea/
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Git and Version Control
+.git/
+.gitignore
+.gitattributes
+*.patch
+*.diff
+
+# Package Manager Files
+package-lock.json
+yarn.lock
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test Coverage and Reports
+coverage/
+.nyc_output/
+*.lcov
+junit.xml
+test-results/
+
+# Cache Directories
+.cache/
+.temp/
+.tmp/
+*.cache
+.eslintcache
+.stylelintcache
+
+# Development Tools
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Compiled and Generated Files
+*.js.map
+*.css.map
+*.d.ts.map
+src/**/*.js
+src/**/*.d.ts
+!src/**/*.d.ts
+auto-generated/
+
+# Documentation Build Output
+docs/_site/
+docs/.jekyll-cache/
+docs/node_modules/
+
+# Platform-specific Files
+.electron-gyp/
+.cmake/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Large Media Files
+*.mov
+*.mp4
+*.avi
+*.mkv
+*.wmv
+*.flv
+*.webm
+*.m4v
+*.3gp
+
+# Large Image Files
+*.psd
+*.ai
+*.sketch
+*.fig
+*.xd
+
+# Database Files
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+
+# Backup Files
+*.backup
+*.bak
+*.old
+*~
+
+# Archive Files
+*.zip
+*.tar
+*.tar.gz
+*.tar.bz2
+*.rar
+*.7z
+
+# Binary Files
+*.exe
+*.dll
+*.so
+*.dylib
+*.bin
+*.app
+*.dmg
+*.pkg
+*.deb
+*.rpm
+
+# Certificate and Key Files
+*.p12
+*.key
+*.pem
+*.crt
+*.cer
+*.pfx
+*.p7b
+*.p7c
+*.spc
+*.csr
+
+# Sensitive Data Files
+secrets.json
+credentials.json
+*secret*
+*credential*
+*password*
+*token*
+*key*
+
+# User-specific Project Files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Temporary Office Files
+~$*
+*.tmp
+
+# macOS Metadata
+.AppleDouble
+.LSOverride
+Icon?
+
+# Windows Thumbnail Cache
+ehthumbs_vista.db
+
+# Folder Config Files
+[Dd]esktop.ini
+
+# Recycle Bin
+$RECYCLE.BIN/
+
+# VS Code Workspace Files
+*.code-workspace
+
+# JetBrains IDE Files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime Text Files
+*.sublime-project
+*.sublime-workspace
+
+# Emacs Files
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Vim Files
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+Session.vim
+.netrwhist
+
+# Project-specific Exclusions
+
+# User Project Data (should not be analyzed)
+projects/
+user-data/
+mock-data/
+
+# Large Test Files
+test-fixtures/large/
+test-data/big/
+sample-projects/enterprise/
+
+# Development Databases
+*.dev.db
+dev-database/
+local-storage/
+
+# Performance Test Results
+benchmarks/
+load-test-results/
+profiling-data/
+
+# Documentation Images (for size)
+docs/images/screenshots/
+docs/videos/
+assets/demo/
+
+# Third-party Assets
+vendor/
+third-party/
+external/
+
+# Generated Documentation
+api-docs/generated/
+swagger-output/
+typedoc-output/
+
+# Analytics and Tracking
+analytics-data/
+tracking/
+metrics/
+
+# Temporary Development Files
+playground/
+scratch/
+experiments/
+debug/

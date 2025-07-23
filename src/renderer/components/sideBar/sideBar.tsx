@@ -4,7 +4,13 @@ import { useEffect, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import FormControl from '@mui/material/FormControl';
 import ClearIcon from '@mui/icons-material/Clear';
-import { Divider, FilledInput, InputAdornment, InputLabel, Typography } from '@mui/material';
+import {
+  Divider,
+  FilledInput,
+  InputAdornment,
+  InputLabel,
+  Typography,
+} from '@mui/material';
 import { TreeItem2 } from '@mui/x-tree-view/TreeItem2';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import CloudQueueIcon from '@mui/icons-material/CloudQueue';
@@ -120,55 +126,51 @@ function filterServersHash(
   return filteredServersHash;
 }
 
-
 const buildPresetNodeId = (
   folderId: string | null,
   presetId?: string | null,
-)=>{
-  if(folderId && !presetId){
+) => {
+  if (folderId && !presetId) {
     return JSON.stringify({
       folderId,
     });
   }
 
-  if(folderId && presetId ){
-   return JSON.stringify({
+  if (folderId && presetId) {
+    return JSON.stringify({
       folderId,
       presetId,
     });
   }
-  return ''
-}
+  return '';
+};
 
-const parsePresetNodeId = (nodeId: string)=>{
-  return JSON.parse(
-    nodeId,
-  ) as {
+const parsePresetNodeId = (nodeId: string) => {
+  return JSON.parse(nodeId) as {
     folderId: string;
     presetId: string | null;
   };
-}
-
+};
 
 const buildRouteNodeId = (
   serverName: string | null,
   parentId?: string | null,
   routeId?: string | null,
-)=>{
-  if(serverName && !parentId && !routeId){
+) => {
+  if (serverName && !parentId && !routeId) {
     return JSON.stringify({
       serverName,
     });
   }
 
-  if(serverName && parentId && !routeId){
-   return JSON.stringify({
+  if (serverName && parentId && !routeId) {
+    return JSON.stringify({
       serverName,
       parentId,
     });
   }
-  
-  if(serverName && parentId && routeId){
+
+  if (serverName && parentId && routeId) {
     return JSON.stringify({
       serverName,
       parentId,
@@ -176,18 +178,16 @@ const buildRouteNodeId = (
     });
   }
 
-  return ''
-}
+  return '';
+};
 
-const parseRouteNodeId = (nodeId: string)=>{
-  return JSON.parse(
-    nodeId || '{}',
-  ) as {
+const parseRouteNodeId = (nodeId: string) => {
+  return JSON.parse(nodeId || '{}') as {
     serverName: string;
     parentId: string | null;
     routeId: string | null;
   };
-}
+};
 
 export function SideBar({
   onAddParent,
@@ -196,7 +196,9 @@ export function SideBar({
   onAddParent: (data: { serverName: string; data: RouteParent | null }) => void;
   selectedTab: MainSideBarTabs | null;
 }) {
-  const { setSelectedRoute, setSelectedPreset, 
+  const {
+    setSelectedRoute,
+    setSelectedPreset,
     selectedFolderId,
     selectedPresetId,
     selectedRouteId,
@@ -211,33 +213,51 @@ export function SideBar({
   const [isPresetDialogOpen, setIsPresetDialogOpen] = useState(false);
   const [presetFolderId, setPresetFolderId] = useState<string | null>(null);
 
-  const [routeNodeId, setRouteNodeId] = useState(buildRouteNodeId(selectedServerName || '', selectedParentId, selectedRouteId))
-  const [presetNodeId, setPresetNodeId] = useState(buildPresetNodeId(selectedFolderId || '', selectedPresetId))
+  const [routeNodeId, setRouteNodeId] = useState(
+    buildRouteNodeId(
+      selectedServerName || '',
+      selectedParentId,
+      selectedRouteId,
+    ),
+  );
+  const [presetNodeId, setPresetNodeId] = useState(
+    buildPresetNodeId(selectedFolderId || '', selectedPresetId),
+  );
 
+  useEffect(() => {
+    setRouteNodeId(
+      buildRouteNodeId(
+        selectedServerName || '',
+        selectedParentId,
+        selectedRouteId,
+      ),
+    );
+  }, [selectedServerName, selectedParentId, selectedRouteId]);
 
-  useEffect(()=>{
-    setRouteNodeId(buildRouteNodeId(selectedServerName || '', selectedParentId, selectedRouteId))
-  }, [selectedServerName, selectedParentId, selectedRouteId])
-
-  useEffect(()=>{
-    setPresetNodeId(buildPresetNodeId(selectedFolderId || '', selectedPresetId))
-  }, [selectedFolderId, selectedPresetId])
-
+  useEffect(() => {
+    setPresetNodeId(
+      buildPresetNodeId(selectedFolderId || '', selectedPresetId),
+    );
+  }, [selectedFolderId, selectedPresetId]);
 
   const renderRoutes = (_serversHash: ServersHash, isSearch: boolean) => {
     return (
       <SimpleTreeView
-        defaultExpandedItems={
-          [
-            buildRouteNodeId(selectedServerName),
-            buildRouteNodeId(selectedServerName, selectedParentId),
-            buildRouteNodeId(selectedServerName, selectedParentId, selectedRouteId),
-          ]
-        }
+        defaultExpandedItems={[
+          buildRouteNodeId(selectedServerName),
+          buildRouteNodeId(selectedServerName, selectedParentId),
+          buildRouteNodeId(
+            selectedServerName,
+            selectedParentId,
+            selectedRouteId,
+          ),
+        ]}
         selectedItems={routeNodeId}
         defaultSelectedItems={routeNodeId}
         onSelectedItemsChange={(e, nodeId) => {
-          const { parentId, routeId, serverName } = parseRouteNodeId(nodeId || '{}') 
+          const { parentId, routeId, serverName } = parseRouteNodeId(
+            nodeId || '{}',
+          );
 
           if (serverName === 'createServer') {
             reportElementClick(ELEMENTS.SIDE_BAR_ROUTES_TREE_CREATE_SERVER_ROW);
@@ -265,8 +285,8 @@ export function SideBar({
       >
         {Object.keys(_serversHash).map((serverKey) => {
           const server = _serversHash[serverKey];
-          
-          const serverId = buildRouteNodeId(server.name)
+
+          const serverId = buildRouteNodeId(server.name);
 
           return (
             <TreeItem2
@@ -285,7 +305,11 @@ export function SideBar({
                     >
                       {Object.values(parent.graphQlRouteHash || {})?.map(
                         (route) => {
-                          const routeId = buildRouteNodeId(server.name, parent.id, route.id);
+                          const routeId = buildRouteNodeId(
+                            server.name,
+                            parent.id,
+                            route.id,
+                          );
                           return (
                             <TreeItem
                               itemId={routeId}
@@ -308,7 +332,11 @@ export function SideBar({
                     label={<CustomLabel label={parent.path} />}
                   >
                     {Object.values(parent.routesHash || {})?.map((route) => {
-                      const routeId = buildRouteNodeId(server.name, parent.id, route.id);
+                      const routeId = buildRouteNodeId(
+                        server.name,
+                        parent.id,
+                        route.id,
+                      );
 
                       return (
                         <TreeItem
@@ -341,7 +369,7 @@ export function SideBar({
         })}
         {!isSearch && (
           <TreeItem2
-            itemId={buildRouteNodeId( 'createServer' )}
+            itemId={buildRouteNodeId('createServer')}
             label={<CustomLabel label="new server" Icon={AddOutlinedIcon} />}
           />
         )}
@@ -352,14 +380,16 @@ export function SideBar({
   const renderRoutesTab = () => {
     return (
       <div className="parent-tree-view-container">
-        <div style={{
-          display:'flex',
-          alignItems:'center',
-          paddingLeft: '8px'
-        }}>
-          <Typography variant='h6'>Routes</Typography>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            paddingLeft: '8px',
+          }}
+        >
+          <Typography variant="h6">Routes</Typography>
         </div>
-        <Divider></Divider>
+        <Divider />
         {renderRoutes(serversHash, false)}
       </div>
     );
@@ -415,7 +445,7 @@ export function SideBar({
         ]}
         selectedItems={presetNodeId}
         onSelectedItemsChange={(e, nodeId) => {
-          const { presetId, folderId } = parsePresetNodeId(nodeId || '{}')
+          const { presetId, folderId } = parsePresetNodeId(nodeId || '{}');
 
           if (folderId === 'createPresetsFolder') {
             setIsPresetFolderDialogOpen(true);
@@ -465,7 +495,7 @@ export function SideBar({
         })}
         {!isSearch && (
           <TreeItem2
-            itemId={buildPresetNodeId( 'createPresetsFolder' )}
+            itemId={buildPresetNodeId('createPresetsFolder')}
             label={
               <CustomLabel
                 label="New folder"
@@ -481,14 +511,16 @@ export function SideBar({
   const renderPresetsTab = () => {
     return (
       <div className="parent-tree-view-container">
-        <div style={{
-          display:'flex',
-          alignItems:'center',
-          paddingLeft: '8px'
-        }}>
-          <Typography variant='h6'>Presets</Typography>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            paddingLeft: '8px',
+          }}
+        >
+          <Typography variant="h6">Presets</Typography>
         </div>
-        <Divider></Divider>
+        <Divider />
         {renderPresets(presetFoldersHash, false)}
       </div>
     );
