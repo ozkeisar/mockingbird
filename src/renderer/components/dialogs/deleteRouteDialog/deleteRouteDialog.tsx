@@ -8,15 +8,18 @@ import {
 } from '@mui/material';
 import { BUTTONS } from '../../../../consts/analytics';
 import { reportButtonClick } from '../../../utils';
+import { PresetUsageWarning } from '../../presetUsageWarning';
 
 export function DeleteRouteDialog({
   open,
   onClose,
   onConfirm,
+  presets,
 }: {
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  presets?: { folder: string; preset: string }[];
 }) {
   const handleDelete = () => {
     reportButtonClick(BUTTONS.DELETE_ROUTE_DIALOG_DELETE);
@@ -44,6 +47,8 @@ export function DeleteRouteDialog({
         <DialogContentText id="alert-dialog-description">
           this will permanently delete the route and all its responses
         </DialogContentText>
+
+        <PresetUsageWarning usedInPresets={presets || []} entityType="route" />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} autoFocus>

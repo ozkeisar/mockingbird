@@ -13,6 +13,7 @@ import { ProjectServer, RouteParent } from '../../../../types';
 import { EVENT_KEYS } from '../../../../types/events';
 import { useProjectStore } from '../../../state/project';
 import { emitSocketEvent, reportButtonClick, socket } from '../../../utils';
+import { PresetUsageWarning } from '../../presetUsageWarning';
 
 export function DeleteParentDialog({
   server,
@@ -27,9 +28,13 @@ export function DeleteParentDialog({
 }) {
   const { activeProjectName, removeParent, setHasDiffs } = useProjectStore();
   const [isLoading, setIsLoading] = useState(false);
+  const [isCheckingPresets, setIsCheckingPresets] = useState(false);
+  const [usedInPresets, setUsedInPresets] = useState<
+    { folderName: string; presetName: string }[]
+  >([]);
 
   useEffect(() => {
-    const onEvent = (arg: any) => {
+    const onDeleteEvent = (arg: any) => {
       setIsLoading(false);
       const { success, projectName, serverName, parentId, hasDiffs } = arg;
       setHasDiffs(hasDiffs);
@@ -38,12 +43,35 @@ export function DeleteParentDialog({
         onClose();
       }
     };
-    socket.on(EVENT_KEYS.DELETE_PARENT, onEvent);
+
+    const onCheckPresetUsageEvent = (arg: any) => {
+      setIsCheckingPresets(false);
+      const { success, usedInPresets: presets } = arg;
+      if (success) {
+        setUsedInPresets(presets || []);
+      }
+    };
+
+    socket.on(EVENT_KEYS.DELETE_PARENT, onDeleteEvent);
+    socket.on(EVENT_KEYS.CHECK_PARENT_PRESET_USAGE, onCheckPresetUsageEvent);
 
     return () => {
-      socket.off(EVENT_KEYS.DELETE_PARENT, onEvent);
+      socket.off(EVENT_KEYS.DELETE_PARENT, onDeleteEvent);
+      socket.off(EVENT_KEYS.CHECK_PARENT_PRESET_USAGE, onCheckPresetUsageEvent);
     };
   }, [activeProjectName, onClose, removeParent, setHasDiffs]);
+
+  useEffect(() => {
+    if (open && activeProjectName) {
+      setIsCheckingPresets(true);
+      setUsedInPresets([]);
+      emitSocketEvent(EVENT_KEYS.CHECK_PARENT_PRESET_USAGE, {
+        projectName: activeProjectName,
+        serverName: server.name,
+        parentId: parent.id,
+      });
+    }
+  }, [open, activeProjectName, server.name, parent.id]);
 
   const handleDelete = () => {
     reportButtonClick(BUTTONS.DELETE_PARENT_DIALOG_DELETE);
@@ -77,6 +105,12 @@ export function DeleteParentDialog({
         <DialogContentText id="alert-dialog-description">
           this will permanently delete the parent and all its routes
         </DialogContentText>
+
+        <PresetUsageWarning
+          isChecking={isCheckingPresets}
+          usedInPresets={usedInPresets}
+          entityType="parent"
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} autoFocus>

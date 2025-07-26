@@ -8,15 +8,18 @@ import {
 } from '@mui/material';
 import { BUTTONS } from '../../../../consts/analytics';
 import { reportButtonClick } from '../../../utils';
+import { PresetUsageWarning } from '../../presetUsageWarning';
 
 export function DeleteResponseDialog({
   open,
   onClose,
   onConfirm,
+  presets,
 }: {
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  presets?: { folder: string; preset: string }[];
 }) {
   const handleDelete = () => {
     reportButtonClick(BUTTONS.DELETE_RESPONSE_DIALOG_DELETE);
@@ -44,6 +47,11 @@ export function DeleteResponseDialog({
         <DialogContentText id="alert-dialog-description">
           this will permanently delete the response and its data
         </DialogContentText>
+
+        <PresetUsageWarning
+          usedInPresets={presets || []}
+          entityType="response"
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} autoFocus>

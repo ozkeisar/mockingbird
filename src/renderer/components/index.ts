@@ -8,5 +8,6 @@ export * from './dialogs';
 export * from './errorBoundary';
 export * from './globalEvents';
 export * from './logRow';
+export * from './presetUsageWarning';
 export * from './projectDataUnsupported';
 export * from './tabs';

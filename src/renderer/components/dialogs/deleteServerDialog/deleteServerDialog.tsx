@@ -13,6 +13,7 @@ import { ProjectServer } from '../../../../types';
 import { EVENT_KEYS } from '../../../../types/events';
 import { useProjectStore } from '../../../state/project';
 import { emitSocketEvent, reportButtonClick, socket } from '../../../utils';
+import { PresetUsageWarning } from '../../presetUsageWarning';
 
 export function DeleteServerDialog({
   server,
@@ -25,9 +26,13 @@ export function DeleteServerDialog({
 }) {
   const { activeProjectName, removeServer, setHasDiffs } = useProjectStore();
   const [isLoading, setIsLoading] = useState(false);
+  const [isCheckingPresets, setIsCheckingPresets] = useState(false);
+  const [usedInPresets, setUsedInPresets] = useState<
+    { folderName: string; presetName: string }[]
+  >([]);
 
   useEffect(() => {
-    const onEvent = (arg: any) => {
+    const onDeleteEvent = (arg: any) => {
       setIsLoading(false);
       const { success, projectName, serverName, hasDiffs } = arg;
       setHasDiffs(hasDiffs);
@@ -36,12 +41,34 @@ export function DeleteServerDialog({
         onClose();
       }
     };
-    socket.on(EVENT_KEYS.DELETE_SERVER, onEvent);
+
+    const onCheckPresetUsageEvent = (arg: any) => {
+      setIsCheckingPresets(false);
+      const { success, usedInPresets: presets } = arg;
+      if (success) {
+        setUsedInPresets(presets || []);
+      }
+    };
+
+    socket.on(EVENT_KEYS.DELETE_SERVER, onDeleteEvent);
+    socket.on(EVENT_KEYS.CHECK_SERVER_PRESET_USAGE, onCheckPresetUsageEvent);
 
     return () => {
-      socket.off(EVENT_KEYS.DELETE_SERVER, onEvent);
+      socket.off(EVENT_KEYS.DELETE_SERVER, onDeleteEvent);
+      socket.off(EVENT_KEYS.CHECK_SERVER_PRESET_USAGE, onCheckPresetUsageEvent);
     };
   }, [activeProjectName, onClose, removeServer, setHasDiffs]);
+
+  useEffect(() => {
+    if (open && activeProjectName) {
+      setIsCheckingPresets(true);
+      setUsedInPresets([]);
+      emitSocketEvent(EVENT_KEYS.CHECK_SERVER_PRESET_USAGE, {
+        projectName: activeProjectName,
+        serverName: server.name,
+      });
+    }
+  }, [open, activeProjectName, server.name]);
 
   const handleDelete = () => {
     reportButtonClick(BUTTONS.DELETE_SERVER_DIALOG_DELETE);
@@ -73,6 +100,12 @@ export function DeleteServerDialog({
         <DialogContentText id="alert-dialog-description">
           this will permanently delete the server and all its routes
         </DialogContentText>
+
+        <PresetUsageWarning
+          isChecking={isCheckingPresets}
+          usedInPresets={usedInPresets}
+          entityType="server"
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} autoFocus>
