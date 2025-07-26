@@ -496,3 +496,64 @@ export async function isDirectoryEmpty(projectName: string): Promise<boolean> {
     return false; // or throw, depending on your error handling strategy
   }
 }
+
+export const checkParentUsageInPresets = async (
+  projectName: string,
+  serverName: string,
+  parentId: string,
+) => {
+  const presetFolders = await getProjectPresets(projectName);
+  const usedInPresets: { folderName: string; presetName: string }[] = [];
+
+  presetFolders.forEach((folder) => {
+    if (folder.presetsHash) {
+      Object.values(folder.presetsHash).forEach((preset) => {
+        if (preset.routesHash) {
+          const hasRouteInParent = Object.values(preset.routesHash).some(
+            (presetRoute) =>
+              presetRoute.serverId === serverName &&
+              presetRoute.parentId === parentId,
+          );
+
+          if (hasRouteInParent) {
+            usedInPresets.push({
+              folderName: folder.name,
+              presetName: preset.name,
+            });
+          }
+        }
+      });
+    }
+  });
+
+  return usedInPresets;
+};
+
+export const checkServerUsageInPresets = async (
+  projectName: string,
+  serverName: string,
+) => {
+  const presetFolders = await getProjectPresets(projectName);
+  const usedInPresets: { folderName: string; presetName: string }[] = [];
+
+  presetFolders.forEach((folder) => {
+    if (folder.presetsHash) {
+      Object.values(folder.presetsHash).forEach((preset) => {
+        if (preset.routesHash) {
+          const hasRouteInServer = Object.values(preset.routesHash).some(
+            (presetRoute) => presetRoute.serverId === serverName,
+          );
+
+          if (hasRouteInServer) {
+            usedInPresets.push({
+              folderName: folder.name,
+              presetName: preset.name,
+            });
+          }
+        }
+      });
+    }
+  });
+
+  return usedInPresets;
+};

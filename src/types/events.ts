@@ -16,6 +16,8 @@ export enum EVENT_KEYS {
   PROJECT_DATA_IS_UNSUPPORTED = 'projectDataIsUnsupported',
   DELETE_SERVER = 'deleteServer',
   DELETE_PARENT = 'deleteParent',
+  CHECK_PARENT_PRESET_USAGE = 'checkParentPresetUsage',
+  CHECK_SERVER_PRESET_USAGE = 'checkServerPresetUsage',
   BRANCH_LIST = 'branchList',
   PROJECT_DATA = 'projectData',
   CHECKOUT_TO_BRANCH = 'checkoutToBranch',

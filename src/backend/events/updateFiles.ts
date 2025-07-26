@@ -1,6 +1,8 @@
 import { Socket } from 'socket.io';
 import { SUPPORTED_PROJECT_DATA_VERSION } from '../../consts';
 import {
+  checkParentUsageInPresets,
+  checkServerUsageInPresets,
   createNewServer,
   deleteParent,
   deleteServer,
@@ -87,6 +89,26 @@ export const updateFilesEvents = (socket: Socket) => {
     }
   });
 
+  socket.on(EVENT_KEYS.CHECK_SERVER_PRESET_USAGE, async (arg) => {
+    try {
+      const { projectName, serverName } = arg;
+
+      const usedInPresets = await checkServerUsageInPresets(
+        projectName,
+        serverName,
+      );
+
+      socket.emit(EVENT_KEYS.CHECK_SERVER_PRESET_USAGE, {
+        success: true,
+        usedInPresets,
+        projectName,
+        serverName,
+      });
+    } catch (error) {
+      socket.emit(EVENT_KEYS.CHECK_SERVER_PRESET_USAGE, { success: false });
+    }
+  });
+
   socket.on(EVENT_KEYS.DELETE_SERVER, async (arg) => {
     try {
       const { projectName, serverName } = arg;
@@ -103,6 +125,28 @@ export const updateFilesEvents = (socket: Socket) => {
       });
     } catch (error) {
       socket.emit(EVENT_KEYS.DELETE_SERVER, { success: false });
+    }
+  });
+
+  socket.on(EVENT_KEYS.CHECK_PARENT_PRESET_USAGE, async (arg) => {
+    try {
+      const { projectName, serverName, parentId } = arg;
+
+      const usedInPresets = await checkParentUsageInPresets(
+        projectName,
+        serverName,
+        parentId,
+      );
+
+      socket.emit(EVENT_KEYS.CHECK_PARENT_PRESET_USAGE, {
+        success: true,
+        usedInPresets,
+        projectName,
+        serverName,
+        parentId,
+      });
+    } catch (error) {
+      socket.emit(EVENT_KEYS.CHECK_PARENT_PRESET_USAGE, { success: false });
     }
   });
 

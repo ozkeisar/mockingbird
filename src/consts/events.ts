@@ -170,4 +170,12 @@ export const EVENTS_SNACKBAR: EventsSnackbarType = {
     success: null,
     fail: null,
   },
+  [EVENT_KEYS.CHECK_PARENT_PRESET_USAGE]: {
+    success: null,
+    fail: 'failed to check preset usage',
+  },
+  [EVENT_KEYS.CHECK_SERVER_PRESET_USAGE]: {
+    success: null,
+    fail: 'failed to check preset usage',
+  },
 };
