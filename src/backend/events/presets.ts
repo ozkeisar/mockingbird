@@ -2,16 +2,15 @@ import { Socket } from 'socket.io';
 import serialize from 'serialize-javascript';
 import fs from 'fs';
 import {
-  replaceUndefined,
   deletePresetFolder,
-  getPresetsPath,
   getProjectServers,
-  updateProjectSupportedDataVersion,
   updateServerData,
+  getPresetsPath,
+  updateProjectSupportedDataVersion,
 } from '../utils';
 import { hasUncommittedChanges } from '../utils/git';
 import { EVENT_KEYS } from '../../types/events';
-import { listToHashmap } from '../utils/utils';
+import { listToHashmap, replaceUndefined } from '../utils/utils';
 import { Preset } from '../../types';
 import { updateClientProjectData } from '../utils/events';
 

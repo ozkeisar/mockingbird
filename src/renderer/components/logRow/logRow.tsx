@@ -20,6 +20,8 @@ type props = {
   windowWidth: number;
   onRowClick: (id: string) => void;
   openRows: { [key: string]: boolean };
+  selectedLogIds?: Set<string>;
+  onLogSelection?: (logId: string, selected: boolean) => void;
   onAddParentClick: ({
     serverName,
     data,
@@ -69,6 +71,8 @@ function LogRow({
   setSize,
   windowWidth,
   onRowClick,
+  selectedLogIds = new Set(),
+  onLogSelection,
   onAddParentClick,
   onAddRouteClick,
   onAddResponseClick,
@@ -100,6 +104,8 @@ function LogRow({
           setSize={setSize}
           windowWidth={windowWidth}
           onRowClick={onRowClick}
+          selectedLogIds={selectedLogIds}
+          onLogSelection={onLogSelection}
           onAddParentClick={onAddParentClick}
           onAddQueryClick={onAddQueryClick}
           onAddQueryResponseClick={onAddQueryResponseClick}
@@ -115,6 +121,8 @@ function LogRow({
       setSize={setSize}
       windowWidth={windowWidth}
       onRowClick={onRowClick}
+      selectedLogIds={selectedLogIds}
+      onLogSelection={onLogSelection}
       onAddParentClick={onAddParentClick}
       onAddRouteClick={onAddRouteClick}
       onAddResponseClick={onAddResponseClick}

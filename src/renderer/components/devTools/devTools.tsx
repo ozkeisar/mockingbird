@@ -5,6 +5,7 @@ import { CommandsTerminal } from './terminal/terminal';
 import { RightTopBar } from './rightTopBar/rightTopBar';
 import styles from './devTools.module.css';
 import { ConsoleDialog } from '../dialogs/consoleDialog';
+import { CreatePresetFromLogsDialog } from '../dialogs/createPresetFromLogsDialog';
 import { reportButtonClick } from '../../utils';
 import { BUTTONS } from '../../../consts/analytics';
 import { ServersLogs } from './serversLogs';
@@ -29,6 +30,8 @@ function DevTools({ onMinimize, onCenter, onMaximize, devToolsHeight }: Props) {
   const [openConsoleDialog, setOpenConsoleDialog] = useState(false);
   const [search, setSearch] = useState('');
   const serversLogsRef = useRef<{ clear: () => void } | null>(null);
+  const [selectedLogIds, setSelectedLogIds] = useState<Set<string>>(new Set());
+  const [openCreatePresetDialog, setOpenCreatePresetDialog] = useState(false);
 
   const [selectedId, setSelectedId] = useState<TabIds>('console');
   const showClear = ['console', 'serversLogs'].includes(selectedId);
@@ -38,9 +41,26 @@ function DevTools({ onMinimize, onCenter, onMaximize, devToolsHeight }: Props) {
     reportButtonClick(BUTTONS.CONSOLE_CLEAR);
     if (selectedId === 'console') {
       resetLoggerState();
+      setSelectedLogIds(new Set());
     } else if (selectedId === 'serversLogs' && serversLogsRef.current?.clear) {
       serversLogsRef.current.clear();
     }
+  };
+
+  const handleCreatePreset = () => {
+    setOpenCreatePresetDialog(true);
+  };
+
+  const handleLogSelection = (logId: string, selected: boolean) => {
+    setSelectedLogIds((prev) => {
+      const newSet = new Set(prev);
+      if (selected) {
+        newSet.add(logId);
+      } else {
+        newSet.delete(logId);
+      }
+      return newSet;
+    });
   };
 
   const tabs: Tab[] = [
@@ -90,12 +110,14 @@ function DevTools({ onMinimize, onCenter, onMaximize, devToolsHeight }: Props) {
           onMaximize={onMaximize}
           onClear={handleClear}
           onFullScreen={() => setOpenConsoleDialog(true)}
+          onCreatePreset={handleCreatePreset}
           showMaximize={devToolsHeight !== '100%'}
           showMinimize={devToolsHeight !== 40}
           showCenter={devToolsHeight !== '50%'}
           showFullScreen={isConsole}
           showClear={showClear}
           showSearch={isConsole}
+          showCreatePreset={isConsole && selectedLogIds.size > 0}
         />
       </div>
 
@@ -118,7 +140,13 @@ function DevTools({ onMinimize, onCenter, onMaximize, devToolsHeight }: Props) {
           <ServersLogs ref={serversLogsRef} />
         </div>
 
-        {selectedId === 'console' && <Console search={search} />}
+        {selectedId === 'console' && (
+          <Console
+            search={search}
+            selectedLogIds={selectedLogIds}
+            onLogSelection={handleLogSelection}
+          />
+        )}
 
         {/* {selectedId === 2 && <div>Logger Component</div>} */}
       </div>
@@ -126,6 +154,13 @@ function DevTools({ onMinimize, onCenter, onMaximize, devToolsHeight }: Props) {
         <ConsoleDialog
           open={openConsoleDialog}
           onClose={() => setOpenConsoleDialog(false)}
+        />
+      )}
+      {openCreatePresetDialog && (
+        <CreatePresetFromLogsDialog
+          open={openCreatePresetDialog}
+          onClose={() => setOpenCreatePresetDialog(false)}
+          selectedLogIds={selectedLogIds}
         />
       )}
     </>

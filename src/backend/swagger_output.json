@@ -51,6 +51,19 @@
         }
       }
     },
+    "/presets/create-from-logs": {
+      "post": {
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/routes/{projectName}/{serverName}/{parentId}/{routeId}": {
       "get": {
         "description": "",

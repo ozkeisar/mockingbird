@@ -1,7 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import JsonView from '@uiw/react-json-view';
 import { vscodeTheme } from '@uiw/react-json-view/vscode';
-import { Button, IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
+import {
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Tooltip,
+  Checkbox,
+} from '@mui/material';
 import { parse } from 'graphql';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {
@@ -72,6 +79,8 @@ type props = {
   windowWidth: number;
   onRowClick: (id: string) => void;
   openRows: { [key: string]: boolean };
+  selectedLogIds?: Set<string>;
+  onLogSelection?: (logId: string, selected: boolean) => void;
   onAddParentClick: ({
     serverName,
     data,
@@ -107,6 +116,8 @@ export function GraphqlLogRow({
   setSize,
   windowWidth,
   onRowClick,
+  selectedLogIds = new Set(),
+  onLogSelection,
   onAddParentClick,
   onAddQueryClick,
   onAddQueryResponseClick,
@@ -157,9 +168,22 @@ export function GraphqlLogRow({
     server,
   );
 
+  const isSelected = selectedLogIds.has(logData.metadata.id);
+
   useEffect(() => {
     setSize(index, rowRef?.current?.getBoundingClientRect().height);
   }, [setSize, index, windowWidth, isOpen]);
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    if (onLogSelection) {
+      onLogSelection(logData.metadata.id, e.target.checked);
+    }
+  };
+
+  const handleCheckboxClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+  };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -282,6 +306,14 @@ export function GraphqlLogRow({
         }}
       >
         <div className="type-e-url">
+          <Checkbox
+            size="small"
+            checked={isSelected}
+            onChange={handleCheckboxChange}
+            onClick={handleCheckboxClick}
+            sx={{ mr: 1 }}
+            disabled
+          />
           <div className="type" style={{ backgroundColor: getBGColor(type) }}>
             {type}
             <div

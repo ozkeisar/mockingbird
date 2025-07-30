@@ -21,9 +21,15 @@ import { GraphqlResponseDialog } from '../../dialogs/graphqlResponseDialog';
 
 type Props = {
   search?: string | null;
+  selectedLogIds?: Set<string>;
+  onLogSelection?: (logId: string, selected: boolean) => void;
 };
 
-export function Console({ search }: Props) {
+export function Console({
+  search,
+  selectedLogIds = new Set(),
+  onLogSelection,
+}: Props) {
   const { serverLogs } = useLoggerStore();
   const { serversHash } = useProjectStore();
 
@@ -197,6 +203,8 @@ export function Console({ search }: Props) {
                             return prev;
                           });
                         }}
+                        selectedLogIds={selectedLogIds}
+                        onLogSelection={onLogSelection}
                       />
                     </div>
                   )}

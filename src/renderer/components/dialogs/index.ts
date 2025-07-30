@@ -2,6 +2,7 @@ export * from './activationDialog';
 export * from './branchDialog';
 export * from './checkoutBranchDialog';
 export * from './cloneDialog';
+export * from './createPresetFromLogsDialog';
 export * from './deleteParentDialog';
 export * from './deletePresetDialog';
 export * from './deletePresetFolderDialog';
