@@ -166,7 +166,7 @@ export const ensureParentExists = (
   const newParent = createNewParent(parentPath);
 
   if (!server.parentRoutesHash) {
-    server.parentRoutesHash = {};
+    server.parentRoutesHash = Object.create(null);
   }
   server.parentRoutesHash[newParent.id] = newParent;
 
