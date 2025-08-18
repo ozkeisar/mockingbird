@@ -1,9 +1,10 @@
-import { IconButton, InputBase, Tooltip } from '@mui/material';
+import { IconButton, InputBase, Tooltip, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import VerticalAlignCenterIcon from '@mui/icons-material/VerticalAlignCenter';
+import AddIcon from '@mui/icons-material/Add';
 import styles from './RightTopBar.module.css';
 
 type Props = {
@@ -14,12 +15,14 @@ type Props = {
   onCenter: () => void;
   onClear: () => void;
   onFullScreen: () => void;
+  onCreatePreset?: () => void;
   showMaximize: boolean;
   showMinimize: boolean;
   showFullScreen: boolean;
   showClear: boolean;
   showSearch: boolean;
   showCenter: boolean;
+  showCreatePreset?: boolean;
 };
 
 export function RightTopBar({
@@ -30,15 +33,29 @@ export function RightTopBar({
   onClear,
   onFullScreen,
   onCenter,
+  onCreatePreset,
   showMaximize,
   showMinimize,
   showCenter,
   showFullScreen,
   showClear,
   showSearch,
+  showCreatePreset,
 }: Props) {
   return (
     <div className={styles.endContainer}>
+      {showCreatePreset && (
+        <Button
+          variant="text"
+          size="small"
+          startIcon={<AddIcon />}
+          onClick={onCreatePreset}
+          sx={{ mr: 1 }}
+        >
+          Create Preset
+        </Button>
+      )}
+
       {showSearch && (
         <div className={styles.inputWrapper}>
           <InputBase

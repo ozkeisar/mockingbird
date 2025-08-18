@@ -100,6 +100,8 @@ export enum BUTTONS {
   IMPORT_SWAGGER_DIALOG_IMPORT = 'import swagger dialog import',
   IMPORT_SWAGGER_DIALOG_CLOSE = 'import swagger dialog close',
   SERVER_DETAILS_IMPORT = 'server details import',
+  CREATE_PRESET_FROM_LOGS_SAVE = 'create preset from logs save',
+  CREATE_PRESET_FROM_LOGS_CLOSE = 'create preset from logs close',
 }
 
 export enum ELEMENTS {

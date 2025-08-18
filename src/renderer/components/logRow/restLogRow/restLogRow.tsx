@@ -5,7 +5,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import './restLogRow.css';
 import JsonView from '@uiw/react-json-view';
 import { vscodeTheme } from '@uiw/react-json-view/vscode';
-import { Button, IconButton, Tooltip } from '@mui/material';
+import { Button, IconButton, Tooltip, Checkbox } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {
   formatDate,
@@ -86,6 +86,8 @@ type props = {
   windowWidth: number;
   onRowClick: (id: string) => void;
   openRows: { [key: string]: boolean };
+  selectedLogIds?: Set<string>;
+  onLogSelection?: (logId: string, selected: boolean) => void;
   onAddParentClick: (data: {
     data: Partial<RouteParent>;
     serverName?: string;
@@ -118,6 +120,8 @@ export function RestLogRow({
   setSize,
   windowWidth,
   onRowClick,
+  selectedLogIds = new Set(),
+  onLogSelection,
   onAddParentClick,
   onAddRouteClick,
   onAddResponseClick,
@@ -178,10 +182,22 @@ export function RestLogRow({
   );
 
   const routeExist = !!matchedRoute;
+  const isSelected = selectedLogIds.has(logData.metadata.id);
 
   useEffect(() => {
     setSize(index, rowRef?.current?.getBoundingClientRect().height);
   }, [setSize, index, windowWidth, isOpen]);
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    if (onLogSelection) {
+      onLogSelection(logData.metadata.id, e.target.checked);
+    }
+  };
+
+  const handleCheckboxClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+  };
 
   const getBGColor = () => {
     switch (type) {
@@ -305,6 +321,13 @@ export function RestLogRow({
         }}
       >
         <div className="type-e-url">
+          <Checkbox
+            size="small"
+            checked={isSelected}
+            onChange={handleCheckboxChange}
+            onClick={handleCheckboxClick}
+            sx={{ mr: 1 }}
+          />
           <div className="type" style={{ backgroundColor: getBGColor() }}>
             {type}
             <div
@@ -321,6 +344,7 @@ export function RestLogRow({
               {logData.response.status}
             </div>
           </div>
+          <div style={{ marginRight: '8px' }}> {logData.request.method}</div>
           <Tooltip title={logData.request.url}>
             <div>
               <div

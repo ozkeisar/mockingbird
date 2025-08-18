@@ -7,6 +7,9 @@ import {
 import { listToHashmap } from '../utils/utils';
 import { emitGlobalSocketMessage } from '../socket';
 import { EVENT_KEYS } from '../../types/events';
+import { validateCreatePresetFromLogs } from '../middleware/presetValidation';
+import { createPresetFromLogs } from '../services/presetCreationService';
+import { CreatePresetRequest } from '../utils/presetHelpers';
 
 const presetsRouter = Router();
 
@@ -59,6 +62,36 @@ presetsRouter.get(
       res.status(500).send({
         success: false,
         message: error?.message || 'fail to apply preset',
+      });
+    }
+  },
+);
+
+presetsRouter.post(
+  '/create-from-logs',
+  validateCreatePresetFromLogs,
+  async (req: Request, res: Response) => {
+    try {
+      const result = await createPresetFromLogs(
+        req.body as CreatePresetRequest,
+      );
+
+      if (!result.success) {
+        const statusCode = result.message?.includes('not found') ? 404 : 400;
+        return res.status(statusCode).json(result);
+      }
+
+      // Trigger client reload on success
+      emitGlobalSocketMessage(EVENT_KEYS.RELOAD, {
+        projectName: result.projectName,
+      });
+
+      return res.status(201).json(result);
+    } catch (error: any) {
+      console.error('Unexpected error in create-from-logs endpoint:', error);
+      return res.status(500).json({
+        success: false,
+        message: 'Internal server error',
       });
     }
   },
