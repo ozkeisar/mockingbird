@@ -1,6 +1,6 @@
 import { getCurrentIPAddresses } from './utils';
 import { server } from './app';
-import { initAnalytics } from './utils/analytics';
+import { initAnalytics, cleanupAnalytics } from './utils/analytics';
 
 export const startInternalServer = async (
   port: number,
@@ -24,6 +24,9 @@ export const startInternalServer = async (
 };
 
 export const closeInternalServer = () => {
+  // Cleanup analytics intervals
+  cleanupAnalytics();
+
   if (server) {
     server.close();
 

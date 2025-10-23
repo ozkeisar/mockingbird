@@ -4,7 +4,7 @@ import * as amplitude from '@amplitude/analytics-node';
 import { init, identify, Identify } from '@amplitude/analytics-node';
 import pj from '../../../package.json';
 
-let aliveInterval: any | null = null;
+let aliveInterval: NodeJS.Timeout | null = null;
 const second = 60 * 1000;
 const minutes = second * 60;
 
@@ -36,13 +36,26 @@ export const initAnalytics = async ({
     platform,
   });
 
+  // Clear any existing interval to prevent memory leaks
   if (aliveInterval !== null) {
     clearInterval(aliveInterval);
   }
 
+  // Send "alive" heartbeat every 30 minutes
   aliveInterval = setInterval(() => {
     reportEvent('alive', {});
   }, minutes * 30);
+};
+
+/**
+ * Cleanup function to clear analytics intervals
+ * Should be called on application shutdown
+ */
+export const cleanupAnalytics = () => {
+  if (aliveInterval !== null) {
+    clearInterval(aliveInterval);
+    aliveInterval = null;
+  }
 };
 
 // export const reportCommandExecuted = (

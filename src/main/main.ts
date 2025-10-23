@@ -36,6 +36,7 @@ autoUpdater.autoDownload = true;
 autoUpdater.autoInstallOnAppQuit = true;
 
 let clearAutoUpdateInterval: ReturnType<typeof setInterval> | null = null;
+let clearIPDetection: (() => void) | null = null;
 let updateAvailable = false;
 
 const checkForUpdate = () => {
@@ -144,7 +145,8 @@ const createWindow = async () => {
     return { action: 'deny' };
   });
 
-  detectIPAddressChanges((ip: string) => {
+  // Store cleanup function to prevent memory leak
+  clearIPDetection = detectIPAddressChanges((ip: string) => {
     mainWindow?.webContents.send(EVENT_KEYS.IP_CHANGED, { ip });
   });
 
@@ -200,12 +202,22 @@ app.on('window-all-closed', () => {
   if (clearAutoUpdateInterval) {
     clearInterval(clearAutoUpdateInterval);
   }
+  if (clearIPDetection) {
+    clearIPDetection();
+  }
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
 app.on('before-quit', () => {
+  // Cleanup intervals to prevent memory leaks
+  if (clearIPDetection) {
+    clearIPDetection();
+  }
+  if (clearAutoUpdateInterval) {
+    clearInterval(clearAutoUpdateInterval);
+  }
   closeProjectServers();
   closeInternalServer();
 });

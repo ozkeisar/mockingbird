@@ -87,9 +87,10 @@ export const getCurrentIPAddresses = () => {
   return ipAddresses;
 };
 
-export const detectIPAddressChanges = (callback: (ip: string) => void) => {
+export const detectIPAddressChanges = (callback: (ip: string) => void): (() => void) => {
   let currentIPAddresses = getCurrentIPAddresses();
-  setInterval(() => {
+
+  const intervalId = setInterval(() => {
     const newIPAddresses = getCurrentIPAddresses();
     if (JSON.stringify(currentIPAddresses) !== JSON.stringify(newIPAddresses)) {
       if (callback) {
@@ -97,7 +98,10 @@ export const detectIPAddressChanges = (callback: (ip: string) => void) => {
       }
       currentIPAddresses = newIPAddresses;
     }
-  }, 1000); // Check every second
+  }, 30000); // Check every 30 seconds (reduced from 1s to prevent excessive polling)
+
+  // Return cleanup function to prevent memory leaks
+  return () => clearInterval(intervalId);
 };
 
 export const isFirstVersionGreater = (version1: string, version2: string) => {
