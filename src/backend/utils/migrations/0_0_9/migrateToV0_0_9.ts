@@ -83,12 +83,12 @@ const getServersFolderPath = (projectName: string) => {
   return serversFolderPath;
 };
 
-const verifyProjectFolderExist = (repoFolderName: string) => {
-  getProjectPath(repoFolderName);
-  getServersFolderPath(repoFolderName);
-  getProjectSettingsPath(repoFolderName);
+const verifyProjectFolderExist = async (repoFolderName: string) => {
+  await getProjectPath(repoFolderName);
+  await getServersFolderPath(repoFolderName);
+  await getProjectSettingsPath(repoFolderName);
 
-  verifyProjectFoldersExist();
+  await verifyProjectFoldersExist();
 };
 
 const getProjectServersNameList = async (projectName: string) => {

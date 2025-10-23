@@ -52,7 +52,7 @@ export const addCredentialsToGitURI = (
 };
 
 export const verifyProjectFolderExist = async (repoFolderName: string) => {
-  verifyProjectFoldersExist();
+  await verifyProjectFoldersExist();
 
   await getProjectPath(repoFolderName);
   await getServersFolderPath(repoFolderName);

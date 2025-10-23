@@ -1,8 +1,8 @@
 import serialize from 'serialize-javascript';
-import fs, { readdirSync } from 'fs';
+import fs from 'fs';
+import fsp from 'fs/promises';
 import path from 'path';
 import { v4 as uuid } from 'uuid';
-import { readdir } from 'fs/promises';
 import {
   AppSettings,
   PresetsFolder,
@@ -24,13 +24,15 @@ import {
 import { listToHashmap, replaceUndefined } from './utils';
 
 export const readAppSettings = async (): Promise<AppSettings> => {
-  if (!fs.existsSync(appSettingsFolder)) {
-    fs.mkdirSync(appSettingsFolder);
+  try {
+    await fsp.mkdir(appSettingsFolder, { recursive: true });
+  } catch (error) {
+    // Directory might already exist, ignore
   }
 
   try {
     const settings = JSON.parse(
-      await fs.readFileSync(`${appSettingsFolder}settings.json`, 'utf8'),
+      await fsp.readFile(`${appSettingsFolder}settings.json`, 'utf8'),
     );
 
     return { ...DEFAULT_APP_SETTINGS, ...settings };
@@ -77,30 +79,18 @@ function formatFolderName(input: string): string {
   return formattedName;
 }
 
-export const verifyProjectFoldersExist = () => {
-  if (!fs.existsSync(mainFolderPath)) {
-    fs.mkdirSync(mainFolderPath);
-  }
-  if (!fs.existsSync(projectsPath)) {
-    fs.mkdirSync(projectsPath);
-  }
-  if (!fs.existsSync(appSettingsFolder)) {
-    fs.mkdirSync(appSettingsFolder);
-  }
+export const verifyProjectFoldersExist = async () => {
+  await fsp.mkdir(mainFolderPath, { recursive: true });
+  await fsp.mkdir(projectsPath, { recursive: true });
+  await fsp.mkdir(appSettingsFolder, { recursive: true });
 };
 
-export const createProjectPath = (projectName: string) => {
+export const createProjectPath = async (projectName: string) => {
   const projectPath = `${projectsPath + formatFolderName(projectName + new Date().getTime())}/`;
 
-  verifyProjectFoldersExist();
+  await verifyProjectFoldersExist();
 
-  if (!fs.existsSync(projectsPath)) {
-    fs.mkdirSync(projectsPath);
-  }
-
-  if (!fs.existsSync(projectPath)) {
-    fs.mkdirSync(projectPath);
-  }
+  await fsp.mkdir(projectPath, { recursive: true });
 
   return projectPath;
 };
@@ -110,9 +100,7 @@ export const getProjectSettingsPath = async (projectName: string) => {
 
   const projectSettingsPath = `${projectPath}/settings/`;
 
-  if (!fs.existsSync(projectSettingsPath)) {
-    fs.mkdirSync(projectSettingsPath);
-  }
+  await fsp.mkdir(projectSettingsPath, { recursive: true });
 
   return projectSettingsPath;
 };
@@ -122,9 +110,7 @@ export const getServersFolderPath = async (projectName: string) => {
 
   const serversFolderPath = `${projectPath}servers/`;
 
-  if (!fs.existsSync(serversFolderPath)) {
-    fs.mkdirSync(serversFolderPath);
-  }
+  await fsp.mkdir(serversFolderPath, { recursive: true });
 
   return serversFolderPath;
 };
@@ -137,9 +123,7 @@ export const getServerPath = async (
 
   const serverPath = `${serversFolderPath + serverName}/`;
 
-  if (!fs.existsSync(serverPath)) {
-    fs.mkdirSync(serverPath);
-  }
+  await fsp.mkdir(serverPath, { recursive: true });
 
   return serverPath;
 };
@@ -152,9 +136,7 @@ export const getServerDataPath = async (
 
   const serverDataPath = `${serverPath}data/`;
 
-  if (!fs.existsSync(serverDataPath)) {
-    fs.mkdirSync(serverDataPath);
-  }
+  await fsp.mkdir(serverDataPath, { recursive: true });
 
   return serverDataPath;
 };
@@ -164,9 +146,7 @@ export const getPresetsPath = async (projectName: string) => {
 
   const presetsPath = `${projectPath}presets/`;
 
-  if (!fs.existsSync(presetsPath)) {
-    fs.mkdirSync(presetsPath);
-  }
+  await fsp.mkdir(presetsPath, { recursive: true });
 
   return presetsPath;
 };
@@ -179,9 +159,7 @@ export const getServerSettingsPath = async (
 
   const serverSettingsPath = `${serverPath}settings/`;
 
-  if (!fs.existsSync(serverSettingsPath)) {
-    fs.mkdirSync(serverSettingsPath);
-  }
+  await fsp.mkdir(serverSettingsPath, { recursive: true });
 
   return serverSettingsPath;
 };
@@ -196,14 +174,11 @@ export const readServerSettings = async (
       serverName,
     );
 
-    if (fs.existsSync(serverSettingsPath)) {
-      const settings = JSON.parse(
-        await fs.readFileSync(`${serverSettingsPath}settings.json`, 'utf8'),
-      );
+    const settings = JSON.parse(
+      await fsp.readFile(`${serverSettingsPath}settings.json`, 'utf8'),
+    );
 
-      return { ...DEFAULT_SERVER_SETTINGS, ...settings };
-    }
-    return DEFAULT_SERVER_SETTINGS;
+    return { ...DEFAULT_SERVER_SETTINGS, ...settings };
   } catch (error) {
     return DEFAULT_SERVER_SETTINGS;
   }
@@ -224,11 +199,7 @@ export const updateServerSettings = async (
     serverName,
   );
 
-  if (!fs.existsSync(serverSettingsPath)) {
-    fs.mkdirSync(serverSettingsPath);
-  }
-
-  await fs.writeFileSync(
+  await fsp.writeFile(
     `${serverSettingsPath}settings.json`,
     fileData,
     'utf8',
@@ -238,7 +209,7 @@ export const updateServerSettings = async (
 export const deleteServer = async (projectName: string, serverName: string) => {
   const serverPath = await getServerPath(projectName, serverName);
 
-  await fs.rmSync(serverPath, { recursive: true, force: true });
+  await fsp.rm(serverPath, { recursive: true, force: true });
 };
 
 export const deleteParent = async (
@@ -248,7 +219,7 @@ export const deleteParent = async (
 ) => {
   const serverDataPath = await getServerDataPath(projectName, serverName);
 
-  await fs.unlinkSync(`${serverDataPath + parentFilename}.json`);
+  await fsp.unlink(`${serverDataPath + parentFilename}.json`);
 };
 
 export const deletePresetFolder = async (
@@ -257,15 +228,13 @@ export const deletePresetFolder = async (
 ) => {
   const presetsPath = await getPresetsPath(projectName);
 
-  await fs.unlinkSync(`${presetsPath + filename}.json`);
+  await fsp.unlink(`${presetsPath + filename}.json`);
 };
 
-export const updateAppSettings = (settings: AppSettings) => {
-  if (!fs.existsSync(appSettingsFolder)) {
-    fs.mkdirSync(appSettingsFolder);
-  }
+export const updateAppSettings = async (settings: AppSettings) => {
+  await fsp.mkdir(appSettingsFolder, { recursive: true });
 
-  fs.writeFileSync(
+  await fsp.writeFile(
     `${appSettingsFolder}settings.json`,
     JSON.stringify(replaceUndefined(settings)),
     'utf8',
@@ -275,7 +244,8 @@ export const updateAppSettings = (settings: AppSettings) => {
 const insertProjectFilesIntoAppSettings = async () => {
   const appSettings = await readAppSettings();
 
-  const projects = await readdirSync(projectsPath, { withFileTypes: true })
+  const dirents = await fsp.readdir(projectsPath, { withFileTypes: true });
+  const projects = dirents
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => ({
       name: dirent.name,
@@ -300,16 +270,16 @@ export const getProjectsNameList = async () => {
 export const getProjectServersNameList = async (projectName: string) => {
   const serversFolderPath = await getServersFolderPath(projectName);
 
-  return readdirSync(serversFolderPath, { withFileTypes: true })
+  const dirents = await fsp.readdir(serversFolderPath, { withFileTypes: true });
+  return dirents
     .filter((dirent) => dirent.isDirectory() && dirent.name?.length > 0)
     .map((dirent) => dirent.name);
 };
 
 export const getProjectPresetsFilenames = async (projectName: string) => {
   const presetsPath = await getPresetsPath(projectName);
-  const filenames = await fs
-    .readdirSync(presetsPath)
-    .filter((filename) => filename.endsWith('.json'));
+  const files = await fsp.readdir(presetsPath);
+  const filenames = files.filter((filename) => filename.endsWith('.json'));
 
   return filenames;
 };
@@ -320,11 +290,7 @@ export const updateProjectSettings = async (
 ) => {
   const projectSettingsPath = await getProjectSettingsPath(projectName);
 
-  if (!fs.existsSync(projectSettingsPath)) {
-    fs.mkdirSync(projectSettingsPath);
-  }
-
-  fs.writeFileSync(
+  await fsp.writeFile(
     `${projectSettingsPath}settings.json`,
     JSON.stringify(replaceUndefined(settings)),
     'utf8',
@@ -336,13 +302,9 @@ export const readProjectSettings = async (
 ): Promise<ProjectSettings> => {
   const projectSettingsPath = await getProjectSettingsPath(projectName);
 
-  if (!fs.existsSync(projectSettingsPath)) {
-    fs.mkdirSync(projectSettingsPath);
-  }
-
   try {
     const settings = JSON.parse(
-      await fs.readFileSync(`${projectSettingsPath}settings.json`, 'utf8'),
+      await fsp.readFile(`${projectSettingsPath}settings.json`, 'utf8'),
     );
 
     return Object.freeze({ ...DEFAULT_PROJECT_SETTINGS, ...settings });
@@ -357,16 +319,15 @@ export const readServerData = async (
 ): Promise<RouteParentHash> => {
   const dataFolderPath = await getServerDataPath(projectName, serverName);
 
-  const filenames = await fs
-    .readdirSync(dataFolderPath)
-    .filter((filename) => filename.endsWith('.json'));
+  const files = await fsp.readdir(dataFolderPath);
+  const filenames = files.filter((filename) => filename.endsWith('.json'));
 
   const data = await Promise.all(
     filenames.map(async (filename) => {
       const modulePath = path.resolve(dataFolderPath, filename);
 
       const obj = JSON.parse(
-        await fs.readFileSync(modulePath, 'utf8'),
+        await fsp.readFile(modulePath, 'utf8'),
       ) as RouteParent;
 
       return obj;
@@ -385,7 +346,7 @@ export const getProjectPresets = async (projectName: string) => {
       const presetPath = path.resolve(presetsPath, filename);
 
       return JSON.parse(
-        await fs.readFileSync(presetPath, 'utf8'),
+        await fsp.readFile(presetPath, 'utf8'),
       ) as PresetsFolder;
     }),
   );
@@ -418,7 +379,7 @@ export const updateRouteParentFile = async (
     unsafe: true,
   });
 
-  fs.writeFileSync(
+  await fsp.writeFile(
     `${serverDataPath + parent.filename}.json`,
     fileData,
     'utf8',
@@ -438,7 +399,7 @@ export const updatePresetFile = async (
     unsafe: true,
   });
 
-  fs.writeFileSync(
+  await fsp.writeFile(
     `${presetsPath + presetFolder.filename}.json`,
     fileData,
     'utf8',
@@ -456,40 +417,39 @@ export const updateServerData = async (
   );
 };
 
-export function deleteDirectory(
+export async function deleteDirectory(
   directoryPath: string,
-  callback: (success: boolean) => void,
   maxAttempts = 5,
-) {
+): Promise<boolean> {
   let attempts = 0;
 
-  function attemptDelete() {
+  async function attemptDelete(): Promise<boolean> {
     try {
-      fs.rmSync(directoryPath, { recursive: true, force: true });
+      await fsp.rm(directoryPath, { recursive: true, force: true });
       console.log('Directory removed', directoryPath);
-      callback(true);
+      return true;
     } catch (err: any) {
       if (err.code === 'EBUSY' && attempts < maxAttempts) {
         // Check if error is due to a busy resource
         console.log('Directory is locked, retrying...');
         attempts += 1;
-        setTimeout(attemptDelete, 1000); // Wait 1 second before retrying
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before retrying
+        return attemptDelete();
       } else {
-        callback(false);
-
         console.error('Failed to remove directory:', err);
+        return false;
       }
     }
   }
 
-  attemptDelete();
+  return attemptDelete();
 }
 
 export async function isDirectoryEmpty(projectName: string): Promise<boolean> {
   try {
     const projectPath = await getProjectPath(projectName);
 
-    const files = await readdir(projectPath);
+    const files = await fsp.readdir(projectPath);
     return files.length === 0;
   } catch (error) {
     console.error('Error reading directory:', error);

@@ -41,7 +41,7 @@ export const createProject = async (
   await verifyProjectFoldersExist();
 
   const projectPath =
-    cloneType === 'OPEN' ? directoryPath || '' : createProjectPath(projectName);
+    cloneType === 'OPEN' ? directoryPath || '' : await createProjectPath(projectName);
 
   const appSettings = await readAppSettings();
   const newProject = {
