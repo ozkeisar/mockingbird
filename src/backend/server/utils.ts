@@ -212,27 +212,25 @@ const customConsole = {
 
 export const reviveFunctionRest = (serverName: string, fnString: string) => {
   try {
-    const script = `
+    // Using Function constructor instead of eval for better security
+    // This still executes user code but in a more controlled manner
+    const consoleObj = {
+      log: customConsole.log(serverName),
+      error: customConsole.error(serverName),
+      warn: customConsole.warn(serverName),
+      info: customConsole.info(serverName),
+      debug: customConsole.debug(serverName),
+    };
 
-      (req, res) => {
-        const console = {
-          log: customConsole.log(serverName),
-          error: customConsole.error(serverName),
-          warn: customConsole.warn(serverName),
-          info: customConsole.info(serverName),
-          debug: customConsole.debug(serverName),
-        };
-
-        const func = (${fnString.trim()})
-        func(req, res)
-
-      }
+    const functionBody = `
+      const console = arguments[2];
+      const func = (${fnString.trim()});
+      return func(arguments[0], arguments[1]);
     `;
 
-    // eslint-disable-next-line no-eval
-    const func = eval(`(${script.trim()})`);
+    const func = new Function('req', 'res', 'console', functionBody);
 
-    return func;
+    return (req: any, res: any) => func(req, res, consoleObj);
   } catch (error) {
     throw new Error('fail to revive function rest');
   }
@@ -240,26 +238,25 @@ export const reviveFunctionRest = (serverName: string, fnString: string) => {
 
 export const reviveFunctionGraphql = (serverName: string, fnString: string) => {
   try {
-    const script = `
-      (args, context, info) => {
-        const console = {
-          log: customConsole.log(serverName),
-          error: customConsole.error(serverName),
-          warn: customConsole.warn(serverName),
-          info: customConsole.info(serverName),
-          debug: customConsole.debug(serverName),
-        };
+    // Using Function constructor instead of eval for better security
+    // This still executes user code but in a more controlled manner
+    const consoleObj = {
+      log: customConsole.log(serverName),
+      error: customConsole.error(serverName),
+      warn: customConsole.warn(serverName),
+      info: customConsole.info(serverName),
+      debug: customConsole.debug(serverName),
+    };
 
-        const func = (${fnString.trim()})
-        return func(args, context, info)
-
-      }
+    const functionBody = `
+      const console = arguments[3];
+      const func = (${fnString.trim()});
+      return func(arguments[0], arguments[1], arguments[2]);
     `;
 
-    // eslint-disable-next-line no-eval
-    const func = eval(`(${script.trim()})`);
+    const func = new Function('args', 'context', 'info', 'console', functionBody);
 
-    return func;
+    return (args: any, context: any, info: any) => func(args, context, info, consoleObj);
   } catch (error) {
     throw new Error('fail to revive function graphql');
   }

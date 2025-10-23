@@ -73,8 +73,9 @@ export function ResponseDialog({
   useEffect(() => {
     try {
       if (resType === 'func') {
-        // eslint-disable-next-line no-eval
-        eval(`(${exec})`);
+        // Using Function constructor instead of eval for syntax validation
+        // This is safer as it doesn't execute in the local scope
+        new Function(`return (${exec})`);
       } else if (resType === 'obj') {
         JSON.parse(res);
       } else if (resType === 'proxy') {
