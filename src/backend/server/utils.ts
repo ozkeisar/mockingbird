@@ -14,6 +14,7 @@ import { updateLog } from './logger';
 import { mergeObjects } from '../../utils/utils';
 import { emitGlobalSocketMessage } from '../socket';
 import { EVENT_KEYS } from '../../types/events';
+import { executeSideEffects } from './sideEffectsExecutor';
 
 const expressPlayground =
   require('graphql-playground-middleware-express').default;
@@ -343,6 +344,11 @@ export const handleResponse = async ({
       updateLog((req as any).id, { logType: 'local', serverName });
 
       func(req, res);
+      
+      // Execute side effects after sending response (fire and forget)
+      if (response.sideEffects?.length) {
+        executeSideEffects(response.sideEffects, serverName, req, res);
+      }
     } else if (response.type === 'obj') {
       const data = response.res?.data;
       const status = response.res?.code || 500;
@@ -352,6 +358,11 @@ export const handleResponse = async ({
       updateLog((req as any).id, { logType: 'local', serverName });
 
       res.status(status).send(data);
+      
+      // Execute side effects after sending response (fire and forget)
+      if (response.sideEffects?.length) {
+        executeSideEffects(response.sideEffects, serverName, req, res);
+      }
     } else if (response.type === 'proxy' && !!response.url) {
       const proxyUrl = buildProxyUrl(response.url, req);
 
@@ -374,6 +385,11 @@ export const handleResponse = async ({
         serverSettings,
       });
       res.status(proxyRes.status).send(proxyRes.data);
+      
+      // Execute side effects after sending response (fire and forget)
+      if (response.sideEffects?.length) {
+        executeSideEffects(response.sideEffects, serverName, req, res);
+      }
     } else {
       updateLog((req as any).id, { logType: 'error', serverName });
 
@@ -432,10 +448,23 @@ export const handleGraphqlResponse = (
           const func = reviveFunctionGraphql(serverName, response?.exec || '');
           updateLog(req.id, { logType: 'local', serverName });
 
-          return func(args, context, info);
+          const result = func(args, context, info);
+          
+          // Execute side effects after resolver (fire and forget)
+          if (response.sideEffects?.length) {
+            executeSideEffects(response.sideEffects, serverName, req, res);
+          }
+          
+          return result;
         }
         if (response?.type === 'obj') {
           updateLog(req.id, { logType: 'local', serverName });
+          
+          // Execute side effects after resolver (fire and forget)
+          if (response.sideEffects?.length) {
+            executeSideEffects(response.sideEffects, serverName, req, res);
+          }
+          
           return response.res;
         }
         if (response?.type === 'proxy') {
@@ -455,6 +484,11 @@ export const handleGraphqlResponse = (
           const proxyResLog = buildProxyResLog(proxyRes);
 
           updateLog(req.id, { proxyResponse: proxyResLog });
+          
+          // Execute side effects after resolver (fire and forget)
+          if (response.sideEffects?.length) {
+            executeSideEffects(response.sideEffects, serverName, req, res);
+          }
 
           return proxyRes.data;
         }

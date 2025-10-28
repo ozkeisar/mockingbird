@@ -1,3 +1,5 @@
+import { SideEffect } from './sideEffects';
+
 export type Method = 'post' | 'get' | 'put' | 'delete' | 'patch';
 export type ResponseType = 'func' | 'obj' | 'proxy';
 export type ParamType = 'body' | 'query' | 'params';
@@ -12,6 +14,8 @@ export type ServerSettings = {
   reWriteCookieDomain: boolean | null;
   simplifyCookies: boolean | null;
   duplicateCookies: boolean | null;
+  websocketPort?: number;
+  websocketEnabled?: boolean;
 };
 
 export type ProjectSettings = {
@@ -28,6 +32,7 @@ export interface RouteResponse {
   url: string | null;
   type: ResponseType;
   blockProxy: boolean | null;
+  sideEffects?: SideEffect[];
 }
 
 export interface RouteResponseHash {
@@ -57,6 +62,7 @@ export interface GraphQlRouteResponse {
   type: ResponseType;
   schema: string;
   schemaTypeName: string;
+  sideEffects?: SideEffect[];
 }
 
 export interface GraphQlRouteResponseHash {

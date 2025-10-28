@@ -47,6 +47,8 @@ export function ServerDetails() {
   );
   const [_delay, setDelay] = useState(server?.settings.delay || 0);
   const [_port, setPort] = useState(server?.settings.port || 3001);
+  const [_websocketPort, setWebsocketPort] = useState(server?.settings.websocketPort || 0);
+  const [_websocketEnabled, setWebsocketEnabled] = useState(server?.settings.websocketEnabled || false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteServerDialogOpen, setIsDeleteServerDialogOpen] =
     useState(false);
@@ -60,6 +62,8 @@ export function ServerDetails() {
     setSimplifyCookies(server?.settings?.simplifyCookies || false);
     setDelay(server?.settings?.delay || 0);
     setPort(server?.settings?.port || 3001);
+    setWebsocketPort(server?.settings?.websocketPort || 0);
+    setWebsocketEnabled(server?.settings?.websocketEnabled || false);
   }, [server]);
 
   useEffect(() => {
@@ -106,6 +110,8 @@ export function ServerDetails() {
       reWriteCookieDomain: _reWriteCookieDomain,
       simplifyCookies: _simplifyCookies,
       duplicateCookies: _duplicateCookies,
+      websocketPort: _websocketPort,
+      websocketEnabled: _websocketEnabled,
     };
     emitSocketEvent(EVENT_KEYS.UPDATE_SERVER_SETTINGS, {
       settings,
@@ -123,6 +129,8 @@ export function ServerDetails() {
     setReWriteCookieDomain(server?.settings.reWriteCookieDomain || false);
     setDelay(server?.settings.delay || 0);
     setPort(server?.settings.port || 3001);
+    setWebsocketPort(server?.settings?.websocketPort || 0);
+    setWebsocketEnabled(server?.settings?.websocketEnabled || false);
   };
 
   const isDataModified =
@@ -132,7 +140,9 @@ export function ServerDetails() {
     server?.settings.port !== _port ||
     server?.settings.duplicateCookies !== _duplicateCookies ||
     server?.settings.reWriteCookieDomain !== _reWriteCookieDomain ||
-    server?.settings.simplifyCookies !== _simplifyCookies;
+    server?.settings.simplifyCookies !== _simplifyCookies ||
+    server?.settings.websocketPort !== _websocketPort ||
+    server?.settings.websocketEnabled !== _websocketEnabled;
 
   return (
     <div className={styles.container}>
@@ -278,6 +288,48 @@ export function ServerDetails() {
             disabled={!_proxyBaseUrl || hasError}
           />
         </div>
+        <Divider style={{ margin: '20px 0' }} />
+        <Typography variant="h6" gutterBottom>
+          WebSocket Settings (Side Effects)
+        </Typography>
+        <div className={styles.switch}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={_websocketEnabled}
+                onChange={(e) => setWebsocketEnabled(e.target.checked)}
+              />
+            }
+            label="Enable WebSocket Server"
+          />
+        </div>
+        {_websocketEnabled && (
+          <div style={{ marginTop: '10px' }}>
+            <TextField
+              style={{ width: '250px' }}
+              value={_websocketPort}
+              onChange={(e) => {
+                const value = parseInt(e.target.value, 10);
+                if (!isNaN(value) && value > 0 && value < 65536) {
+                  setWebsocketPort(value);
+                }
+              }}
+              type="number"
+              label="WebSocket Port"
+              variant="filled"
+              helperText="Port for WebSocket server (side effects)"
+              error={_websocketPort === _port}
+            />
+            {_websocketPort === _port && (
+              <Typography
+                variant="caption"
+                style={{ color: 'red', display: 'block', marginTop: '5px' }}
+              >
+                WebSocket port cannot be the same as server port
+              </Typography>
+            )}
+          </div>
+        )}
       </div>
       <div className={styles.buttons}>
         <Button onClick={handleCancel}>cancel</Button>

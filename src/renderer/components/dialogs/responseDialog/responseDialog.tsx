@@ -16,10 +16,11 @@ import Typography from '@mui/material/Typography';
 import MonacoEditor from '@uiw/react-monacoeditor';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { Tooltip } from '@mui/material';
+import { Tooltip, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useResponseActions } from '../../../hooks/files';
 import { BUTTONS } from '../../../../consts/analytics';
-import { getRouteBGColor, reportButtonClick } from '../../../utils';
+import { getRouteBGColor, reportButtonClick, emitSocketEvent } from '../../../utils';
 import {
   ProjectServer,
   ResponseType,
@@ -27,6 +28,10 @@ import {
   RouteParent,
   RouteResponse,
 } from '../../../../types';
+import { SideEffect } from '../../../../types/sideEffects';
+import { SideEffectsList } from '../../sideEffects/SideEffectsList';
+import { SideEffectDialog } from '../../sideEffects/SideEffectDialog';
+import { useProjectStore } from '../../../state/project';
 
 type Props = {
   onClose: Function;
@@ -64,10 +69,14 @@ export function ResponseDialog({
   const [url, setUrl] = useState<string | null>(data?.url || 'http://');
   const [blockProxy, setBlockProxy] = useState(data?.blockProxy || false);
   const [badSyntaxError, setBadSyntaxError] = useState<string | null>(null);
+  const [sideEffects, setSideEffects] = useState<SideEffect[]>(data?.sideEffects || []);
+  const [sideEffectDialogOpen, setSideEffectDialogOpen] = useState(false);
+  const [editingSideEffect, setEditingSideEffect] = useState<SideEffect | null>(null);
   const existingNames = Object.values(route.responsesHash || {}).map(
     (item) => item.name,
   );
   const { createResponse, updateResponse } = useResponseActions();
+  const { activeProjectName } = useProjectStore();
   const isEdit = !!data?.id;
 
   useEffect(() => {
@@ -112,6 +121,7 @@ export function ResponseDialog({
         url: resType === 'proxy' ? url : data?.url ?? null,
         type: resType,
         blockProxy,
+        sideEffects: sideEffects.length > 0 ? sideEffects : undefined,
       };
 
       if (isNewResponse) {
@@ -129,6 +139,49 @@ export function ResponseDialog({
     reportButtonClick(BUTTONS.RESPONSE_DIALOG_CLOSE);
 
     onClose();
+  };
+
+  // Side Effects handlers
+  const handleAddSideEffect = () => {
+    setEditingSideEffect(null);
+    setSideEffectDialogOpen(true);
+  };
+
+  const handleEditSideEffect = (id: string) => {
+    const effect = sideEffects.find(e => e.id === id);
+    if (effect) {
+      setEditingSideEffect(effect);
+      setSideEffectDialogOpen(true);
+    }
+  };
+
+  const handleDeleteSideEffect = (id: string) => {
+    setSideEffects(sideEffects.filter(e => e.id !== id));
+  };
+
+  const handleToggleSideEffect = (id: string) => {
+    setSideEffects(sideEffects.map(e => 
+      e.id === id ? { ...e, enabled: !e.enabled } : e
+    ));
+  };
+
+  const handleTestSideEffect = async (sideEffect: SideEffect) => {
+    try {
+      const response = await fetch('/side-effects/test-side-effect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sideEffect,
+          serverName: server.name
+        })
+      });
+      const result = await response.json();
+      if (!result.success) {
+        console.error('Test failed:', result.error);
+      }
+    } catch (error) {
+      console.error('Failed to test side effect:', error);
+    }
   };
 
   const hasError = existingNames?.includes(name) && data?.name !== name;
@@ -215,6 +268,24 @@ export function ResponseDialog({
           />
         </Tooltip>
       </div>
+      
+      <Accordion style={{ marginTop: '20px' }}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography>
+            Side Effects {sideEffects.length > 0 && `(${sideEffects.length})`}
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <SideEffectsList
+            sideEffects={sideEffects}
+            onAdd={handleAddSideEffect}
+            onEdit={handleEditSideEffect}
+            onDelete={handleDeleteSideEffect}
+            onToggle={handleToggleSideEffect}
+            onTest={handleTestSideEffect}
+          />
+        </AccordionDetails>
+      </Accordion>
     </div>
   );
 
@@ -321,6 +392,31 @@ export function ResponseDialog({
           save
         </Button>
       </DialogActions>
+      
+      {sideEffectDialogOpen && (
+        <SideEffectDialog
+          open={sideEffectDialogOpen}
+          onClose={() => {
+            setSideEffectDialogOpen(false);
+            setEditingSideEffect(null);
+          }}
+          onSave={(sideEffect) => {
+            if (editingSideEffect) {
+              // Update existing side effect
+              setSideEffects(sideEffects.map(e =>
+                e.id === sideEffect.id ? sideEffect : e
+              ));
+            } else {
+              // Add new side effect
+              setSideEffects([...sideEffects, sideEffect]);
+            }
+            setSideEffectDialogOpen(false);
+            setEditingSideEffect(null);
+          }}
+          data={editingSideEffect}
+          serverName={server.name}
+        />
+      )}
     </Dialog>
   );
 }

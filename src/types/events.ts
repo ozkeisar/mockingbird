@@ -41,4 +41,5 @@ export enum EVENT_KEYS {
   RELOAD_PROJECT = 'reload project',
   OPEN_PROJECT_DIRECTORY = 'openProjectDirectory',
   SERVERS_CONSOLE = 'SERVERS_CONSOLE',
+  SIDE_EFFECT_LOG = 'SIDE_EFFECT_LOG',
 }

@@ -21,6 +21,7 @@ import {
 } from '../utils';
 import { Route, RouteParent } from '../../types';
 import { buildUrl } from '../../utils/utils';
+import { startWebSocketServer, stopWebSocketServer, stopAllWebSocketServers } from './websocketServer';
 
 const nocache = require('nocache');
 const { v4: uuidv4 } = require('uuid');
@@ -270,6 +271,16 @@ export const startServer = async (
     );
   });
 
+  // Start WebSocket server if enabled
+  if (serverSettings.websocketEnabled && serverSettings.websocketPort) {
+    try {
+      startWebSocketServer(serverName, serverSettings.websocketPort);
+      console.log(`--------WebSocket server started for ${serverName} on port ${serverSettings.websocketPort}`);
+    } catch (error) {
+      console.error(`Failed to start WebSocket server for ${serverName}:`, error);
+    }
+  }
+
   return server;
 };
 
@@ -301,6 +312,9 @@ export const closeProjectServers = () => {
   });
 
   servers = [];
+  
+  // Also stop all WebSocket servers
+  stopAllWebSocketServers();
 };
 
 export const checkIServerUp = () => {

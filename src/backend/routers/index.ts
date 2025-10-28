@@ -6,6 +6,7 @@ import { parentsRouter } from './parents';
 import { appDataRouter } from './appData';
 import { projectRouter } from './project';
 import { serverLogsRouter } from './serverLogs';
+import { sideEffectsRouter } from './sideEffects';
 
 export const routes = express.Router();
 
@@ -16,3 +17,4 @@ routes.use('/parents', parentsRouter);
 routes.use('/project', projectRouter);
 routes.use('/app-data', appDataRouter);
 routes.use('/server-logs', serverLogsRouter);
+routes.use('/side-effects', sideEffectsRouter);
